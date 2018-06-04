@@ -1,0 +1,32 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block css %}
+            <link rel='stylesheet' type='text/css' href='{% static "rim/css/base.css" %}'/>
+        {% endblock %}
+        <title>{% block title %}{% trans 'RIM ' %}{% endblock %}</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    </head>
+    <body>
+        {% block body %}
+            <div id='wrapper'>
+                <div id='container'>
+                    {% block header %}
+                        <div id='nav-bar'>
+                            {% block navigation %}
+                                <ul id='nav-list'>
+                                    <li>{% trans 'Home' %}</li>
+                                    <li id='rim'>{% trans 'RIM' %}</li>
+                                    <li>{% trans 'Placeholder' %}</li>
+                                </ul>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+    </body>
+</html>
