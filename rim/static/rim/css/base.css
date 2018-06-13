@@ -6,19 +6,26 @@
 #container {
     width: 70%;
     margin:auto;
+    border: 1px solid black;
 }
 
-#nav-bar {
-    background-color: maroon;
-    width: 100%;
-    height: 5em;
-    padding: 1em;
+#nav {
+    background-color: #af2111;
 }
 
-#nav-list {
-    padding: 1em;
-    padding-left: 3em;
-    list-style: none;
+#title {
+    f ont-size: 3em;
+}
+
+.menu a {
     color: white;
-    vertical-align: middle;
+}
+
+.menu li {
+    border-top: 1px solid black;
+}
+
+.menu li:hover {
+    background-color: #8c0a01;
+    cursor: pointer;
 }
