@@ -1,0 +1,31 @@
+#wrapper {
+    background-color: gray;
+    width: 100%;
+}
+
+#container {
+    width: 70%;
+    margin:auto;
+    border: 1px solid black;
+}
+
+#nav {
+    background-color: #af2111;
+}
+
+#title {
+    font-size: 3em;
+}
+
+.menu a {
+    color: white;
+}
+
+.menu li {
+    border-top: 1px solid black;
+}
+
+.menu li:hover {
+    background-color: #8c0a01;
+    cursor: pointer;
+}

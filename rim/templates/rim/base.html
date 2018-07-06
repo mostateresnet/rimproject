@@ -1,0 +1,42 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block css %}
+        <link rel='stylesheet' type='text/css' href='{% static "rim/css/foundation/foundation.css" %}'>
+        <link rel='stylesheet' type='text/css' href='{% static "rim/css/base.css" %}'>
+    {% endblock %}
+    {% block javascript %}
+        <script type='text/javascript' src='{% static "rim/js/libraries/foundation.min.js" %}'></script>
+        <script type='text/javascript' src='{% static "rim/js/libraries/jquery.js" %}'></script>
+        <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
+    {% endblock %}
+    <title>{% block title %}{% trans 'RIM ' %}{% endblock %}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+
+<body>
+    <div id='wrapper'>
+        <div id='container'>
+            {% block body %}
+                {% block header %}
+                    <div id='nav'>
+                        <span id='title'>RIM</span>
+                        <ul class='expanded menu align-center' >
+                            <li><a href='#'>Home</a></li>
+                            <li><a href='#'>Add</a></li>
+                            <li><a href='#'>Groups</a></li>
+                        </ul>
+                    </div>
+                {% endblock %}
+                {% block content %}
+                {% endblock %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+
+</html>
