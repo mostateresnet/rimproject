@@ -1,7 +1,8 @@
 from django.urls import path
+from django.conf.urls import url, include
 
 from rim import views
 
 urlpatterns = [
-    path('', views.BaseView.as_view(), name='base'),
+    path('', views.HomeView.as_view(), name='home'),
 ]

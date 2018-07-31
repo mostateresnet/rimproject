@@ -1,0 +1,42 @@
+{% extends "rim/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Serial No
+                </th>
+                <th>
+                    Equipment Type
+                </th>
+                <th>
+                    Manufacturer
+                </th>
+                <th>
+                    Model
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in equipment_list %}
+                <tr>
+                    <td>{{ e.serial_no }}</td>
+                    <td>{{ e.equipment_type.type_name }}</td>
+                    <td>{{ e.manufacturer }}</td>
+                    <td>{{ e.equipment_model }}</td>
+                    <td>{{ e. }}</td>
+                    <td>{{ e.count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

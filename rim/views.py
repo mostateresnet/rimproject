@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from rim.models import Equipment
 
 
-class BaseView(TemplateView):
-    template_name='rim/base.html'
+class HomeView(ListView):
+	template_name='rim/home.html'
+	def get_queryset(self):
+		return Equipment.objects.all()
