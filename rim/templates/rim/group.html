@@ -1,0 +1,29 @@
+{% extends "rim/base.html" %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block css %}
+            {{ block.super }}
+            <link rel='stylesheet' type='text/css' href='{% static "rim/css/group.css" %}'>
+        {% endblock %}
+    </head>
+
+    {% block content %}
+        <body>
+            <div class='addgroup'>Groups</div>
+                <form method=POST class='groupform'>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class='grid-x'>
+                            <div class='small-12 large-12 groupcell cell'>
+                                {{ field.help_text }}{{ field }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <button type='submit' class='groupsubmit'>Submit</button>
+                </form>
+        </body>
+    {% endblock %}
+</html>
