@@ -7,22 +7,22 @@
         <thead>
             <tr>
                 <th>
-                    Serial No
+                    {% trans 'Serial No' %}
                 </th>
                 <th>
-                    Equipment Type
+                    {% trans 'Equipment Type' %}
                 </th>
                 <th>
-                    Manufacturer
+                    {% trans 'Manufacturer' %}
                 </th>
                 <th>
-                    Model
+                    {% trans 'Model' %}
                 </th>
                 <th>
-                    Location
+                    {% trans 'Location' %}
                 </th>
                 <th>
-                    Count
+                    {% trans 'Count' %}
                 </th>
             </tr>
         </thead>
@@ -33,7 +33,7 @@
                     <td>{{ e.equipment_type.type_name }}</td>
                     <td>{{ e.manufacturer }}</td>
                     <td>{{ e.equipment_model }}</td>
-                    <td>{{ e. }}</td>
+                    <td>{{ e.location }}</td>
                     <td>{{ e.count }}</td>
                 </tr>
             {% endfor %}
