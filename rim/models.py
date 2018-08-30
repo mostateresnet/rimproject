@@ -23,7 +23,8 @@ class Equipment(models.Model):
     physical_address = models.CharField(max_length=30, blank=True)
     purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     purchase_info = models.CharField(max_length=100, blank=True)
-    
+    def latest_checkout(self):
+        return self.checkout_set.order_by("-timestamp").first()
 
 class EquipmentType(models.Model):
     type_name = models.CharField(max_length=30)
@@ -37,6 +38,8 @@ class Checkout(models.Model):
 class Location(models.Model):
     building = models.CharField(max_length=50)
     room = models.CharField(max_length=50, blank=True)
+    def __str__(self):
+        return '%s %s' % (self.building, self.room)
 
 class Note(models.Model):
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)

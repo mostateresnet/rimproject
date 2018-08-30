@@ -33,7 +33,7 @@
                     <td>{{ e.equipment_type.type_name }}</td>
                     <td>{{ e.manufacturer }}</td>
                     <td>{{ e.equipment_model }}</td>
-                    <td>{{ e.location }}</td>
+                    <td>{{ e.latest_checkout.location }}</td>
                     <td>{{ e.count }}</td>
                 </tr>
             {% endfor %}
