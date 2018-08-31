@@ -6,7 +6,6 @@
 .groupheader {
     margin-left: 1em;
     font-size: 2em;
-    padding:.5em;
 }
 
 .group-list {
@@ -22,9 +21,6 @@
 .groupform {
     padding: 2em;
     padding-top: 1em;
-}
-
-.groupcell {
 }
 
 .groupbutton {

@@ -12,18 +12,24 @@
 
     {% block content %}
         <body>
-            <div class='addgroup'>Groups</div>
-                <form method=POST class='groupform'>
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class='grid-x'>
-                            <div class='small-12 large-12 groupcell cell'>
-                                {{ field.help_text }}{{ field }}
+            <div class='grid-x'>
+                <div class='small-8 large-8 cell'>
+                    <div class='grouptitle'>Group List</div>
+                </div>
+            </div>
+                <div class='group-list'>
+                    {% for object in object_list %}
+                        <a href='{% url "editgroup" pk=object.pk %}'>
+                            <div class='grid-x'>
+                                <div class='small-12 large-12 groupcell cell'>
+                                    {{ object.name }}
+                                </div>
                             </div>
-                        </div>
+                        </a>
+                        <hr>
                     {% endfor %}
-                    <button type='submit' class='groupsubmit'>Submit</button>
-                </form>
+                <a href='{% url "addgroup" %}'><div>Add a Group</div></a>
+                </div>
         </body>
     {% endblock %}
 </html>

@@ -1,0 +1,21 @@
+{% extends "rim/base.html" %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block css %}
+            {{ block.super }}
+            <link rel='stylesheet' type='text/css' href='{% static "rim/css/group.css" %}'>
+        {% endblock %}
+    </head>
+
+    {% block content %}
+        <body>
+            <div class='grouptitle'>Groups</div>
+            <a href='{% url "addgroup" %}'><div class='groupheader'>Edit Group</div></a>
+                <div class='group-list'>
+               </div>
+        </body>
+    {% endblock %}
+</html>
