@@ -28,7 +28,11 @@
                         </a>
                         <hr>
                     {% endfor %}
-                <a href='{% url "addgroup" %}'><div>Add a Group</div></a>
+                    <div class='grid-x'>
+                        <div class='small-12 large-12 groupcell cell'>
+                            <a href='{% url "addgroup" %}'><div>Add a Group</div></a>
+                        </div>
+                    </div>
                 </div>
         </body>
     {% endblock %}

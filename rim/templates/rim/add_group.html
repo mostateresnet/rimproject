@@ -13,23 +13,21 @@
     {% block content %}
         <body>
             <div class='grouptitle'>Add A Group</div>
-                <div class='addgroup'>
-                    <form method=POST class='groupform'>
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class='grid-x'>
-                                <div class='small-12 large-12 groupcell cell'>
-                                    {{ field.help_text }}{{ field }}
-                                </div>
-                            </div>
-                        {% endfor %}
+                <form method=POST class='groupform'>
+                    {% csrf_token %}
+                    {% for field in form %}
                         <div class='grid-x'>
-                            <div class='small-1 large-1 cell groupbutton'>
-                                <button type='submit'>Submit</button>
+                            <div class='small-12 large-12 groupcell cell'>
+                                {{ field.help_text }}{{ field }}
                             </div>
                         </div>
-                    </form>
-               </div>
+                    {% endfor %}
+                    <div class='grid-x'>
+                        <div class='small-1 large-1 cell groupbutton'>
+                            <button type='submit'>Submit</button>
+                        </div>
+                    </div>
+                </form>
         </body>
     {% endblock %}
 </html>

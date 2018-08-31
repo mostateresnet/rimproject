@@ -15,7 +15,6 @@
     margin: auto;
     border-radius: 1.5em;
     padding: 1em;
-    margin-top: 2em;
     margin-bottom: 2em;
 }
 
@@ -25,6 +24,7 @@
 }
 
 .groupcell {
+    padding-left:1em;
 }
 
 .groupbutton {

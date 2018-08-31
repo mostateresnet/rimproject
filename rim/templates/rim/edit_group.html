@@ -12,10 +12,22 @@
 
     {% block content %}
         <body>
-            <div class='grouptitle'>Groups</div>
-            <a href='{% url "addgroup" %}'><div class='groupheader'>Edit Group</div></a>
-                <div class='group-list'>
-               </div>
+            <div class='grouptitle'>Edit Group</div>
+            <form method=POST class='groupform'>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class='grid-x'>
+                        <div class='small-12 large-12 groupcell cell'>
+                            {{ field.help_text }}{{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class='grid-x'>
+                    <div class='small-1 large-1 cell groupbutton'>
+                        <button type='submit'>Submit</button>
+                    </div>
+                </div>
+            </form>
         </body>
     {% endblock %}
 </html>
