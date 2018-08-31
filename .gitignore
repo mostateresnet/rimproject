@@ -1,3 +1,8 @@
+##### start project specific ignores #####
+*.sqlite3
+settings_local.py
+##### end project specific ignores #####
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

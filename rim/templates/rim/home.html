@@ -1,0 +1,42 @@
+{% extends "rim/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    {% trans 'Serial No' %}
+                </th>
+                <th>
+                    {% trans 'Equipment Type' %}
+                </th>
+                <th>
+                    {% trans 'Manufacturer' %}
+                </th>
+                <th>
+                    {% trans 'Model' %}
+                </th>
+                <th>
+                    {% trans 'Location' %}
+                </th>
+                <th>
+                    {% trans 'Count' %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in equipment_list %}
+                <tr>
+                    <td>{{ e.serial_no }}</td>
+                    <td>{{ e.equipment_type.type_name }}</td>
+                    <td>{{ e.manufacturer }}</td>
+                    <td>{{ e.equipment_model }}</td>
+                    <td>{{ e.latest_checkout.location }}</td>
+                    <td>{{ e.count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
