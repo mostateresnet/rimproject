@@ -16,25 +16,11 @@
             <div class='addform'>
                 <form method=POST class='addform'> {% csrf_token %}
                     {% for field in form %}
-<<<<<<< Updated upstream
-                        {% if forloop.counter|divisibleby:3 or forloop.counter == 1 %}
-                            {% if forloop.counter != 3 %}
-                                <div class='grid-x'>
-                            {% endif %}
-                        {% endif %}
-                        <div class='small-4 large-4 addcell cell'>
-                            {{ field.help_text }}{{ field }}
-                        </div>
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                            </div>
-                        {% endif %}
-=======
                         {% cycle '<div class="grid-x">' '' '' %}
                             <div class='small-4 large-4 addcell cell'>
                                 {{ field.help_text }}{{ field }}
                             </div>
                         {% cycle '' '' '</div>' %}
->>>>>>> Stashed changes
                     {% endfor %}
                     <button type='submit' class='addsubmit'>Submit</button>
                 </form>

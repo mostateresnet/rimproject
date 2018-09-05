@@ -13,4 +13,4 @@ class AddView(CreateView):
     template_name = 'rim/add.html'
     model = Equipment
     form_class = AddForm
-    success_url = reverse_lazy('add')
+    success_url = reverse_lazy('home')
