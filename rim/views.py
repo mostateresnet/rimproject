@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
-from rim.models import Equipment
-
-from rim.models import Group
+from django.utils.translation import ugettext_lazy as _
+from rim.models import Equipment, Group
 from rim.forms import GroupForm
 
 class HomeView(ListView):
@@ -16,13 +15,23 @@ class ListGroupView(ListView):
     model = Group
 
 class AddGroupView(CreateView):
-    template_name = 'rim/add_group.html'
+    template_name = 'rim/edit_group.html'
     model = Group
     form_class = GroupForm
     success_url = reverse_lazy('group')
+
+    def get_context_data(self):
+        context = super(AddGroupView, self).get_context_data()
+        context["group_title"] = _("Add A Group")
+        return context
 
 class EditGroupView(UpdateView):
     template_name = 'rim/edit_group.html'
     model = Group
     form_class = GroupForm
     success_url = reverse_lazy('group')
+
+    def get_context_data(self):
+        context = super(EditGroupView, self).get_context_data()
+        context["group_title"] = _("Edit Group")
+        return context
