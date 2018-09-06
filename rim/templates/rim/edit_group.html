@@ -14,11 +14,14 @@
         <body>
             <div class='grouptitle'>{% trans 'Edit Group' %}</div>
             <form method=POST class='groupform'>
+                {{ form.non_field_errors }}
                 {% csrf_token %}
                 {% for field in form %}
                     <div class='grid-x'>
                         <div class='small-12 large-12 groupcell cell'>
-                            {{ field.help_text }}{{ field }}
+                            {{ field.label }}
+                            {{ field.errors }}
+                            {{ field }}
                         </div>
                     </div>
                 {% endfor %}
