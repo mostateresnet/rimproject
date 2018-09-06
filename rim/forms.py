@@ -6,10 +6,4 @@ class AddForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = ['serial_no', 'equipment_model', 'equipment_type', 'count', 'manufacturer',
-        'service_tag', 'smsu_tag', 'cpu', 'optical_drive', 'size', 'memory', 'other_connectivity',
-        'hard_drive', 'usb_ports', 'video_card', 'removable_media', 'physical_address',
-        'purchase_price', 'purchase_info']
-
-    def clean(self):
-        cleaned_data = super().clean()
+        exclude = []
