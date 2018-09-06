@@ -55,5 +55,5 @@ class Note(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 class Group(models.Model):
-    name = models.CharField(max_length=50, help_text='Group Name')
-    note = models.TextField(help_text='Notes')
+    name = models.CharField(max_length=50)
+    note = models.TextField()
