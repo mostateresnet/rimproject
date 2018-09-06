@@ -4,25 +4,25 @@ from django.utils.timezone import now
 from django.conf import settings
 
 class Equipment(models.Model):
-    serial_no = models.CharField(max_length=100, help_text='Serial Number')
-    equipment_model = models.CharField(max_length=30, help_text='Equipment Model')
-    equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE, help_text='Equipment Type')
-    count = models.IntegerField(blank=True, null=True, help_text='Count')
-    manufacturer = models.CharField(max_length=30, blank=True, help_text='Manufacturer')
-    service_tag = models.CharField(max_length=30, blank=True, help_text='Service Tag')
-    smsu_tag = models.CharField(max_length=30, blank=True, help_text='SMSU Tag')
-    cpu = models.CharField(max_length=64, blank=True, help_text='CPU')
-    optical_drive = models.CharField(max_length=30, blank=True, help_text='Optical Drive')
-    size = models.CharField(max_length=10, blank=True, help_text='Size')
-    memory = models.CharField(max_length=10, blank=True, help_text='Memory')
-    other_connectivity = models.CharField(max_length=30, blank=True, help_text='Other Connectivity')
-    hard_drive = models.CharField(max_length=30, blank=True, help_text='Hard Drive')
-    usb_ports = models.IntegerField(blank=True, null=True, help_text='USB Ports')
-    video_card = models.CharField(max_length=30, blank=True, help_text='Video Card')
-    removable_media = models.CharField(max_length=30, blank=True, help_text='Removable Media')
-    physical_address = models.CharField(max_length=30, blank=True, help_text='Physical Adress')
-    purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, help_text='Purchase Price')
-    purchase_info = models.CharField(max_length=100, blank=True, help_text='Purchase Info')
+    serial_no = models.CharField(max_length=100, verbose_name='Serial Number')
+    equipment_model = models.CharField(max_length=30)
+    equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
+    count = models.IntegerField(blank=True, null=True)
+    manufacturer = models.CharField(max_length=30, blank=True)
+    service_tag = models.CharField(max_length=30, blank=True)
+    smsu_tag = models.CharField(max_length=30, blank=True, verbose_name='SMSU Tag')
+    cpu = models.CharField(max_length=64, blank=True, verbose_name='CPU')
+    optical_drive = models.CharField(max_length=30, blank=True)
+    size = models.CharField(max_length=10, blank=True)
+    memory = models.CharField(max_length=10, blank=True)
+    other_connectivity = models.CharField(max_length=30, blank=True)
+    hard_drive = models.CharField(max_length=30, blank=True)
+    usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB Ports')
+    video_card = models.CharField(max_length=30, blank=True)
+    removable_media = models.CharField(max_length=30, blank=True)
+    physical_address = models.CharField(max_length=30, blank=True)
+    purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    purchase_info = models.CharField(max_length=100, blank=True)
 
     def latest_checkout(self):
         return self.checkout_set.order_by("-timestamp").first()
@@ -48,7 +48,7 @@ class Checkout(models.Model):
 class Location(models.Model):
     building = models.CharField(max_length=50)
     room = models.CharField(max_length=50, blank=True)
-    
+
     def __str__(self):
         return '%s %s' % (self.building, self.room)
 
