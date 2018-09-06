@@ -1,50 +1,44 @@
 {% extends "rim/base.html" %}
 {% load static %}
 {% load i18n %}
-<!DOCTYPE html>
-<html>
-    <head>
-        {% block css %}
-            {{ block.super }}
-            <link rel='stylesheet' type='text/css' href='{% static "rim/css/group.css" %}'>
-        {% endblock %}
-    </head>
 
-    {% block content %}
-        <body>
-            <div class='grid-x'>
-                <div class='small-8 large-8 cell'>
-                    <div class='grouptitle'>{% trans 'Group List' %}</div>
-                </div>
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/group.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div class='grid-x'>
+        <div class='small-8 large-8 cell'>
+            <div class='grouptitle'>{% trans 'Group List' %}</div>
+        </div>
+    </div>
+    <div class='group-list'>
+        <div class='grid-x'>
+            <div class='small-6 large-6 groupcell cell'>
+                {% trans 'Group Name' %}
             </div>
-            <div class='group-list'>
+            <div class='small-6 large-6 groupcell cell'>
+                {% trans 'Equipment Count' %}
+            </div>
+        </div>
+        {% for object in object_list %}
+            <a href='{% url "editgroup" pk=object.pk %}'>
                 <div class='grid-x'>
                     <div class='small-6 large-6 groupcell cell'>
-                        {% trans 'Group Name' %}
+                        {{ object.name }}
                     </div>
                     <div class='small-6 large-6 groupcell cell'>
-                        {% trans 'Equipment Count' %}
+                        {{ object.equipment_count }}
                     </div>
                 </div>
-                {% for object in object_list %}
-                    <a href='{% url "editgroup" pk=object.pk %}'>
-                        <div class='grid-x'>
-                            <div class='small-6 large-6 groupcell cell'>
-                                {{ object.name }}
-                            </div>
-                            <div class='small-6 large-6 groupcell cell'>
-                                {{ object.equipment_count }}
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
-                <hr>
-                <div class='grid-x'>
-                    <div class='small-12 large-12 groupcell cell'>
-                        <a href='{% url "addgroup" %}'>{% trans 'Add a Group' %}</a>
-                    </div>
-                </div>
+            </a>
+        {% endfor %}
+        <hr>
+        <div class='grid-x'>
+            <div class='small-12 large-12 groupcell cell'>
+                <a href='{% url "addgroup" %}'>{% trans 'Add a Group' %}</a>
             </div>
-        </body>
-    {% endblock %}
-</html>
+        </div>
+    </div>
+{% endblock %}
