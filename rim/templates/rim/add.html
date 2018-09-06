@@ -1,40 +1,34 @@
 {% extends "rim/base.html" %}
 {% load static %}
 {% load i18n %}
-<!DOCTYPE html>
-<html>
-    <head>
-        {% block css %}
-            {{ block.super }}
-            <link rel='stylesheet' type='text/css' href='{% static "rim/css/add.css" %}'>
-        {% endblock %}
-    </head>
 
-    {% block content %}
-        <body>
-            <div class='addtitle'>{% trans 'Add an item' %}</div>
-            <div class='addform'>
-                <form method=POST class='addform'> {% csrf_token %}
-                    {{ form.field_non_errors }}
-                    <div class="grid-x">
-                        {% for field in form %}
-                            <div class='small-4 large-4 addcell cell {% if field.field.required %}required{% endif %}'>
-                                {{ field.label_tag }}
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
-                            {% if not forloop.first and not forloop.last and forloop.counter|divisibleby:3 %}
-                                </div><div class="grid-x">
-                            {% endif %}
-                        {% endfor %}
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/add.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div class='addtitle'>{% trans 'Add an item' %}</div>
+    <div class='addform'>
+        <form method=POST class='addform'> {% csrf_token %}
+            {{ form.field_non_errors }}
+            <div class="grid-x">
+                {% for field in form %}
+                    <div class='small-4 large-4 addcell cell {% if field.field.required %}required{% endif %}'>
+                        {{ field.label_tag }}
+                        {{ field.errors }}
+                        {{ field }}
                     </div>
-                    <div class='grid-x'>
-                        <div class='small-3 large-3 cell'>
-                            <button type='submit' class='button'>{% trans 'Submit' %}</button>
-                        </div>
-                    </div>
-                </form>
+                    {% if not forloop.first and not forloop.last and forloop.counter|divisibleby:3 %}
+                        </div><div class="grid-x">
+                    {% endif %}
+                {% endfor %}
             </div>
-        </body>
-    {% endblock %}
-    </html>
+            <div class='grid-x'>
+                <div class='small-3 large-3 cell'>
+                    <button type='submit' class='button'>{% trans 'Submit' %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
