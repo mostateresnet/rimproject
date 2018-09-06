@@ -12,7 +12,7 @@
 
     {% block content %}
         <body>
-            <div class='grouptitle'>{% trans 'Edit Group' %}</div>
+            <div class='grouptitle'>{{ group_title }}</div>
             <form method=POST class='groupform'>
                 {{ form.non_field_errors }}
                 {% csrf_token %}
