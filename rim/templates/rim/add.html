@@ -12,7 +12,7 @@
 
     {% block content %}
         <body>
-            <div class='addtitle'>Add an item</div>
+            <div class='addtitle'>{% trans 'Add an item' %}</div>
             <div class='addform'>
                 <form method=POST class='addform'> {% csrf_token %}
                     {{ form.field_non_errors }}
