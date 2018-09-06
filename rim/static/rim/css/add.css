@@ -1,0 +1,24 @@
+.addtitle {
+    margin-left:1.5em;
+    margin-top:1.5em;
+    font-size: 3em;
+}
+
+.addform {
+    padding: 2em;
+    padding-top:1em;
+}
+
+.addcell {
+    padding: .5em;
+}
+
+.button {
+    background-color: #74020C;
+    margin-left: 2em;
+    margin-top: 2em;
+}
+
+.required label {
+    font-weight: bold;
+}
