@@ -28,7 +28,7 @@
                         <ul class='expanded menu align-center'>
                             <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
                             <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
-                            <li><a href=''>Groups</a></li>
+                            <li><a href='{% url "group" %}'>{% trans 'Groups' %}</a></li>
                         </ul>
                     </div>
                 {% endblock %}

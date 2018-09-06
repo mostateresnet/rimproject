@@ -6,6 +6,7 @@ from django.conf import settings
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial Number')
     equipment_model = models.CharField(max_length=30)
+    group = models.ForeignKey('Group', blank=True, null=True, on_delete=models.SET_NULL)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
     count = models.IntegerField(blank=True, null=True)
     manufacturer = models.CharField(max_length=30, blank=True)
@@ -57,3 +58,10 @@ class Note(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(default=now, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+class Group(models.Model):
+    name = models.CharField(max_length=50)
+    note = models.TextField()
+
+    def __str__(self):
+        return '%s' % (self.name)

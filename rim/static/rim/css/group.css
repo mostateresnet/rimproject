@@ -1,0 +1,33 @@
+.grouptitle {
+    padding: .5em;
+    font-size: 3em;
+}
+
+.groupheader {
+    margin-left: 1em;
+    font-size: 2em;
+    padding:.5em;
+}
+
+.group-list {
+    border: 1px solid black;
+    width: 95%;
+    margin: auto;
+    border-radius: 1.5em;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+
+.groupform {
+    padding: 2em;
+    padding-top: 1em;
+}
+
+.groupcell {
+    padding-left:1em;
+    margin-top: .5em;
+}
+
+.button {
+    background-color: #74020C;
+}
