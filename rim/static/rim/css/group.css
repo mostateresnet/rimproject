@@ -27,10 +27,6 @@
     padding-left:1em;
 }
 
-.groupbutton {
-    margin-left: .5em;
-    padding: .25em;
-    border: 2px solid black;
-    border-radius: .5em;
-    text-align: center;
+.button {
+    background-color: #74020C;    
 }

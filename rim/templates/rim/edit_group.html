@@ -12,7 +12,7 @@
 
     {% block content %}
         <body>
-            <div class='grouptitle'>Edit Group</div>
+            <div class='grouptitle'>{% trans 'Edit Group' %}</div>
             <form method=POST class='groupform'>
                 {% csrf_token %}
                 {% for field in form %}
@@ -23,8 +23,8 @@
                     </div>
                 {% endfor %}
                 <div class='grid-x'>
-                    <div class='small-1 large-1 cell groupbutton'>
-                        <button type='submit'>Submit</button>
+                    <div class='small-1 large-1 cell groupcell'>
+                        <button type='submit' class='button'>{% trans 'Submit' %}</button>
                     </div>
                 </div>
             </form>

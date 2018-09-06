@@ -14,26 +14,26 @@
         <body>
             <div class='grid-x'>
                 <div class='small-8 large-8 cell'>
-                    <div class='grouptitle'>Group List</div>
+                    <div class='grouptitle'>{% trans 'Group List' %}</div>
                 </div>
             </div>
-                <div class='group-list'>
-                    {% for object in object_list %}
-                        <a href='{% url "editgroup" pk=object.pk %}'>
-                            <div class='grid-x'>
-                                <div class='small-12 large-12 groupcell cell'>
-                                    {{ object.name }}
-                                </div>
+            <div class='group-list'>
+                {% for object in object_list %}
+                    <a href='{% url "editgroup" pk=object.pk %}'>
+                        <div class='grid-x'>
+                            <div class='small-12 large-12 groupcell cell'>
+                                {{ object.name }}
                             </div>
-                        </a>
-                        <hr>
-                    {% endfor %}
-                    <div class='grid-x'>
-                        <div class='small-12 large-12 groupcell cell'>
-                            <a href='{% url "addgroup" %}'><div>Add a Group</div></a>
                         </div>
+                    </a>
+                    <hr>
+                {% endfor %}
+                <div class='grid-x'>
+                    <div class='small-12 large-12 groupcell cell'>
+                        <a href='{% url "addgroup" %}'>{% trans 'Add a Group' %}</a>
                     </div>
                 </div>
+            </div>
         </body>
     {% endblock %}
 </html>
