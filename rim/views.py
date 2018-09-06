@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
 from rim.models import Equipment, Group
-from rim.forms import GroupForm
+from rim.forms import GroupForm, AddForm
 
 class HomeView(ListView):
     template_name = 'rim/home.html'
@@ -39,3 +39,9 @@ class EditGroupView(UpdateView):
         context = super(EditGroupView, self).get_context_data()
         context["group_title"] = _("Edit Group")
         return context
+
+class AddView(CreateView):
+    template_name = 'rim/add.html'
+    model = Equipment
+    form_class = AddForm
+    success_url = reverse_lazy('home')
