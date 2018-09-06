@@ -25,8 +25,9 @@
 
 .groupcell {
     padding-left:1em;
+    margin-top: .5em;
 }
 
 .button {
-    background-color: #74020C;    
+    background-color: #74020C;
 }

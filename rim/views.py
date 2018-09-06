@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
 from rim.models import Equipment, Group
@@ -13,6 +14,9 @@ class HomeView(ListView):
 class ListGroupView(ListView):
     template_name = 'rim/group.html'
     model = Group
+
+    def get_queryset(self):
+        return super().get_queryset().annotate(equipment_count=Count('equipment'))
 
 class AddGroupView(CreateView):
     template_name = 'rim/edit_group.html'

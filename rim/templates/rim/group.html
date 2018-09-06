@@ -18,16 +18,27 @@
                 </div>
             </div>
             <div class='group-list'>
+                <div class='grid-x'>
+                    <div class='small-6 large-6 groupcell cell'>
+                        {% trans 'Group Name' %}
+                    </div>
+                    <div class='small-6 large-6 groupcell cell'>
+                        {% trans 'Equipment Count' %}
+                    </div>
+                </div>
                 {% for object in object_list %}
                     <a href='{% url "editgroup" pk=object.pk %}'>
                         <div class='grid-x'>
-                            <div class='small-12 large-12 groupcell cell'>
+                            <div class='small-6 large-6 groupcell cell'>
                                 {{ object.name }}
+                            </div>
+                            <div class='small-6 large-6 groupcell cell'>
+                                {{ object.equipment_count }}
                             </div>
                         </div>
                     </a>
-                    <hr>
                 {% endfor %}
+                <hr>
                 <div class='grid-x'>
                     <div class='small-12 large-12 groupcell cell'>
                         <a href='{% url "addgroup" %}'>{% trans 'Add a Group' %}</a>
