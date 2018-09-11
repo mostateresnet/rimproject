@@ -6,7 +6,7 @@ class GroupForm(forms.ModelForm):
         model = Group
         exclude =[]
 
-class AddForm(forms.ModelForm):
+class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment

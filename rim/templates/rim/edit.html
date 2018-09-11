@@ -8,7 +8,15 @@
 {% endblock %}
 
 {% block content %}
-    <div class='addtitle'>{% trans 'Add an item' %}</div>
+    <div class='addtitle'>
+        {% if object.pk %}
+            {% blocktrans with equipment_name=equipment|stringformat:'s' %}
+                Edit {{ equipment_name }}
+            {% endblocktrans %}
+        {% else %}
+            {% trans 'Add an item' %}
+        {% endif %}
+    </div>
     <div class='addform'>
         <form method=POST class='addform'> {% csrf_token %}
             {{ form.non_field_errors }}
