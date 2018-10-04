@@ -10,4 +10,4 @@ class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        exclude = []
+        exclude = ['latest_checkout']
