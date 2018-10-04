@@ -3,7 +3,6 @@
 <div class='search_table'>
     <form method=GET>
         {{ form.non_field_errors }}
-
         <div class="grid-x">
             <div class='small-3 large-3 searchcell cell'>
                 {% trans 'Serial Number' %}<input type='text' name='serial_no' value='{{ search_data.serial_no }}'/>
@@ -55,12 +54,11 @@
             <div class='small-2 large-2 searchcell cell'>
                 {% trans 'Room' %}<input type='text' name='latest_checkout__location__room' value='{{ search_data.latest_checkout__location__room }}'/>
             </div>
-
         </div>
 
             <div class='grid-x'>
                 <div class='small-3 large-3 cell'>
-                    <button type='submit' class='button'>{% trans 'Submit' %}</button>
+                    <button type='submit' class='button'>{% trans 'Search' %}</button>
                 </div>
             </div>
         </form>

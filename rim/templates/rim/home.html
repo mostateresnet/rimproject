@@ -17,6 +17,9 @@
                     {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
                 </th>
                 <th>
+                    {% include 'rim/includes/header_link.html' with ordering='latest_checkout__location' title='Location' %}
+                </th>
+                <th>
                     {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Serial No.' %}
                 </th>
                 <th>
@@ -29,9 +32,6 @@
                     {% include 'rim/includes/header_link.html' with ordering='equipment_model' title='Model' %}
                 </th>
                 <th>
-                    {% include 'rim/includes/header_link.html' with ordering='latest_checkout__location' title='Location' %}
-                </th>
-                <th>
                     {% include 'rim/includes/header_link.html' with ordering='count' title='Count' %}
                 </th>
             </tr>
@@ -41,16 +41,16 @@
                 <tr>
                     <td>
                         {% if e.latest_checkout == None %}
-                            {% trans 'At ResNet' %}
+                            &nbsp;
                         {% else %}
                             {{ e.latest_checkout.timestamp }}
                         {% endif %}
                     </td>
+                    <td>{{ e.latest_checkout.location }}</td>
                     <td><a href="{% url 'edit' pk=e.pk %}">{{ e.serial_no }}</a></td>
                     <td>{{ e.equipment_type.type_name }}</td>
                     <td>{{ e.manufacturer }}</td>
                     <td>{{ e.equipment_model }}</td>
-                    <td>{{ e.latest_checkout.location }}</td>
                     <td>{{ e.count }}</td>
                 </tr>
             {% endfor %}
