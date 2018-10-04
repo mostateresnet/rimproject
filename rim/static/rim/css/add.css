@@ -1,58 +1,25 @@
 .add_title {
-    margin-left:1.5em;
-    margin-top:1.5em;
+    margin-left: 1.5em;
+    margin-top: 0.3em;
     font-size: 3em;
-}
-
-.addform {
-    padding: 2em;
-    padding-top:1em;
-}
-
-.addcell {
-    padding: .5em;
-}
-
-.button {
-    margin-left: 2em;
 }
 
 .required label {
     font-weight: bold;
 }
 
-#submit_button {
-    margin: 0px;
-    margin-left: 7px;
+.add_form #id_serial_no {
+    height: 15em;
 }
 
 @media only screen and (max-width: 769px){
     .add_title {
-        margin: 0px;
-        margin-top: 15px;
-        padding: 0px;
+        margin-left: 0px;
         text-align: center;
     }
-    .addform {
-        padding: 0px;
-    }
-    #id_serial_no {
-        height: 15vh;
-    }
-   
 }
 
-@media only screen and (max-width: 479px){
-    /* Input fields occupy a whole line each on small screens */
-    .grid-x > .small-4 {
-        width: 100%;
-        width: -moz-available;          /* WebKit-based browsers will ignore this. */
-        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
-        width: stretch;
-    }
-    /* The submit button is closer to the last input field than default */
-    .grid-x :last-child input {
-        margin-bottom: 0;
-    }
-   
+.checkout {
+    border: 1px solid black;
+    padding: 1em;
 }

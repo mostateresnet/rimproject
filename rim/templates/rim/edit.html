@@ -11,7 +11,7 @@
     {{ block.super }}
     <script>
         var SERIAL_NUM_CHECK_URL = "{% url 'check_serial_nums' %}";
-        var json_fields = JSON.parse(unescape(`{{form.json_fields.value | safe}}`));
+        var json_fields = JSON.parse(unescape(`{{ form.json_fields.value | safe }}`));
     </script>
     <script type='text/javascript' src='{% static "rim/js/edit.js" %}'></script>
     <script type="text/javascript" src='{% static "rim/js/dynamic_fields.js" %}'></script>
@@ -27,72 +27,72 @@
             {% trans 'Add an item' %}
         {% endif %}
     </div>
-    <div class='addform'>
-        <form method=POST class='addform' name="add_edit_form">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="grid-x">
-                {% with form.visible_fields|first as field %}
-                    <div class='cell-block-y large-3 addcell cell {% if field.field.required %}required{% endif %}'>
-                        {{ field.label_tag }}
-                        {{ field.errors }}
-                        {{ field }}
-                    </div>
-                {% endwith %}
-                <div class="cell large-9 cell-block-y">
-                    <div class="grid-x">
-                        {% for field in form.visible_fields|slice:"1:" %}
-                            <div class='small-4 large-4 addcell cell {% if field.field.required %}required{% endif %}'>
-                                {{ field.label_tag }}
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
-                            {% if not forloop.first and not forloop.last and forloop.counter|divisibleby:3 %}
-                                </div><div class="grid-x">
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
+    <div class="grid-x grid-padding-x grid-padding-y {% if object.pk %}edit_form{% else %}add_form{% endif %}">
+        <div class="large-auto cell">
+            <form method="POST" name="add_edit_form">
+                {% csrf_token %}
                 {% for hidden in form.hidden_fields %}
                     {{ hidden }}
                 {% endfor %}
-
-            </div>
-            <div class='cell large-9 cell-block-y'>
-                <div class="cell cell-block-y">
-                    <div class="grid-x" id="display_inputs">
-
-                    </div>
+                {{ form.non_field_errors }}
+                <div class="grid-x grid-padding-x grid-padding-y">
+                    {% for field in form.visible_fields %}
+                        <div class='{% if not object.pk and forloop.first %}cell-block-y large-3{% else %}small-12 medium-4{% endif %} cell {% if field.field.required %}required{% endif %}'>
+                            {{ field.label_tag }}
+                            {{ field.errors }}
+                            {{ field }}
+                        </div>
+                        {% if not object.pk and forloop.first %}
+                            <div class="cell-block-y large-9 cell"><div class="grid-x grid-padding-x grid-padding-y">
+                        {% endif %}
+                        {% if not forloop.first and not forloop.last %}
+                            {% if not object.pk and forloop.counter|add:"2"|divisibleby:3 or object.pk and forloop.counter|divisibleby:3 %}
+                                </div><div class="grid-x grid-padding-x grid-padding-y">
+                            {% endif %}
+                        {% endif %}
+                        {% if not object.pk and forloop.last %}
+                            {# Close out the extra cell-block-y & grid-x <div> #}
+                            </div></div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="cell cell-block-y">
-                    <div class="grid-x" id="storage_inputs">
-
-                    </div>
-                </div>
-                <div class="cell cell-block-y">
-                    <div class="grid-x" id="gpu_inputs">
-
-                    </div>
-                </div>
-                <div class="cell cell-block-y">
-                    <div class="grid-x" id="nic_inputs">
-
-                    </div>
-                </div>
-                <div class="grid-x" style="justify-content: center;">
+                <div class="grid-x grid-padding-x grid-padding-y" id="display_inputs"></div>
+                <div class="grid-x grid-padding-x grid-padding-y" id="storage_inputs"></div>
+                <div class="grid-x grid-padding-x grid-padding-y" id="gpu_inputs"></div>
+                <div class="grid-x grid-padding-x grid-padding-y" id="nic_inputs"></div>
+                <div class="button-group align-center">
                     <button type="button" class="button" onclick="addInputs('display')">{% trans 'Add Display' %}</button>
                     <button type="button" class="button" onclick="addInputs('storage')">{% trans 'Add Storage' %}</button>
                     <button type="button" class="button" onclick="addInputs('gpu')">{% trans 'Add GPU' %}</button>
                     <button type="button" class="button" onclick="addInputs('nic')">{% trans 'Add NIC' %}</button>
-
+                </div>
+                <div class='grid-x align-center'>
+                    <div class='{% if not object.pk %}medium-5{% endif %} large-5 small-12 cell'>
+                        <button class='button expanded' id="submit_button" onclick="submitAddEditForm()">{% trans 'Submit' %}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% if object.pk %}
+            <div class="large-3 cell">
+                <div class="grid-y medium-grid-frame grid-padding-x grid-padding-y">
+                    <div class="cell large-1">
+                        <button type='submit' class='button expanded'>{% trans 'Checkout' %}</button>
+                    </div>
+                    <div class="cell large-auto medium-cell-block-container">
+                        <div class="cell medium-12 medium-cell-block-y">
+                            <h3>History</h3>
+                            {% for checkout in object.checkout_set.all %}
+                                <p class="checkout">
+                                    {{ checkout.client }}<br>
+                                    {{ checkout.timestamp }}<br>
+                                    {{ checkout.location }}<br>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class='grid-x'>
-                <div class='small-3 large-3 cell'>
-                    <button type='button' class='button' id="submit_button" onclick="submitAddEditForm()">{% trans 'Submit' %}</button>
-                </div>
-            </div>
-        </form>
+        {% endif %}
     </div>
 {% endblock %}

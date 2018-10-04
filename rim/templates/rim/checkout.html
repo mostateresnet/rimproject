@@ -1,0 +1,45 @@
+{% extends "rim/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/checkout.js" %}'></script>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/checkout.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div class="grid-x grid-padding-x grid-padding-y align-center">
+        <div class="large-3 text-center cell">
+            <input type="radio" checked=checked name="checkform" id="checkout"><label for="checkout">Checkout</label>
+            <input type="radio" name="checkform" id="checkin"><label for="checkin">Check-In</label>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-3 cell">
+            <h3>Barcodes</h3>
+            <textarea class="textbox" placeholder="{% trans 'Barcodes' %}"></textarea>
+        </div>
+        <div class="large-3 cell">
+            <h3>Client</h3>
+            <textarea class="textbox" placeholder="{% trans 'Name' %}" id="client_names"></textarea>
+        </div>
+        <div class="large-3 cell">
+            <h3>Building</h3>
+            <textarea class="textbox" placeholder="{% trans 'Building' %}"></textarea>
+        </div>
+        <div class="large-3 cell">
+            <h3>Room</h3>
+            <textarea class="textbox" placeholder="{% trans 'Room Number' %}"></textarea>
+        </div>
+    </div>
+        <div class="grid-x align-center">
+            <div class="large-2 cell">
+                <button type='submit' class='button expanded'>{% trans 'Submit' %}</button>
+            </div>
+        </div>
+{% endblock %}
