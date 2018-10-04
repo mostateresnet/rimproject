@@ -9,5 +9,6 @@ urlpatterns = [
     path('edit/<int:pk>', views.EditEquipmentView.as_view(), name='edit'),
     path('group/', views.ListGroupView.as_view(), name='group'),
     path('group/add', views.AddGroupView.as_view(), name='addgroup'),
-    path('group/edit/<int:pk>', views.EditGroupView.as_view(), name='editgroup')
+    path('group/edit/<int:pk>', views.EditGroupView.as_view(), name='editgroup'),
+    path('checkout/', views.CheckoutView.as_view(), name='checkout'),
 ]

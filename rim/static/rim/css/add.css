@@ -1,4 +1,4 @@
-.addtitle {
+.additiontitle {
     margin-left:1.5em;
     margin-top:1.5em;
     font-size: 3em;
@@ -13,12 +13,11 @@
     padding: .5em;
 }
 
-.button {
-    background-color: #74020C;
-    margin-left: 2em;
-    margin-top: 2em;
-}
-
 .required label {
     font-weight: bold;
+}
+
+.checkout {
+    border: 1px solid black;
+    padding: 1em;
 }

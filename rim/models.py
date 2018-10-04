@@ -46,6 +46,9 @@ class Checkout(models.Model):
     def __str__(self):
         return '%s' % (self.client)
 
+    class Meta:
+        ordering = ['-timestamp']
+
 class Location(models.Model):
     building = models.CharField(max_length=50)
     room = models.CharField(max_length=50, blank=True)
@@ -65,3 +68,4 @@ class Group(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
+

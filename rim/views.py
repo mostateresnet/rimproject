@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
-from rim.models import Equipment, Group
+from rim.models import Equipment, Group, Checkout
 from rim.forms import GroupForm, EquipmentForm
 
 class HomeView(ListView):
@@ -51,3 +51,9 @@ class EditEquipmentView(UpdateView):
     model = Equipment
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
+
+class CheckoutView(CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
