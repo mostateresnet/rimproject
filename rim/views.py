@@ -195,3 +195,9 @@ class CheckSerialView(View):
 
         return_data = {'context': errors}
         return JsonResponse(return_data)
+
+class CheckoutView(CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
