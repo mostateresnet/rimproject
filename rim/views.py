@@ -76,6 +76,8 @@ class EditGroupView(UpdateView):
     def get_context_data(self):
         context = super(EditGroupView, self).get_context_data()
         context["group_title"] = _("Edit Group")
+        context['equipments'] = Equipment.objects.filter(group_id=self.kwargs['pk'])
+
         return context
 
 class AddEquipmentView(CreateView):
