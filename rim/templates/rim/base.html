@@ -23,13 +23,15 @@
         <div id='container'>
             {% block body %}
                 {% block header %}
-                    <div id='nav'>
+                    <div class='nav'>
                         <span id='title'>RIM</span>
-                        <ul class='expanded menu align-center'>
-                            <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
-                            <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
-                            <li><a href='{% url "group" %}'>{% trans 'Groups' %}</a></li>
-                        </ul>
+                        <div data-sticky-container>
+                            <ul class='expanded menu align-center sticky nav' data-sticky data-margin-top="0">
+                                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                                <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
+                                <li><a href='{% url "group" %}'>{% trans 'Groups' %}</a></li>
+                            </ul>
+                        </div>
                     </div>
                 {% endblock %}
                 {% block content %}
