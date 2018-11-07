@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<div class='grid-container'>
+    <div class='grid-margin-x'>
+        <form method=GET>
+            {{ form.non_field_errors }}
+            <div class="grid-x">
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Serial Number' %}<input type='text' name='serial_no' value='{{ search_data.serial_no }}'/>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Equipment Type' %}
+                    <select name='equipment_type__type_name'>
+                        <option value=""></option>
+                        {% for type in equipment_types %}
+                            <option value="{{ type.type_name }}" {% if search_data.equipment_type__type_name == type.type_name %}selected{% endif %}>{{ type.type_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Group' %}<input type='text' name='group__name' value='{{ search_data.group__name }}'/>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Equipment Model' %}<input type='text' name='equipment_model' value='{{ search_data.equipment_model }}'/>
+                </div>
+            </div>
+
+            <div class="grid-x">
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Service Tag' %}<input type='text' name='service_tag' value='{{ search_data.service_tag }}'/>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'SMSU Tag' %}<input type='text' name='smsu_tag' value='{{ search_data.smsu_tag }}'/>
+                </div>
+
+                <div class='small-2 large-2 cell'>
+                    {% trans 'Manufacturer' %}<input type='text' name='manufacturer' value='{{ search_data.manufacturer }}'/>
+                </div>
+
+                <div class='small-2 large-2 cell'>
+                    {% trans 'Building' %}
+                    <select name='latest_checkout__location__building'>
+                        <option value=""></option>
+                        {% for building in buildings %}
+                            <option value="{{ building }}" {% if search_data.latest_checkout__location__building == building %}selected{% endif %}>{{ building }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class='small-2 large-2 cell'>
+                    {% trans 'Room' %}<input type='text' name='latest_checkout__location__room' value='{{ search_data.latest_checkout__location__room }}'/>
+                </div>
+            </div>
+
+            <div class='grid-x'>
+                <div class='small-3 large-3 cell'>
+                    <button type='submit' class='button'>{% trans 'Search' %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

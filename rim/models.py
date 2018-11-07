@@ -24,9 +24,7 @@ class Equipment(models.Model):
     physical_address = models.CharField(max_length=30, blank=True)
     purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     purchase_info = models.CharField(max_length=100, blank=True)
-
-    def latest_checkout(self):
-        return self.checkout_set.order_by("-timestamp").first()
+    latest_checkout = models.ForeignKey('Checkout', blank=True, null=True, on_delete=models.SET_NULL, related_name='+')
 
     def __str__(self):
         return '%s' % (self.equipment_model)
@@ -42,6 +40,11 @@ class Checkout(models.Model):
     timestamp = models.DateTimeField(default=now, blank=True)
     location = models.ForeignKey('Location', blank=True, null=True, on_delete=models.SET_NULL)
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        latest_checkout_qs = models.Subquery(Checkout.objects.filter(equipment_id=self.equipment_id).order_by('-timestamp')[:1].values('pk'))
+        Equipment.objects.filter(pk=self.equipment_id).update(latest_checkout=latest_checkout_qs)
 
     def __str__(self):
         return '%s' % (self.client)
