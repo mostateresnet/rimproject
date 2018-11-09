@@ -1,13 +1,19 @@
+import csv
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max
 from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
+from django.http import HttpResponse
+from django.forms.utils import pretty_name
+from django.utils.timezone import now, localtime
 from rim.models import Equipment, Group, Checkout, EquipmentType, Location
 from rim.forms import GroupForm, EquipmentForm
 
 class HomeView(ListView):
+    export_csv = False
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
 
@@ -21,8 +27,37 @@ class HomeView(ListView):
         else:
             return [Lower(self.order).asc()]
 
-    def get_context_data(self):
-        context = super(HomeView, self).get_context_data()
+    def get(self, request, *args, **kwargs):
+        if self.export_csv:
+            keys = ['serial_no', 'equipment_model', 'manufacturer', 'equipment_type__type_name', 'latest_checkout__location__building', 'latest_checkout__location__room']
+            verbose_keys = []
+            for key in keys:
+                split_key = key.split('__')
+                field = Equipment._meta.get_field(split_key[0])
+                while True:
+                    if len(split_key) > 1:
+                        field = field.remote_field.model._meta.get_field(split_key[1])
+                        split_key = split_key[1:]
+                    else:
+                        verbose_keys.append(pretty_name(field.verbose_name))
+                        break
+
+            equipment_list = self.get_queryset().values(*keys)
+            current_time = localtime(now()).strftime("%Y-%m-%d-%I%M")
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="RIMreport_' + current_time + '.csv"'
+
+            writer = csv.DictWriter(response, fieldnames=keys)
+            writer.writerow(dict(zip(keys, verbose_keys)))
+
+            for equipment in equipment_list:
+                writer.writerow(equipment)
+            return response
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeView, self).get_context_data(*args, **kwargs)
         context['current_order_desc'] = self.order[0] == '-'
         context['current_ordering_name'] = self.order[1:] if context['current_order_desc'] else self.order
         context['equipment_types'] = EquipmentType.objects.all()
@@ -46,8 +81,8 @@ class HomeView(ListView):
                 if value != '':
                     qset = qset.filter(**{item + '__icontains': value})
 
+        qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
-
 
 class ListGroupView(ListView):
     template_name = 'rim/group.html'

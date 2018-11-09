@@ -55,4 +55,13 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class='grid-container'>
+        <div class='grid-margin-x'>
+            <div class='grid-x'>
+                <div class='small-3 large-3 cell'>
+                    <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
