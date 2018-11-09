@@ -21,12 +21,16 @@ $(document).ready(function() {
         var last_barcode = $('.barcode input[type=text]').last();
         if(last_barcode.val() != ""){
             $('.copyable').each(function(){
-                var last_element = $(this).find('input[type=text]').last();
+                var last_element = $(this).find('.input_container').last();
                 var clone = last_element.clone();
-                if(!(last_element.prop('disabled'))) {
-                    clone.val("");
+                var input_element = clone.find('input[type=text]');
+                if($(this).closest('.client').length == 0){
+                    input_element.prop('disabled', false);
                 }
-                clone.toggleClass('focused', false);
+                if(!(input_element.prop('disabled'))) {
+                    input_element.val("");
+                }
+                input_element.toggleClass('focused', false);
                 last_element.after(clone);
             })
         }
@@ -45,4 +49,19 @@ $(document).ready(function() {
         })
     })
 
+    $('.client').on('keyup', 'input[type=text]', function() {
+        var current_name = $(this).val();
+        var regex = /^[mM8]\d{8}$/;
+        var row_index = $(this).closest('.copyable').find('input[type=text]').index(this);
+        if(regex.test(current_name)){
+            $('.location').each(function(){
+                $(this).find('input[type=text]').eq(row_index).prop('disabled', true);
+            })
+        }
+        else{
+            $('.location').each(function(){
+                $(this).find('input[type=text]').eq(row_index).prop('disabled', false);
+            })
+        }
+    })
 });
