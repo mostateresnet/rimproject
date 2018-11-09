@@ -1,3 +1,15 @@
 .focused {
 	background-color: #e6e6e6;
 }
+
+.barcode {
+    counter-reset: row_num;
+}
+
+.barcode .counter {
+    counter-increment: row_num;
+}
+
+.barcode .counter:before {
+    content: counter(row_num);
+}
