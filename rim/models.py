@@ -5,11 +5,11 @@ from django.conf import settings
 
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial Number')
-    equipment_model = models.CharField(max_length=30, verbose_name='Equipment Model')
+    equipment_model = models.CharField(max_length=30)
     group = models.ForeignKey('Group', blank=True, null=True, on_delete=models.SET_NULL)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
     count = models.IntegerField(blank=True, null=True)
-    manufacturer = models.CharField(max_length=30, blank=True, verbose_name='Manufacturer')
+    manufacturer = models.CharField(max_length=30, blank=True)
     service_tag = models.CharField(max_length=30, blank=True)
     smsu_tag = models.CharField(max_length=30, blank=True, verbose_name='SMSU Tag')
     cpu = models.CharField(max_length=64, blank=True, verbose_name='CPU')
@@ -50,8 +50,8 @@ class Checkout(models.Model):
         return '%s' % (self.client)
 
 class Location(models.Model):
-    building = models.CharField(max_length=50, verbose_name='Building')
-    room = models.CharField(max_length=50, blank=True, verbose_name='Room')
+    building = models.CharField(max_length=50)
+    room = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return '%s %s' % (self.building, self.room)

@@ -7,7 +7,7 @@ from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse
-from django.forms.models import model_to_dict
+from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from rim.models import Equipment, Group, Checkout, EquipmentType, Location
 from rim.forms import GroupForm, EquipmentForm
@@ -33,20 +33,19 @@ class HomeView(ListView):
             verbose_keys = []
             for key in keys:
                 split_key = key.split('__')
-                foreign_key = Equipment._meta.get_field(split_key[0])
+                field = Equipment._meta.get_field(split_key[0])
                 while True:
                     if len(split_key) > 1:
-                        foreign_key = foreign_key.remote_field.model._meta.get_field(split_key[1])
+                        field = field.remote_field.model._meta.get_field(split_key[1])
                         split_key = split_key[1:]
                     else:
-                        verbose_keys.append(foreign_key.verbose_name)
+                        verbose_keys.append(pretty_name(field.verbose_name))
                         break
 
             equipment_list = self.get_queryset().values(*keys)
-            current_time = localtime(now()).strftime("%a-%b-%d-%I%M")
-            print(current_time)
+            current_time = localtime(now()).strftime("%Y-%m-%d-%I%M")
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="' + current_time + '.csv"'
+            response['Content-Disposition'] = 'attachment; filename="RIMreport_' + current_time + '.csv"'
 
             writer = csv.DictWriter(response, fieldnames=keys)
             writer.writerow(dict(zip(keys, verbose_keys)))
@@ -57,8 +56,8 @@ class HomeView(ListView):
         else:
             return super().get(request, *args, **kwargs)
 
-    def get_context_data(self):
-        context = super(HomeView, self).get_context_data()
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeView, self).get_context_data(*args, **kwargs)
         context['current_order_desc'] = self.order[0] == '-'
         context['current_ordering_name'] = self.order[1:] if context['current_order_desc'] else self.order
         context['equipment_types'] = EquipmentType.objects.all()
@@ -82,6 +81,7 @@ class HomeView(ListView):
                 if value != '':
                     qset = qset.filter(**{item + '__icontains': value})
 
+        qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
 class ListGroupView(ListView):
