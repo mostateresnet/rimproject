@@ -20,26 +20,26 @@
         </div>
     </div>
     <div class="grid-x grid-padding-x">
-        <div class="large-3 cell">
+        <div class="large-3 cell copyable barcode">
             <h3>Barcodes</h3>
-            <textarea class="textbox" placeholder="{% trans 'Barcodes' %}"></textarea>
+            <input type="text" placeholder="{% trans 'Barcodes' %}"/>
         </div>
-        <div class="large-3 cell">
+        <div class="large-3 cell copyable client">
             <h3>Client</h3>
-            <textarea class="textbox" placeholder="{% trans 'Name' %}" id="client_names"></textarea>
+            <input type="text" placeholder="{% trans 'Name' %}"/>
         </div>
-        <div class="large-3 cell">
+        <div class="large-3 cell copyable">
             <h3>Building</h3>
-            <textarea class="textbox" placeholder="{% trans 'Building' %}"></textarea>
+            <input type="text" placeholder="{% trans 'Building' %}"/>
         </div>
-        <div class="large-3 cell">
+        <div class="large-3 cell copyable">
             <h3>Room</h3>
-            <textarea class="textbox" placeholder="{% trans 'Room Number' %}"></textarea>
+            <input type="text" placeholder="{% trans 'Room Number' %}"/>
         </div>
     </div>
-        <div class="grid-x align-center">
-            <div class="large-2 cell">
-                <button type='submit' class='button expanded'>{% trans 'Submit' %}</button>
-            </div>
+    <div class="grid-x align-center">
+        <div class="large-2 cell">
+            <button type='submit' class='button expanded'>{% trans 'Submit' %}</button>
         </div>
+    </div>
 {% endblock %}
