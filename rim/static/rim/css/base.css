@@ -1,5 +1,9 @@
-#wrapper {
+body {
     background-color: gray;
+    height: 100vh;
+}
+
+#wrapper {
     width: 100%;
 }
 
@@ -10,7 +14,7 @@
     background-color: white;
 }
 
-#nav {
+.nav {
     background-color: #af2111;
 }
 
