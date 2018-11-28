@@ -1,0 +1,80 @@
+{% extends "rim/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+    <div class='grid-x grid-padding-x'>
+      <div class='small-12 cell'>
+        <h2>{{ client.name }}</h2>
+      </div>
+      <div class='small-3 cell'>
+        <h4>{{ client.bpn }}</h4>
+      </div>
+    </div>
+    <div class='grid-x grid-padding-x'>
+      <div class='small-12 cell'>
+        <h2>{% trans 'Current Checkout' %}</h2>
+      </div>
+    </div>
+
+        <table>
+            <thead>
+                <tr>
+                  <th>{% trans 'Serial Number' %}</th>
+                  <th>{% trans 'Equipment Model' %}</th>
+                  <th>{% trans 'Manufacturer' %}</th>
+                  <th>{% trans 'Location' %}</th>
+                  <th>{% trans 'Time of Checkout' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for c in active %}
+                <tr>
+                  <td><a href="{% url 'edit' pk=c.equipment.pk %}">{{c.equipment.serial_no}}</a></td>
+                  <td>{{c.equipment.equipment_model}}</td>
+                  <td>{{c.equipment.manufacturer}}</td>
+                  <td>{{c.location}}</td>
+                  <td>{{c.timestamp}}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td>No Active Checkouts</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+      <div class='grid-x grid-padding-x'>
+        <div class='small-12 cell'>
+          <h2>{% trans 'Checkout History' %}</h2>
+        </div>
+      </div>
+      <table>
+          <thead>
+            <tr>
+              <th>{% trans 'Serial Number' %}</th>
+              <th>{% trans 'Equipment Model' %}</th>
+              <th>{% trans 'Manufacturer' %}</th>
+              <th>{% trans 'Location' %}</th>
+              <th>{% trans 'Time of Checkout' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in previous %}
+              <tr>
+                <td><a href="{% url 'edit' pk=c.equipment.pk %}">{{c.equipment.serial_no}}</a></td>
+                <td>{{c.equipment.equipment_model}}</td>
+                <td>{{c.equipment.manufacturer}}</td>
+                <td>{{c.location}}</td>
+                <td>{{c.timestamp}}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td> No Past Checkouts </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+
+{% endblock %}
