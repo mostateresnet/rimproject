@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from rim.models import Equipment, Group, Checkout, EquipmentType, Location, Client
-from rim.forms import GroupForm, EquipmentForm, ClientForm
+from rim.forms import GroupForm, EquipmentForm
 
 class HomeView(ListView):
     export_csv = False
@@ -87,7 +87,6 @@ class HomeView(ListView):
 class ListClientView(ListView):
     template_name = 'rim/client_list.html'
     model = Client
-    form_class = ClientForm
 
     def get_queryset(self):
         query = self.request.GET.get('search', '')

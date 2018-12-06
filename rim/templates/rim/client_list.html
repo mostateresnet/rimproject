@@ -8,7 +8,7 @@
             <h1>{% trans 'Client List' %}</h1>
         </div>
         <div class ='small-5 large-5 cell'>
-            <form method=GET class='clientform' action="{% url 'client_list' %}">
+            <form method=GET action="{% url 'client_list' %}">
                 <input type='text' placeholder='{% trans "Search by Name or M-number" %}' name='search' value='{{ searchterm }}'>
                 <button type='submit' class='button' value='submit'>{% trans 'Search' %}</button>
             </form>
