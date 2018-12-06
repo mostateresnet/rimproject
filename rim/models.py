@@ -65,9 +65,9 @@ class Note(models.Model):
 
 
 class Client(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Client Name')
     bpn_validator = RegexValidator(r'[mM8]\d{8}', _("Bearpass number must start with an 'M,' 'm,' or '8,' and followed by eight digits."))
-    bpn = models.CharField(max_length=9, validators=[bpn_validator], blank=True)
+    bpn = models.CharField(max_length=9, validators=[bpn_validator], blank=True, verbose_name='Client M-number')
     note = models.TextField(blank=True)
 
     def __str__(self):
