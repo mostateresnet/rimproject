@@ -64,4 +64,9 @@ $(document).ready(function() {
             })
         }
     })
+
+    $('.location').on('click', '.delete', function() {
+        $("button").remove();
+
+    })
 });
