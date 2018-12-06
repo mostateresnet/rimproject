@@ -17,7 +17,7 @@ class HomeView(ListView):
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
 
-    valid_params = ['serial_no', 'equipment_type__type_name', 'group__name', 'equipment_model', 'service_tag',
+    valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
                     'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
@@ -29,7 +29,8 @@ class HomeView(ListView):
 
     def get(self, request, *args, **kwargs):
         if self.export_csv:
-            keys = ['serial_no', 'equipment_model', 'manufacturer', 'equipment_type__type_name', 'latest_checkout__location__building', 'latest_checkout__location__room']
+            keys = ['latest_checkout__client__name', 'serial_no', 'equipment_model', 'manufacturer',
+                    'equipment_type__type_name', 'latest_checkout__location__building', 'latest_checkout__location__room']
             verbose_keys = []
             for key in keys:
                 split_key = key.split('__')
