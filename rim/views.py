@@ -9,15 +9,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse
 from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
-from rim.models import Equipment, Group, Checkout, EquipmentType, Location, Client
-from rim.forms import GroupForm, EquipmentForm
+from rim.models import Equipment, Checkout, EquipmentType, Location, Client
+from rim.forms import EquipmentForm
 
 class HomeView(ListView):
     export_csv = False
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
 
-    valid_params = ['serial_no', 'equipment_type__type_name', 'group__name', 'equipment_model', 'service_tag',
+    valid_params = ['serial_no', 'equipment_type__type_name', 'equipment_model', 'service_tag',
                     'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
@@ -61,7 +61,6 @@ class HomeView(ListView):
         context['current_order_desc'] = self.order[0] == '-'
         context['current_ordering_name'] = self.order[1:] if context['current_order_desc'] else self.order
         context['equipment_types'] = EquipmentType.objects.all()
-        context['groups'] = Group.objects.all()
         context['buildings'] = Location.objects.values('building').distinct().order_by('building').values_list('building', flat=True)
 
         data = self.request.GET.copy()
@@ -97,37 +96,6 @@ class ListClientView(ListView):
         context = super(ListClientView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('search', '')
         context['searchterm'] = query
-        return context
-
-class ListGroupView(ListView):
-    template_name = 'rim/group.html'
-    model = Group
-
-    def get_queryset(self):
-        return super().get_queryset().annotate(equipment_count=Count('equipment'))
-
-class AddGroupView(CreateView):
-    template_name = 'rim/edit_group.html'
-    model = Group
-    form_class = GroupForm
-    success_url = reverse_lazy('group')
-
-    def get_context_data(self):
-        context = super(AddGroupView, self).get_context_data()
-        context["group_title"] = _("Add A Group")
-        return context
-
-class EditGroupView(UpdateView):
-    template_name = 'rim/edit_group.html'
-    model = Group
-    form_class = GroupForm
-    success_url = reverse_lazy('group')
-
-    def get_context_data(self):
-        context = super(EditGroupView, self).get_context_data()
-        context["group_title"] = _("Edit Group")
-        context['equipments'] = Equipment.objects.filter(group_id=self.kwargs['pk'])
-
         return context
 
 class AddEquipmentView(CreateView):
