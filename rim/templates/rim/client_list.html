@@ -3,37 +3,39 @@
 {% load static %}
 
 {% block content %}
-  <div class='grid-x grid-padding-x'>
-    <div class='small-7 large-7 cell'>
-      <h1>{% trans 'Client List' %}</h1>
+    <div class='grid-x grid-padding-x'>
+        <div class='small-7 large-7 cell'>
+            <h1>{% trans 'Client List' %}</h1>
+        </div>
+        <div class ='small-5 large-5 cell'>
+            <form method=GET action="{% url 'client_list' %}">
+                <input type='text' placeholder='{% trans "Search by Name or M-number" %}' name='search' value='{{ searchterm }}'>
+                <button type='submit' class='button' value='submit'>{% trans 'Search' %}</button>
+            </form>
+        </div>
     </div>
-    <div class ='small-5 large-5 cell'>
-      <form method=GET class='clientform' action="{% url 'client_list' %}">
-        <input type='text' placeholder='search name or M number' name='search' value='{{searchterm}}'>
-        <button type='submit' class='button' value='submit'>Submit</button>
-      </form>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'M-Number' %}</th>
+                    <th>{% trans 'Checkout Count' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for q in client_list %}
+                    <tr>
+                        <td><a href="{% url 'client' pk=q.pk %}">{{ q.name }}</a></td>
+                        <td>{{ q.bpn }}</td>
+                        <td>{{ q.equipment_count }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>{% trans 'No Results Found' %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </div>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th>{% trans 'Name' %}</th>
-          <th>{% trans 'M-Number' %}</th>
-          <th>{% trans 'Checkout Count' %}</th>
-      </thead>
-      <tbody>
-        {% for q in client_list %}
-          <tr>
-            <td><a href="{% url 'client' pk=q.pk %}">{{q.name}}</a></td>
-            <td>{{q.bpn}}</td>
-            <td>{{q.equipment_count}}</td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td>No Results Found</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
 {% endblock %}

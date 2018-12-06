@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import url, include, re_path
+from django.conf.urls import url, include
 
 from rim import views
 
