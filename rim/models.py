@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
 from django.conf import settings
+from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
 
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial Number')
@@ -36,7 +38,7 @@ class EquipmentType(models.Model):
         return '%s' % (self.type_name)
 
 class Checkout(models.Model):
-    client = models.CharField(max_length=50)
+    client = models.ForeignKey('Client', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=now, blank=True)
     location = models.ForeignKey('Location', blank=True, null=True, on_delete=models.SET_NULL)
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
@@ -65,6 +67,15 @@ class Note(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=50)
     note = models.TextField()
+
+    def __str__(self):
+        return '%s' % (self.name)
+
+class Client(models.Model):
+    name = models.CharField(max_length=50)
+    bpn_validator = RegexValidator(r'[mM8]\d{8}', _("Bearpass number must start with an 'M,' 'm,' or '8,' and followed by eight digits."))
+    bpn = models.CharField(max_length=9, validators=[bpn_validator], blank=True)
+    note = models.TextField(blank=True)
 
     def __str__(self):
         return '%s' % (self.name)

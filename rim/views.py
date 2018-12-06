@@ -2,14 +2,14 @@ import csv
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q, F
 from django.db.models.functions import Lower
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse
 from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
-from rim.models import Equipment, Group, Checkout, EquipmentType, Location
+from rim.models import Equipment, Group, Checkout, EquipmentType, Location, Client
 from rim.forms import GroupForm, EquipmentForm
 
 class HomeView(ListView):
@@ -84,6 +84,21 @@ class HomeView(ListView):
         qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
+class ListClientView(ListView):
+    template_name = 'rim/client_list.html'
+    model = Client
+
+    def get_queryset(self):
+        query = self.request.GET.get('search', '')
+        queryset = Client.objects.filter(Q(name__icontains=query) | Q(bpn__iexact=query)).annotate(equipment_count=Count('checkout', filter=Q(checkout__equipment__latest_checkout__pk=F("checkout__pk"))))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListClientView, self).get_context_data(*args, **kwargs)
+        query = self.request.GET.get('search', '')
+        context['searchterm'] = query
+        return context
+
 class ListGroupView(ListView):
     template_name = 'rim/group.html'
     model = Group
@@ -126,3 +141,13 @@ class EditEquipmentView(UpdateView):
     model = Equipment
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
+
+class ClientView(DetailView):
+    template_name = 'rim/client.html'
+    model = Client
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ClientView, self).get_context_data(*args, **kwargs)
+        context['active'] = context['client'].checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
+        context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
+        return context
