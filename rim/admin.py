@@ -33,7 +33,7 @@ class NoteAdmin(admin.ModelAdmin):
 
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['name', 'bpn']
-    search_fields = ['client__name', 'client__bpn', 'client__note']
+    search_fields = ['name', 'bpn', 'note']
 
 admin.site.register(models.Equipment, EquipmentAdmin)
 admin.site.register(models.EquipmentType, EquipmentTypeAdmin)
