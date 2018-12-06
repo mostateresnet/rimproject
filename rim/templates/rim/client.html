@@ -31,15 +31,15 @@
             <tbody>
               {% for c in active %}
                 <tr>
-                  <td><a href="{% url 'edit' pk=c.equipment.pk %}">{{c.equipment.serial_no}}</a></td>
-                  <td>{{c.equipment.equipment_model}}</td>
-                  <td>{{c.equipment.manufacturer}}</td>
-                  <td>{{c.location}}</td>
-                  <td>{{c.timestamp}}</td>
+                  <td><a href="{% url 'edit' pk=c.equipment.pk %}">{{ c.equipment.serial_no }}</a></td>
+                  <td>{{ c.equipment.equipment_model }}</td>
+                  <td>{{ c.equipment.manufacturer }}</td>
+                  <td>{{ c.location }}</td>
+                  <td>{{ c.timestamp }}</td>
                 </tr>
               {% empty %}
                 <tr>
-                  <td>No Active Checkouts</td>
+                  <td>{% No Active Checkouts %}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -63,14 +63,14 @@
             {% for c in previous %}
               <tr>
                 <td><a href="{% url 'edit' pk=c.equipment.pk %}">{{c.equipment.serial_no}}</a></td>
-                <td>{{c.equipment.equipment_model}}</td>
-                <td>{{c.equipment.manufacturer}}</td>
-                <td>{{c.location}}</td>
-                <td>{{c.timestamp}}</td>
+                <td>{{ c.equipment.equipment_model }}</td>
+                <td>{{ c.equipment.manufacturer }}</td>
+                <td>{{ c.location }}</td>
+                <td>{{ c.timestamp }}</td>
               </tr>
             {% empty %}
               <tr>
-                <td> No Past Checkouts </td>
+                <td>{% No Past Checkouts %}</td>
               </tr>
             {% endfor %}
           </tbody>

@@ -92,11 +92,11 @@ class ListClientView(ListView):
     def get_queryset(self):
         queryset = super(ListClientView, self).get_queryset()
         query = self.request.GET.get('search', '')
-        queryset = Client.objects.filter(Q(name__contains=query)|Q(bpn__iexact=query)).annotate(equipment_count=Count('checkout', filter=Q(checkout__equipment__latest_checkout__pk=F("checkout__pk"))))
+        queryset = Client.objects.filter(Q(name__icontains=query) | Q(bpn__iexact=query)).annotate(equipment_count=Count('checkout', filter=Q(checkout__equipment__latest_checkout__pk=F("checkout__pk"))))
         return queryset
 
-    def get_context_data(self):
-        context = super(ListClientView, self).get_context_data()
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListClientView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('search', '')
         context['searchterm'] = query
         return context
@@ -150,6 +150,7 @@ class ClientView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClientView, self).get_context_data(*args, **kwargs)
-        context['active'] = Client.objects.get(pk=self.kwargs['pk']).checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
-        context['previous'] = Client.objects.get(pk=self.kwargs['pk']).checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
+        context['client'] = Client.objects.get(pk=self.kwargs['pk'])
+        context['active'] = context['client'].checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
+        context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context

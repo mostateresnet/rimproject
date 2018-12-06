@@ -9,8 +9,8 @@
     </div>
     <div class ='small-5 large-5 cell'>
       <form method=GET class='clientform' action="{% url 'client_list' %}">
-        <input type='text' placeholder='search name or M number' name='search' value='{{searchterm}}'>
-        <button type='submit' class='button' value='submit'>Submit</button>
+        <input type='text' placeholder='{% trans "search name or M-number" %}' name='search' value='{{ searchterm }}'>
+        <button type='submit' class='button' value='submit'>{% trans 'Search' %}</button>
       </form>
     </div>
   </div>
@@ -25,13 +25,13 @@
       <tbody>
         {% for q in client_list %}
           <tr>
-            <td><a href="{% url 'client' pk=q.pk %}">{{q.name}}</a></td>
-            <td>{{q.bpn}}</td>
-            <td>{{q.equipment_count}}</td>
+            <td><a href="{% url 'client' pk=q.pk %}">{{ q.name }}</a></td>
+            <td>{{ q.bpn }}</td>
+            <td>{{ q.equipment_count }}</td>
           </tr>
         {% empty %}
           <tr>
-            <td>No Results Found</td>
+            <td>{% trans 'No Results Found' %}</td>
           </tr>
         {% endfor %}
       </tbody>
