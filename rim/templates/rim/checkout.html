@@ -31,19 +31,40 @@
             </div>
         </div>
         <div class="large-3 cell copyable client">
-            <h3>Client</h3>
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Client</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="client_clone" type="checkbox"><label for="client_clone">Copy?</label>
+                </div>
+            </div>
             <div class="input_container">
                 <input type="text" placeholder="{% trans 'Name or M-Number' %}"/>
             </div>
         </div>
         <div class="large-3 cell copyable location">
-            <h3>Building</h3>
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Building</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="building_clone" type="checkbox"><label for="building_clone">Copy?</label>
+                </div>
+            </div>
             <div class="input_container">
                 <input type="text" placeholder="{% trans 'Building' %}"/>
             </div>
         </div>
         <div class="large-3 cell copyable location room">
-            <h3>Room</h3>
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Room</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="room_clone" type="checkbox"><label for="room_clone">Copy?</label>
+                </div>
+            </div>
             <div class="grid-x input_container">
                 <div class="small-11 cell">
                     <input type="text" placeholder="{% trans 'Room Number' %}"/>
