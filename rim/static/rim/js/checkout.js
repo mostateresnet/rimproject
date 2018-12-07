@@ -1,6 +1,7 @@
 $(document).ready(function() {
     function switch_forms(){
         var client_names = $('.client input[type=text]');
+        client_names.keyup();
         if ($('input[name=checkform]:checked').prop('id') == 'checkin') {
             client_names.each(function() {
                 var content = $(this).val();
@@ -17,22 +18,26 @@ $(document).ready(function() {
 
     $('input[name=checkform]').on('click change', switch_forms);
 
+    function insert_row() {
+        $('.copyable').each(function(){
+            var last_element = $(this).find('.input_container').last();
+            var clone = last_element.clone();
+            var input_element = clone.find('input[type=text]');
+            if($(this).closest('.client').length == 0){
+                input_element.prop('disabled', false);
+            }
+            if(!(input_element.prop('disabled'))) {
+                input_element.val("");
+            }
+            input_element.toggleClass('focused', false);
+            last_element.after(clone);
+        })
+    }
+
     $('.barcode').on('keyup', 'input[type=text]', function() {
         var last_barcode = $('.barcode input[type=text]').last();
         if(last_barcode.val() != ""){
-            $('.copyable').each(function(){
-                var last_element = $(this).find('.input_container').last();
-                var clone = last_element.clone();
-                var input_element = clone.find('input[type=text]');
-                if($(this).closest('.client').length == 0){
-                    input_element.prop('disabled', false);
-                }
-                if(!(input_element.prop('disabled'))) {
-                    input_element.val("");
-                }
-                input_element.toggleClass('focused', false);
-                last_element.after(clone);
-            })
+            insert_row();
         }
     })
 
@@ -65,8 +70,13 @@ $(document).ready(function() {
         }
     })
 
-    $('.location').on('click', '.delete', function() {
-        $("button").remove();
-
+    $('.room').on('click', '.delete', function() {
+        var row_index = $(this).closest('.copyable').find('.delete').index(this);
+        if ($('.barcode input[type=text]').length == 1){
+            insert_row();
+        }
+        $('.copyable').each(function(){
+            $(this).find('.input_container').eq(row_index).remove();
+        })
     })
 });
