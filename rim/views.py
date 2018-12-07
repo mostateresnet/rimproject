@@ -163,6 +163,12 @@ class EditEquipmentView(LoginRequiredMixin, UpdateView):
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
+class CheckoutView(LoginRequiredMixin, CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
+
 class ClientView(LoginRequiredMixin, DetailView):
     template_name = 'rim/client.html'
     model = Client
@@ -173,13 +179,12 @@ class ClientView(LoginRequiredMixin, DetailView):
         context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
 
-class CheckSerialView(View):
+class CheckSerialView(LoginRequiredMixin, View):
     def post(self, request):
         data = json.loads(request.POST.get('serial_nums', '[]'))
         data = [x.upper() for x in data]
 
-        #Check the database for existing serial numbers
-        existing_serial_nums = Equipment.objects.filter(serial_no__in=data).values_list('serial_no', flat=True)
+        #Check the database for existing serial numbers existing_serial_nums = Equipment.objects.filter(serial_no__in=data).values_list('serial_no', flat=True)
         errors = []
         for num in existing_serial_nums:
             errors.append(f"Equipment with serial number '{num}' already exists.")
@@ -196,7 +201,7 @@ class CheckSerialView(View):
         return_data = {'context': errors}
         return JsonResponse(return_data)
 
-class CheckoutView(CreateView):
+class CheckoutView(LoginRequiredMixin, CreateView):
     template_name = 'rim/checkout.html'
     model = Checkout
     success_url = reverse_lazy('home')
