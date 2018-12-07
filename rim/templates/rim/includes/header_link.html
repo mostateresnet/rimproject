@@ -1,0 +1,10 @@
+{% load i18n %}
+{% if current_ordering_name == ordering %}
+    {% if current_order_desc %}
+        <a class='desc text-center' href='?{{ search_data.urlencode }}&amp;order={{ ordering }}'>{% blocktrans %}{{ title }}{% endblocktrans %}</a>
+    {% else %}
+        <a class='asc text-center' href='?{{ search_data.urlencode }}&amp;order=-{{ ordering }}'>{% blocktrans %}{{ title }}{% endblocktrans %}</a>
+    {% endif %}
+{% else %}
+    <a class='text-center' href='?{{ search_data.urlencode }}&amp;order={{ ordering }}'>{% blocktrans %}{{ title }}{% endblocktrans %}</a>
+{% endif %}

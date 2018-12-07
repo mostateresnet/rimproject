@@ -1,0 +1,7 @@
+.asc:after {
+    content: " \02191";
+}
+
+.desc:after {
+    content: " \02193";
+}

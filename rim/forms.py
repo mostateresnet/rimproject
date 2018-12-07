@@ -1,13 +1,9 @@
 from django import forms
-from rim.models import Group, Equipment
+from rim.models import Equipment
 
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        exclude =[]
 
 class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        exclude = []
+        exclude = ['latest_checkout']
