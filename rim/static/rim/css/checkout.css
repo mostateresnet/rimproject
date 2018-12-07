@@ -1,5 +1,5 @@
 .focused {
-	background-color: #e6e6e6;
+    background-color: #e6e6e6;
 }
 
 .barcode {
@@ -12,4 +12,12 @@
 
 .barcode .counter:before {
     content: counter(row_num);
+}
+
+.copyable input[type=text], .copyable .delete {
+    margin: 0;
+}
+
+button[type=submit] {
+    margin-top: 1rem;
 }
