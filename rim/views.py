@@ -111,13 +111,13 @@ class EditEquipmentView(UpdateView):
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
-<<<<<<< HEAD
+
 class CheckoutView(CreateView):
     template_name = 'rim/checkout.html'
     model = Checkout
     success_url = reverse_lazy('home')
     fields = ['client', 'location', 'equipment']
-=======
+
 class ClientView(DetailView):
     template_name = 'rim/client.html'
     model = Client
@@ -127,4 +127,4 @@ class ClientView(DetailView):
         context['active'] = context['client'].checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
         context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
->>>>>>> master
+
