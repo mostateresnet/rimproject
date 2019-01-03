@@ -15,13 +15,13 @@ def LocationCreator():
 
     # create list to hold names, numbers, and client list
     buildings = ["Blair", "Shannon", "Freudenberger", "Hammons", "Hutchens", "Kentwood", "Scholars", "Wells", "Woods", "Monroe", "Sunvilla"]
-    nums = []
+    nums = set()
     locationlist = []
 
     # add the name to the name and number list
     for i in range(100):
         random.seed(datetime.now())
-        nums.append(random.randint(100,500))
+        nums.add(random.randint(100,700))
     # print("numbers: ", nums)
 
     # get length of the name list
@@ -29,10 +29,11 @@ def LocationCreator():
 
     # create the dictionary to hold the locations
     for j in range(len(buildings)):
-        for i in range(looplen):
-            locationdict = {'building':buildings[j], 'room':nums[i]}
+        for num in nums:
+            # print("nums ", num)
+            locationdict = {'building':buildings[j], 'room':num}
             locationlist.append(locationdict)
-    # print("location list: ", locationlist)
+    print("location list: ", nums)
 
     # write the list to the file using json dumps
     savef.write(json.dumps(locationlist))

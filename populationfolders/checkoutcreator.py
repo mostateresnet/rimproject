@@ -55,6 +55,7 @@ def CheckoutCreator():
     for loc in location:
         locations.append([loc['building'],loc['room']])
     shuffle(locations)  # This will allow us to get a random shuffled list of locations so we don't have all the same buildings
+    # print("locations", locations)
 
     equipment = json.load(equipmentf)
     for  e in equipment:
