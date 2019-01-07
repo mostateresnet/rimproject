@@ -5,8 +5,6 @@ import json
 import datetime
 import pytz
 import django
-import cProfile
-import pstats
 django.setup()
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
 
@@ -16,13 +14,13 @@ def populate():
         {'type_name':'Tablet'},
         {'type_name':'Desktop'}
     ]
-
+    equiptype_objects = []
     for equip in equipment_type:
-        # TODO make bulk create
-        EquipmentType.objects.get_or_create(type_name=equip['type_name'])
+        equiptype_object = EquipmentType(type_name = equip['type_name'])
+        equiptype_objects.append(equiptype_object)
+    EquipmentType.objects.bulk_create(equiptype_objects)
 
     print("after equipment type")
-    # opens the location list file, reads in the json object and loops through it to add the locations
     with open('locationlist.txt') as locationfile:
         location = json.load(locationfile)
         location_objects = []
@@ -35,12 +33,13 @@ def populate():
     with open('equipmentlist.txt') as equipmentfile:
         equipment = json.load(equipmentfile)
         equipment_objects = []
+        equiptype = EquipmentType.objects.all()
         for i in equipment:
+            et = equiptype.filter(type_name = i['equipment_type'])[0]
             equipment_object = Equipment(
                 serial_no = i['serial_no'],
                 equipment_model = i['equipment_model'],
-                # TODO make all of these get requests at once
-                equipment_type = EquipmentType.objects.get(type_name=i['equipment_type']),
+                equipment_type = et,
                 count = i['count'],
                 manufacturer = i['manufacturer'],
                 service_tag = i['service_tag'],
@@ -74,27 +73,24 @@ def populate():
     with open('checkoutlist.txt') as checkoutfile:
         checkout = json.load(checkoutfile)
         checkoutfile_objects = []
+        locations = Location.objects.all()
+        clients = Client.objects.all()
+        equipments = Equipment.objects.all()
         for check in checkout:
-            # TODO fetch all of these at once and remove duplicates
-            checkout_location = Location.objects.filter(building = check['location'][0], room = check['location'][1])[0]
+            checkout_location = locations.filter(building = check['location'][0], room = check['location'][1])[0]
+            client_instance = clients.filter(name = check['client'])[0]
+            equipment_instance = equipments.filter(serial_no = check['equipment'])[0]
             checkout_object = Checkout(
-                # TODO fetch all at once
-                client = Client.objects.get(name=check['client']),
+                client = client_instance,
                 timestamp = check['timestamp'],
                 location = checkout_location,
-                # TODO fetch all at once
-                equipment = Equipment.objects.get(serial_no = check['equipment'])
+                equipment = equipment_instance
             )
             checkoutfile_objects.append(checkout_object)
         Checkout.objects.bulk_create(checkoutfile_objects)
     print("after checkouts")
 
 if __name__ =='__main__':
-    p = cProfile.Profile()
-    p.enable()
     print("in main")
     populate()
-    p.disable()
-    ps = pstats.Stats(p)
-    p.print_stats()
     print("Completed")
