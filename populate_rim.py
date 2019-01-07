@@ -19,18 +19,16 @@ def populate():
         equiptype_object = EquipmentType(type_name = equip['type_name'])
         equiptype_objects.append(equiptype_object)
     EquipmentType.objects.bulk_create(equiptype_objects)
-    # print("after equipment type")
-    
-    with open('locationlist.txt') as locationfile:
+
+    with open('populationfolders/locationlist.txt') as locationfile:
         location = json.load(locationfile)
         location_objects = []
         for loc in location:
             location_object = Location(building = loc['building'], room = loc['room'])
             location_objects.append(location_object)
         Location.objects.bulk_create(location_objects)
-    # print("after location")
 
-    with open('equipmentlist.txt') as equipmentfile:
+    with open('populationfolders/equipmentlist.txt') as equipmentfile:
         equipment = json.load(equipmentfile)
         equipment_objects = []
         equiptype = EquipmentType.objects.all()
@@ -59,18 +57,16 @@ def populate():
             )
             equipment_objects.append(equipment_object)
         Equipment.objects.bulk_create(equipment_objects)
-    # print("after equipment")
 
-    with open('clientlist.txt') as clientfile:
+    with open('populationfolders/clientlist.txt') as clientfile:
         client = json.load(clientfile)
         client_objects = []
         for c in client:
             client_object = Client(name = c['name'], bpn = c['bpn'], note = c['note'])
             client_objects.append(client_object)
         Client.objects.bulk_create(client_objects)
-    # print("after client")
 
-    with open('checkoutlist.txt') as checkoutfile:
+    with open('populationfolders/checkoutlist.txt') as checkoutfile:
         checkout = json.load(checkoutfile)
         checkoutfile_objects = []
         locations = Location.objects.all()
@@ -88,11 +84,11 @@ def populate():
             )
             checkoutfile_objects.append(checkout_object)
         Checkout.objects.bulk_create(checkoutfile_objects)
-        # print("moving on to the saving section")
         for c in checkoutfile_objects:
             c.save()
 
+
 if __name__ =='__main__':
-    print("in main")
+    print("running populate")
     populate()
     print("Completed")
