@@ -19,8 +19,8 @@ def populate():
         equiptype_object = EquipmentType(type_name = equip['type_name'])
         equiptype_objects.append(equiptype_object)
     EquipmentType.objects.bulk_create(equiptype_objects)
-
-    print("after equipment type")
+    # print("after equipment type")
+    
     with open('locationlist.txt') as locationfile:
         location = json.load(locationfile)
         location_objects = []
@@ -28,7 +28,7 @@ def populate():
             location_object = Location(building = loc['building'], room = loc['room'])
             location_objects.append(location_object)
         Location.objects.bulk_create(location_objects)
-    print("after location")
+    # print("after location")
 
     with open('equipmentlist.txt') as equipmentfile:
         equipment = json.load(equipmentfile)
@@ -59,7 +59,7 @@ def populate():
             )
             equipment_objects.append(equipment_object)
         Equipment.objects.bulk_create(equipment_objects)
-    print("after equipment")
+    # print("after equipment")
 
     with open('clientlist.txt') as clientfile:
         client = json.load(clientfile)
@@ -68,7 +68,7 @@ def populate():
             client_object = Client(name = c['name'], bpn = c['bpn'], note = c['note'])
             client_objects.append(client_object)
         Client.objects.bulk_create(client_objects)
-    print("after client")
+    # print("after client")
 
     with open('checkoutlist.txt') as checkoutfile:
         checkout = json.load(checkoutfile)
@@ -88,7 +88,9 @@ def populate():
             )
             checkoutfile_objects.append(checkout_object)
         Checkout.objects.bulk_create(checkoutfile_objects)
-    print("after checkouts")
+        # print("moving on to the saving section")
+        for c in checkoutfile_objects:
+            c.save()
 
 if __name__ =='__main__':
     print("in main")
