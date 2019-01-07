@@ -8,7 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial Number')
     equipment_model = models.CharField(max_length=30)
-    group = models.ForeignKey('Group', blank=True, null=True, on_delete=models.SET_NULL)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
     count = models.IntegerField(blank=True, null=True)
     manufacturer = models.CharField(max_length=30, blank=True)
@@ -64,17 +63,11 @@ class Note(models.Model):
     timestamp = models.DateTimeField(default=now, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-class Group(models.Model):
-    name = models.CharField(max_length=50)
-    note = models.TextField()
-
-    def __str__(self):
-        return '%s' % (self.name)
 
 class Client(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Client Name')
     bpn_validator = RegexValidator(r'[mM8]\d{8}', _("Bearpass number must start with an 'M,' 'm,' or '8,' and followed by eight digits."))
-    bpn = models.CharField(max_length=9, validators=[bpn_validator], blank=True)
+    bpn = models.CharField(max_length=9, validators=[bpn_validator], blank=True, verbose_name='Client M-number')
     note = models.TextField(blank=True)
 
     def __str__(self):
