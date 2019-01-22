@@ -20,14 +20,6 @@ need to get the:
 
 def CheckoutCreator():
 
-    # clientlist = []
-    # with open('clientlist.txt') as clientfile:
-    #     client = json.load(clientfile)
-    #     for c in client:
-    #         checkoutlist.append(c['name'])
-    # clientfile.close()
-    # print("clientlist: ", clientlist)
-
     # get file names
     clientlist = "clientlist.txt"
     locationlist = "locationlist.txt"
@@ -62,7 +54,13 @@ def CheckoutCreator():
         equipments.append(e['serial_no'])
 
     # runs through and appends all the different lists to the main checkoutlist
-    for i in range(300):
+    #change the numberOfRunthroughs to the desired amount of times to loop through the lists
+    continueCheck = True
+    numberOfRunthroughs = 1  # change this to run more than once
+    runCount = 1
+    numberOfElements = 300  # change this if the file is longer than 300 elements
+    i = 0
+    while continueCheck:
         random.seed(datetime.now())
         checkoutdict = {'client':clients[i],
         'timestamp':"%04d-%02d-%02d %02d:%02d:%02d+06:00"%(random.randint(2010,2018),
@@ -73,6 +71,15 @@ def CheckoutCreator():
             random.randint(0,59)),
         'location':locations[i], 'equipment':equipments[i]}
         checkoutlist.append(checkoutdict)
+        i = i + 1
+        if (runCount == numberOfRunthroughs and i == numberOfElements):
+            continueCheck = False
+        if(runCount < numberOfRunthroughs and i == numberOfElements):
+            runCount = runCount + 1
+            i = 0
+            shuffle(equipments)
+            shuffle(clients)
+            shuffle(locations)
 
     # save the list to the file
     savef.write(json.dumps(checkoutlist))
