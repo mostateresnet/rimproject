@@ -72,21 +72,11 @@ class Command(BaseCommand):
         with open('populationfolders/checkoutlist.txt') as checkoutfile:
             checkout = json.load(checkoutfile)
             checkoutfile_objects = []
-            locations = Location.objects.all()
-            clients = Client.objects.all()
-            equipments = Equipment.objects.all()
             for check in checkout:
-                checkout_location = locations.filter(building = check['location'][0], room = check['location'][1])[0]
-                client_instance = clients.filter(name = check['client'])[0]
-                equipment_instance = equipments.filter(serial_no = check['equipment'])[0]
-                checkout_object = Checkout(
-                    client = client_instance,
+                checkout_object = Checkout.objects.get_or_create(
+                    client = Client.objects.get(name=check['client']),
                     timestamp = check['timestamp'],
-                    location = checkout_location,
-                    equipment = equipment_instance
-                )
-                checkoutfile_objects.append(checkout_object)
-            Checkout.objects.bulk_create(checkoutfile_objects)
-            for c in checkoutfile_objects:
-                c.save()
+                    location = Location.objects.get(building = check['location'][0], room = check['location'][1]),
+                    equipment = Equipment.objects.get(serial_no = check['equipment']))[0]
+                checkout_object.save()
         self.stdout.write("completed")
