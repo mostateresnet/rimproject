@@ -6,31 +6,17 @@ restrictions:
 
 import json
 import random
-import pytz
 from datetime import datetime
 from random import shuffle
 
-"""
-need to get the:
-    client name from clientlist.txt
-    location building and room from locationlist.txt
-    equipment serial_no from equipmentlist.txt
-    create timestamp
-"""
 
 def CheckoutCreator():
 
-    # get file names
-    clientlist = "clientlist.txt"
-    locationlist = "locationlist.txt"
-    equipmentlist = "equipmentlist.txt"
-    checkoutlist = "checkoutlist.txt"
-
     # open the files to read and write from/to
-    clientf = open(clientlist, 'r')
-    locationf = open(locationlist, 'r')
-    equipmentf = open(equipmentlist, 'r')
-    savef = open(checkoutlist, 'w')
+    clientf = open("clientlist.txt", 'r')
+    locationf = open("locationlist.txt", 'r')
+    equipmentf = open("equipmentlist.txt", 'r')
+    savef = open("checkoutlist.txt", 'w')
 
     # create the lists to hold the variables
     clients = []  # grab the names of clients
@@ -45,16 +31,16 @@ def CheckoutCreator():
 
     location = json.load(locationf)
     for loc in location:
-        locations.append([loc['building'],loc['room']])
+        locations.append([loc['building'], loc['room']])
     shuffle(locations)  # This will allow us to get a random shuffled list of locations so we don't have all the same buildings
     # print("locations", locations)
 
     equipment = json.load(equipmentf)
-    for  e in equipment:
+    for e in equipment:
         equipments.append(e['serial_no'])
 
     # runs through and appends all the different lists to the main checkoutlist
-    #change the numberOfRunthroughs to the desired amount of times to loop through the lists
+    # change the numberOfRunthroughs to the desired amount of times to loop through the lists
     continueCheck = True
     numberOfRunthroughs = 1  # change this to run more than once
     runCount = 1
@@ -62,14 +48,14 @@ def CheckoutCreator():
     i = 0
     while continueCheck:
         random.seed(datetime.now())
-        checkoutdict = {'client':clients[i],
-        'timestamp':"%04d-%02d-%02d %02d:%02d:%02d+06:00"%(random.randint(2010,2018),
-            random.randint(1,12),
-            random.randint(1,28),
-            random.randint(0,23),
-            random.randint(0,59),
-            random.randint(0,59)),
-        'location':locations[i], 'equipment':equipments[i]}
+        checkoutdict = {'client': clients[i],
+        'timestamp': "%04d-%02d-%02d %02d:%02d:%02d+06:00" % (random.randint(2010, 2018),
+            random.randint(1, 12),
+            random.randint(1, 28),
+            random.randint(0, 23),
+            random.randint(0, 59),
+            random.randint(0, 59)),
+            'location': locations[i], 'equipment': equipments[i]}
         checkoutlist.append(checkoutdict)
         i = i + 1
         if (runCount == numberOfRunthroughs and i == numberOfElements):

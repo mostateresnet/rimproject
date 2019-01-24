@@ -10,7 +10,7 @@ from datetime import datetime
 
 def EquipmentCreator():
 
-    #file names of files to read
+    # file names of files to read
     serialfile = "300_unique_codes.txt"
     modelfile = "modelnames.txt"
     manufacturerfile = "manufacturer.txt"
@@ -19,7 +19,7 @@ def EquipmentCreator():
     physicaladdrssfile = 'physicaladdress.txt'
     purchasepricefile = 'purchaseprice.txt'
 
-    #open the files
+    # open the files
     serialf = open(serialfile, 'r')
     modelf = open(modelfile, 'r')
     manf = open(manufacturerfile, 'r')
@@ -67,11 +67,11 @@ def EquipmentCreator():
 
     for servicetag in servtagf:
         servicetag = servicetag.rstrip()
-        servicetags.append(servicetag+"-"+str(random.randint(0,9)))
+        servicetags.append(servicetag + "-" + str(random.randint(0, 9)))
 
     for smsut in smsutagf:
         smsut = smsut.rstrip()
-        smsutag.append("M"+smsut+"-"+str(random.randint(0,9)))
+        smsutag.append("M" + smsut + "-" + str(random.randint(0, 9)))
 
     for mac in physicalf:
         mac = mac.rstrip()
@@ -87,25 +87,25 @@ def EquipmentCreator():
     # create the dictionary rows in the equipmentlist
     for i in range(looplen):
         equipdict = {
-            "serial_no":serials[i],
-            'equipment_model':models[i],
-            'equipment_type':types[random.randint(0,2)],
-            'count':count,
-            'manufacturer':manufacturers[i],
-            'service_tag':servicetags[i],
-            'smsu_tag':smsutag[i],
-            'cpu':cpu[random.randint(0,9)],
-            'optical_drive':opticaldrive[random.randint(0,1)],
-            'size':sizes[random.randint(0,2)],
-            'memory':memory[random.randint(0,2)],
-            'other_connectivity':otherconn[random.randint(0,1)],
-            'hard_drive':harddrives[random.randint(0,2)],
-            'usb_ports':usbports[random.randint(0,2)],
-            'video_card':videocards[random.randint(0,2)],
-            'removable_media':removablemedia[random.randint(0,1)],
-            'physical_address':physicaladdress[i],
-            'purchase_price':purchaseprice[i],
-            'purchase_info':purchaseinfo[random.randint(0,2)]
+            "serial_no": serials[i],
+            'equipment_model': models[i],
+            'equipment_type': types[random.randint(0, 2)],
+            'count': count,
+            'manufacturer': manufacturers[i],
+            'service_tag': servicetags[i],
+            'smsu_tag': smsutag[i],
+            'cpu': cpu[random.randint(0, 9)],
+            'optical_drive': opticaldrive[random.randint(0, 1)],
+            'size': sizes[random.randint(0, 2)],
+            'memory': memory[random.randint(0, 2)],
+            'other_connectivity': otherconn[random.randint(0, 1)],
+            'hard_drive': harddrives[random.randint(0, 2)],
+            'usb_ports': usbports[random.randint(0, 2)],
+            'video_card': videocards[random.randint(0, 2)],
+            'removable_media': removablemedia[random.randint(0, 1)],
+            'physical_address': physicaladdress[i],
+            'purchase_price': purchaseprice[i],
+            'purchase_info': purchaseinfo[random.randint(0, 2)]
         }
         equipmentlist.append(equipdict)
     print("equipmentlist: ", equipmentlist)
@@ -113,7 +113,7 @@ def EquipmentCreator():
     # write the list to the file using json dumps
     savef.write(json.dumps(equipmentlist))
 
-    #close the files
+    # close the files
     serialf.close()
     modelf.close()
     manf.close()
@@ -122,6 +122,7 @@ def EquipmentCreator():
     physicalf.close()
     purchasef.close()
     savef.close()
+
 
 if __name__ == '__main__':
     random.seed(datetime.now())
