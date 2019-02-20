@@ -2,6 +2,10 @@
 {% load i18n %}
 {% load static %}
 
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
 {% block content %}
     <div class='grid-x grid-padding-x'>
         <div class='small-7 large-7 cell'>
@@ -10,7 +14,7 @@
         <div class ='small-5 large-5 cell'>
             <form method=GET action="{% url 'client_list' %}">
                 <input type='text' placeholder='{% trans "Search by Name or M-number" %}' name='search' value='{{ searchterm }}'>
-                <button type='submit' class='button' value='submit'>{% trans 'Search' %}</button>
+                <button type='submit' class='button' value='submit'>{% trans 'Submit' %}</button>
             </form>
         </div>
     </div>
@@ -37,5 +41,33 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class='grid-container'>
+        <div class='grid-margin-x'>
+            <div class='grid-x'>
+                <div class='small-3 large-3 cell'>
+                </div>
+                <div class='small-6 large-6 cell'>
+                    {% if is_paginated %}
+                        <div class='page_nav'>
+                            {% if page_obj.has_previous %}
+                                <a class='page_link' href='?page={{ page_obj.previous_page_number }}'>Previous</a> |
+                            {% endif %}
+                            Page {{ page_obj.number }}
+                            {% if page_obj.has_next %}
+                                 | <a class='page_link' href='?page={{ page_obj.next_page_number }}'>Next</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class='small-3 large-3 cell'>
+                    <div class='paginate_by_sec'>
+                        <span class='page_label'>Objects per Page</span>
+                        <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
+                        <button id='page_submit' class='button page_button' value='submit'>{% trans 'Submit' %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

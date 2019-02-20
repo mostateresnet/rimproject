@@ -34,3 +34,26 @@ body {
     background-color: #8c0a01;
     cursor: pointer;
 }
+
+.page_label {
+    font-size: .6em;
+}
+
+.page_input {
+    width: 20%;
+    display:inline;
+}
+
+.page_button {
+    margin-top: 1em;
+    margin-left: 1em;
+}
+
+.page_nav {
+    padding-left: 35%;
+    padding-top: 1.8em;
+}
+
+.page_link {
+    width: 15%;
+}

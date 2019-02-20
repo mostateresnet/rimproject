@@ -2,6 +2,7 @@ import csv
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
 from django.db.models import Count, Max, Q, F
 from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
@@ -12,13 +13,21 @@ from django.utils.timezone import now, localtime
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
 from rim.forms import EquipmentForm
 
-class HomeView(ListView):
+class PaginateView(object):
+    def get_paginate_by(self, queryset):
+        if 'paginate' in self.request.COOKIES:
+            return self.request.COOKIES['paginate']
+        else:
+            return 15
+
+class HomeView(PaginateView, ListView):
     export_csv = False
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
 
     valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
                     'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
+
 
     def get_ordering(self):
         self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
@@ -30,7 +39,8 @@ class HomeView(ListView):
     def get(self, request, *args, **kwargs):
         if self.export_csv:
             keys = ['serial_no', 'equipment_model', 'manufacturer',
-                    'equipment_type__type_name', 'latest_checkout__client__name', 'latest_checkout__client__bpn', 'latest_checkout__location__building', 'latest_checkout__location__room']
+                    'equipment_type__type_name', 'latest_checkout__client__name',
+                    'latest_checkout__client__bpn', 'latest_checkout__location__building', 'latest_checkout__location__room']
             verbose_keys = []
             for key in keys:
                 split_key = key.split('__')
@@ -84,9 +94,10 @@ class HomeView(ListView):
         qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
-class ListClientView(ListView):
+class ListClientView(PaginateView, ListView):
     template_name = 'rim/client_list.html'
     model = Client
+
 
     def get_queryset(self):
         query = self.request.GET.get('search', '')
