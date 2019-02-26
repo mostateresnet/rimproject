@@ -17,7 +17,7 @@ $(document).ready(function() {
     }
 
     $('input[name=checkform]').on('click change', switch_forms);
-
+    //Take all of the copyable columns (Client, Building, Room) and find
     function insert_row() {
         $('.copyable').each(function(){
             var last_element = $(this).find('.input_container').last();
@@ -34,8 +34,22 @@ $(document).ready(function() {
         })
     }
 
+    $('.barcode, .client').on('keyup', 'input[type=text]', function() {
+        var last_barcode = $('.barcode input[type=text]').last();
+        var second_to_last_barcode = $('.barcode input[type=text]').eq(-2);
+        var last_client = $('.client input[type=text]').last();
+        var second_to_last_client = $('.client input[type=text]').eq(-2);
+        if (last_barcode.val() == "" && second_to_last_barcode.val() == "" && last_client.val() == "" && second_to_last_client.val() == "" ) {
+            var row_index = $(this).closest('.copyable').find('.delete').index(this);
+            $('.copyable').each(function(){
+                $(this).find('.input_container').eq(row_index).remove();
+            })
+        }
+    })
+
     $('.barcode').on('keyup', 'input[type=text]', function() {
         var last_barcode = $('.barcode input[type=text]').last();
+        //Insert a new row if you start putting data into the barcode of the last row
         if(last_barcode.val() != ""){
             insert_row();
         }
@@ -58,15 +72,32 @@ $(document).ready(function() {
         var current_name = $(this).val();
         var regex = /^[mM8]\d{8}$/;
         var row_index = $(this).closest('.copyable').find('input[type=text]').index(this);
+        var last_client = $('.client input[type=text]').last();
         if(regex.test(current_name)){
             $('.location').each(function(){
                 $(this).find('input[type=text]').eq(row_index).prop('disabled', true);
             })
-        }
-        else{
+        } else {
             $('.location').each(function(){
                 $(this).find('input[type=text]').eq(row_index).prop('disabled', false);
             })
+        }
+        if(last_client.val() != ""){
+            if($('#client_paste').prop('checked')) {
+                input = $(this).val();
+                split_input = input.split(" ");
+                $(this).val('');
+                for(i = 0; i < split_input.length; i++) {
+                    $('.client input[type=text]').eq(i).val(split_input[i]);
+                    $('.location').each(function() {
+                        $(this).find('input[type=text]').eq(i).prop('disabled', true);
+                    })
+                    insert_row();
+
+                }
+            } else {
+                insert_row();
+            }
         }
     })
 
