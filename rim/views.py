@@ -2,7 +2,6 @@ import csv
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.core.paginator import Paginator
 from django.db.models import Count, Max, Q, F
 from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
@@ -13,7 +12,7 @@ from django.utils.timezone import now, localtime
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
 from rim.forms import EquipmentForm
 
-class PaginateView(object):
+class PaginateMixin(object):
     def get_paginate_by(self, queryset):
         self.invalid_per_page = False
         obj_per_page = 15
@@ -29,12 +28,12 @@ class PaginateView(object):
 
     def dispatch(self, *args, **kwargs):
         response = super().dispatch(*args, **kwargs)
-        if(self.invalid_per_page):
+        if self.invalid_per_page:
             response.delete_cookie('paginate')
         return response
 
 
-class HomeView(PaginateView, ListView):
+class HomeView(PaginateMixin, ListView):
     export_csv = False
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
@@ -108,7 +107,7 @@ class HomeView(PaginateView, ListView):
         qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
-class ListClientView(PaginateView, ListView):
+class ListClientView(PaginateMixin, ListView):
     template_name = 'rim/client_list.html'
     model = Client
 
@@ -122,6 +121,7 @@ class ListClientView(PaginateView, ListView):
         context = super(ListClientView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('search', '')
         context['searchterm'] = query
+        context['search_data'] = self.request.GET
         return context
 
 class AddEquipmentView(CreateView):
