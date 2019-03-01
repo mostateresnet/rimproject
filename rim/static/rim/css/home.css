@@ -5,3 +5,8 @@
 .desc:after {
     content: " \02193";
 }
+
+.export_button {
+    padding-left: 30%;
+    padding-top: 1.7em;
+}
