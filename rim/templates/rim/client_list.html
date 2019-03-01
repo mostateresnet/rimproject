@@ -58,9 +58,11 @@
                 </div>
                 <div class='small-3 large-3 cell'>
                     <div class='paginate_by_sec'>
-                        <span class='page_label'>Objects per Page</span>
-                        <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
-                        <button id='page_submit' class='button page_button' value='submit'>{% trans 'Submit' %}</button>
+                        <form id='paginate_form'>
+                            <span class='page_label'>Objects per Page</span>
+                            <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
+                            <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
+                        </form>
                     </div>
                 </div>
             </div>
