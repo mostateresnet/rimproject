@@ -16,17 +16,16 @@ from rim.forms import EquipmentForm
 class PaginateView(object):
     def get_paginate_by(self, queryset):
         self.invalid_per_page = False
-        if 'paginate' in self.request.COOKIES:
-            try:
-                obj_per_page = int(self.request.COOKIES['paginate'])
-            except ValueError:
-                self.invalid_per_page = True
-                return 15
-            obj_per_page = min(obj_per_page, 1000)
-            obj_per_page = max(obj_per_page, 1)
-            return obj_per_page
-        else:
-            return 15
+        obj_per_page = 15
+        try:
+            obj_per_page = int(self.request.COOKIES['paginate'])
+        except ValueError:
+            self.invalid_per_page = True
+        except KeyError:
+            pass
+        obj_per_page = min(obj_per_page, 1000)
+        obj_per_page = max(obj_per_page, 1)
+        return obj_per_page
 
     def dispatch(self, *args, **kwargs):
         response = super().dispatch(*args, **kwargs)
