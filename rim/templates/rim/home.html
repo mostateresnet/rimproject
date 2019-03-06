@@ -55,34 +55,36 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class='grid-container'>
-        <div class='grid-margin-x'>
-            <div class='grid-x'>
-                <div class='small-3 large-3 cell'>
-                    <div class='export_button'>
-                        <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
-                    </div>
-                </div>
-                <div class='small-6 large-6 cell'>
-                    {% if is_paginated %}
-                        <div class='page_nav'>
-                            {% if page_obj.has_previous %}
-                                <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
-                            {% endif %}
-                            Page {{ page_obj.number }}
-                            {% if page_obj.has_next %}
-                                 | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
-                            {% endif %}
+    <div class='btm-bar-wrapper'>
+        <div class='expanded align-center nav btm-bar'>
+            <div class='grid-margin-x'>
+                <div class='grid-x'>
+                    <div class='small-3 large-3 cell'>
+                        <div class='export_button'>
+                            <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
                         </div>
-                    {% endif %}
-                </div>
-                <div class='small-3 large-3 cell'>
-                    <div class='paginate_by_sec'>
-                        <form id='paginate_form'>
-                            <span class='page_label'>Objects per Page</span>
-                            <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
-                            <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
-                        </form>
+                    </div>
+                    <div class='small-6 large-6 cell'>
+                        {% if is_paginated %}
+                            <div class='page_nav'>
+                                {% if page_obj.has_previous %}
+                                    <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
+                                {% endif %}
+                                Page {{ page_obj.number }}
+                                {% if page_obj.has_next %}
+                                     | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class='small-3 large-3 cell'>
+                        <div class='paginate_by_sec'>
+                            <form id='paginate_form'>
+                                <span class='page_label'>Objects per Page</span>
+                                <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
+                                <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
