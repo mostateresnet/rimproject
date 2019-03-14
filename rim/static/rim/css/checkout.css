@@ -6,11 +6,11 @@
     counter-reset: row_num;
 }
 
-.barcode .counter {
+.client .counter {
     counter-increment: row_num;
 }
 
-.barcode .counter:before {
+.client .counter:before {
     content: counter(row_num);
 }
 
