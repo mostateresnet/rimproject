@@ -30,16 +30,18 @@
                     <input id="client_paste" type="checkbox"><label for="client_paste">Paste</label>
                 </div>
             </div>
-            <div class="input_container">
-                <input type="text" placeholder="{% trans 'Name or M-Number' %}"/>
+            <div class="grid-x input_container">
+                <div class="small-1 cell counter">
+                </div>
+                <div class='small-11 cell'>
+                    <input type="text" placeholder="{% trans 'Name or M-Number' %}"/>
+                </div>
             </div>
         </div>
         <div class="large-3 cell copyable barcode">
             <h3>Barcodes</h3>
             <div class="grid-x align-middle input_container">
-                <div class="small-1 cell counter">
-                </div>
-                <div class="small-11 cell">
+                <div class="cell">
                     <input type="text" placeholder="{% trans 'Barcodes' %}"/>
                 </div>
             </div>
