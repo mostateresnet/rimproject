@@ -120,8 +120,7 @@ class ListClientView(PaginateMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ListClientView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('search', '')
-        context['searchterm'] = query
-        context['search_data'] = self.request.GET
+        context['search_data'] = query
         return context
 
 class AddEquipmentView(CreateView):
