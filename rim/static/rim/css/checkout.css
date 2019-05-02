@@ -2,6 +2,10 @@
     background-color: #e6e6e6;
 }
 
+[type='text']:focus {
+    border: 1px solid #9CEB31;
+}
+
 .barcode {
     counter-reset: row_num;
 }
@@ -20,4 +24,8 @@
 
 button[type=submit] {
     margin-top: 1rem;
+}
+
+.duplicate, .duplicate:focus {
+    background-color: #E7684D;
 }
