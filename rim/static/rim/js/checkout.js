@@ -28,9 +28,13 @@ function rms_location(){
     );
 }
 
+function hasWhiteSpace(s) {
+  return /\s/g.test(s);
+}
+
 $(document).ready(function() {
     function switch_forms(){
-        var client_names = $('.client input[type=text]');
+        var client_names = $('.client textarea[type=text]');
         client_names.keyup();
         if ($('input[name=checkform]:checked').prop('id') == 'checkin') {
             client_names.each(function() {
@@ -52,7 +56,7 @@ $(document).ready(function() {
         $('.copyable').each(function(){
             var last_element = $(this).find('.input_container').last();
             var clone = last_element.clone();
-            var input_element = clone.find('input[type=text]');
+            var input_element = clone.find('textarea[type=text]');
             if($(this).closest('.client').length == 0){
                 input_element.prop('disabled', false);
             }
@@ -61,14 +65,16 @@ $(document).ready(function() {
             }
             input_element.toggleClass('focused', false);
             input_element.toggleClass('duplicate', false);
-            last_element.after(clone);
+            last_element.after(clone); 
+
         })
     }
+   
 
-    $('.copyable').on('keyup', 'input[type=text]', function() {
+    $('.copyable').on('keyup', 'textarea[type=text]', function() {
         var values = {};
 
-        $(this).closest('.copyable').find('input[type=text]').each(function() {
+        $(this).closest('.copyable').find('textarea[type=text]').each(function() {
             var current_val = $(this).val().toLowerCase();
             if(current_val in values && current_val != "") {
                 values[current_val]++;
@@ -77,7 +83,7 @@ $(document).ready(function() {
             }
         })
 
-        $(this).closest('.copyable').find('input[type=text]').each(function() {
+        $(this).closest('.copyable').find('textarea[type=text]').each(function() {
             var current_val = $(this).val().toLowerCase();
             if(values[current_val] > 1) {
                 $(this).toggleClass("duplicate", true);
@@ -87,37 +93,46 @@ $(document).ready(function() {
         })
     })
 
-    $('.barcode, .client').on('keyup', 'input[type=text]', function() {
-        var last_barcode = $('.barcode input[type=text]').last();
-        var second_to_last_barcode = $('.barcode input[type=text]').eq(-2);
-        var last_client = $('.client input[type=text]').last();
-        var second_to_last_client = $('.client input[type=text]').eq(-2);
-        if (last_barcode.val() == "" && second_to_last_barcode.val() == "" && last_client.val() == "" && second_to_last_client.val() == "" ) {
+    $('.barcode, .client , .building, .room').on('keyup', 'textarea[type=text]', function() {
+        
+        var last_client = $('.client textarea[type=text]').last();
+        var last_barcode = $('.barcode textarea[type=text]').last();
+        var last_building = $('.building textarea[type=text]').last();
+        var last_room = $('.room textarea[type=text]').last();
+
+        var second_to_last_client = $('.client textarea[type=text]').eq(-2);
+        var second_to_last_barcode = $('.barcode textarea[type=text]').eq(-2);
+        var second_to_last_building = $('.building textarea[type=text]').eq(-2);
+        var second_to_last_room = $('.room textarea[type=text]').eq(-2);
+
+        if (last_barcode.val() == "" && second_to_last_barcode.val() == "" && last_client.val() == "" && second_to_last_client.val() == "" &&
+            last_building.val() == "" && second_to_last_building.val() == "" && last_room.val() == "" && second_to_last_room.val() == "") {
+
             var row_index = $(this).closest('.copyable').find('.delete').index(this);
             $('.copyable').each(function(){
                 $(this).find('.input_container').eq(row_index).remove();
             })
         }
-        if (last_barcode.val() != '') {
+        if (last_barcode.val() != '' || last_client.val() != "" || last_building.val() != "" || last_room.val() != "") {
             insert_row();
         }
     })
 
-    $('.copyable').on('focus', 'input[type=text]', function(){
-        var row_index = $(this).closest('.copyable').find('input[type=text]').index(this);
+    $('.copyable').on('focus', 'textarea[type=text]', function(){
+        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
         $('.copyable').each(function(){
-            $(this).find('input[type=text]').eq(row_index).toggleClass('focused', true);
+            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', true);
         })
     })
-    $('.copyable').on('blur', 'input[type=text]', function(){
-        var row_index = $(this).closest('.copyable').find('input[type=text]').index(this);
+    $('.copyable').on('blur', 'textarea[type=text]', function(){
+        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
         $('.copyable').each(function(){
-            $(this).find('input[type=text]').eq(row_index).toggleClass('focused', false);
+            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', false);
         })
     })
 
     var RMS_LOOKUP_TIMER;
-    $('.client').on('keyup', 'input[type=text]', function() {
+    $('.client').on('keyup', 'textarea[type=text]', function() {
         $(this).toggleClass('queried', false); // make sure this gets checked against RMS again
 
         // don't try to look anything up until 300ms after the user is done typing/pasting
@@ -126,43 +141,129 @@ $(document).ready(function() {
 
         var current_name = $(this).val();
         var regex = /^[mM8]\d{8}$/;
-        var row_index = $(this).closest('.copyable').find('input[type=text]').index(this);
-        var last_client = $('.client input[type=text]').last();
+        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
+        var last_client = $('.client textarea[type=text]').last();
         if(regex.test(current_name)){
             $('.location').each(function(){
-                $(this).find('input[type=text]').eq(row_index).prop('disabled', true);
+                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', true);
             })
         } else {
             $('.location').each(function(){
-                $(this).find('input[type=text]').eq(row_index).prop('disabled', false);
+                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', false);
             })
-        }
-
-        if(last_client.val() != ""){
-            if($('#client_paste').prop('checked')) {
-                input = $(this).val();
-                split_input = input.split(" ");
-                $(this).val('');
-                for(i = 0; i < split_input.length; i++) {
-                    $('.client input[type=text]').eq(-1).val(split_input[i]);
-                    $('.location').each(function() {
-                        $(this).find('input[type=text]').eq(-1).prop('disabled', true);
-                    })
-                    insert_row();
-                }
-            } else {
-                insert_row();
-            }
         }
     })
 
     $('.room').on('click', '.delete', function() {
         var row_index = $(this).closest('.copyable').find('.delete').index(this);
-        if ($('.barcode input[type=text]').length == 1){
+        if ($('.barcode textarea[type=text]').length == 1){
             insert_row();
         }
         $('.copyable').each(function(){
             $(this).find('.input_container').eq(row_index).remove();
         })
     })
+
+
+    // Function which detects when the tab button is clicked within a textarea, the tab will move horizontally to
+    // the next textarea.
+    $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
+       
+        var code = e.keyCode || e.which;
+        // var first
+        if (code == '9'){
+
+            // Prevent the default tabbing action.
+            e.preventDefault();
+
+            // Get the current class of the textarea
+            var current_class = $(this).closest('.copyable');
+            
+            // Determine row index of the current textarea
+            var row_index = $(this).closest('.copyable').find('.textarea').index(this);
+            var last_room = $('.room textarea[type=text]').last();
+            
+            // Find next textarea in the same row
+            var next_textarea = current_class.nextAll().find('.textarea')[row_index];
+
+           // If at last row and last textarea, tab will move to submit button.
+           if ($(this).is(last_room)){
+                $('#btn_submit').focus();
+             
+           }
+            // Else, Check if at last column / textarea to wrap around to next row
+           else{
+            if (current_class[0].classList[4] == 'room'){
+                
+                // Get the class of the textarea in next row
+                current_class = $(this).closest('.copyable').parent().children();
+                next_textarea = current_class.find('.textarea')[row_index + 1];
+            }
+                      
+            // Change focus to next textarea 
+            $(next_textarea).focus();
+
+           }
+
+        }    
+    })
+
+
+    // Function which separates pasted input into separate rows. 
+    $('.client , .barcode , .building , .room').on('input', 'textarea[type=text]', function(e) {
+         
+            setTimeout(function(){
+                // Get input from textarea
+                var input = $(e.target).val();
+
+                //Check if input has whitespace
+                var has_space = hasWhiteSpace(input);
+
+                if (has_space) {
+                    // Split the textarea string on newline / linebreak.
+                    var split_input = input.split(/\r\n|\n|\r/);
+                   
+                    // Determine row index of the current textarea
+                    var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+                    //var last_row_index = row_index + (split_input.length - 1);
+                      
+                    // For each value, which isn't an empty string.              
+                    for(i = 0; i < split_input.length; i++) {
+                        if (split_input[i] != ""){
+
+                                //  Find the following row below 
+                                var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];
+                                
+                                // If the row does not exist or is undefined, then insert a new row.
+                                if (typeof next_row === 'undefined'){
+                                    insert_row();
+                                }
+
+                                // Get the collection of class names of which column is being pasted into.
+                                var current_class = $(e.target).closest('.copyable');
+
+                                // Get the precise class name from array.
+                                var col_class = current_class[0].classList[3];
+
+                                // Create the selector for the appropriate class / column and row.  
+                                if (col_class == 'location'){
+                                    var selector = '.'+current_class[0].classList[4] + ' textarea[type=text]';
+                                }
+                                else {
+                                    var selector = '.'+current_class[0].classList[3] + ' textarea[type=text]';
+                                }
+                                
+                                // Set the value for that row
+                                $(selector).eq(row_index).val(split_input[i]);
+                                // Increment to the next row
+                                row_index+=1;
+                        }   
+                    }  
+                }
+           
+         }, 100);
+   
+    })
+
+
 });
