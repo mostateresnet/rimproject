@@ -6,7 +6,7 @@ from django.db.models import Count, Max, Q, F
 from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.utils.translation import ugettext_lazy as _
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, JsonResponse, QueryDict
 from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
@@ -14,7 +14,6 @@ from rim.forms import EquipmentForm
 
 class PaginateMixin(object):
     def get_paginate_by(self, queryset):
-        self.invalid_per_page = False
         obj_per_page = 15
         try:
             obj_per_page = int(self.request.COOKIES['paginate'])
@@ -27,6 +26,7 @@ class PaginateMixin(object):
         return obj_per_page
 
     def dispatch(self, *args, **kwargs):
+        self.invalid_per_page = False
         response = super().dispatch(*args, **kwargs)
         if self.invalid_per_page:
             response.delete_cookie('paginate')
@@ -120,8 +120,8 @@ class ListClientView(PaginateMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ListClientView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('search', '')
-        context['searchterm'] = query
-        context['search_data'] = self.request.GET
+        context['search_data'] = QueryDict(mutable=True)
+        context['search_data'].update({'search': query})
         return context
 
 class AddEquipmentView(CreateView):

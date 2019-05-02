@@ -8,84 +8,87 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'rim/includes/search.html' %}
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Serial No.' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='equipment_type__type_name' title='Equipment Type' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='manufacturer' title='Manufacturer' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='equipment_model' title='Model' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='latest_checkout__client__name' title='Client Name' %}
-                </th>
-                <th>
-                    {% include 'rim/includes/header_link.html' with ordering='latest_checkout__location' title='Location' %}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for e in equipment_list %}
+    <div class='equipment-table'>
+        {% include 'rim/includes/search.html' %}
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        {% if e.latest_checkout == None %}
-                            &nbsp;
-                        {% else %}
-                            {{ e.latest_checkout.timestamp }}
-                        {% endif %}
-                    </td>
-                    <td><a href="{% url 'edit' pk=e.pk %}">{{ e.serial_no }}</a></td>
-                    <td>{{ e.equipment_type.type_name }}</td>
-                    <td>{{ e.manufacturer }}</td>
-                    <td>{{ e.equipment_model }}</td>
-                    <td>{{ e.latest_checkout.client.name }}</td>
-                    <td>{{ e.latest_checkout.location }}</td>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Serial No.' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='equipment_type__type_name' title='Equipment Type' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='manufacturer' title='Manufacturer' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='equipment_model' title='Model' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='latest_checkout__client__name' title='Client Name' %}
+                    </th>
+                    <th>
+                        {% include 'rim/includes/header_link.html' with ordering='latest_checkout__location' title='Location' %}
+                    </th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class='grid-container'>
-        <div class='grid-margin-x'>
-            <div class='grid-x'>
-                <div class='small-3 large-3 cell'>
-                    <div class='export_button'>
-                        <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
-                    </div>
-                </div>
-                <div class='small-6 large-6 cell'>
-                    {% if is_paginated %}
-                        <div class='page_nav'>
-                            {% if page_obj.has_previous %}
-                                <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
+            </thead>
+            <tbody>
+                {% for e in equipment_list %}
+                    <tr>
+                        <td>
+                            {% if e.latest_checkout == None %}
+                                &nbsp;
+                            {% else %}
+                                {{ e.latest_checkout.timestamp }}
                             {% endif %}
-                            Page {{ page_obj.number }}
-                            {% if page_obj.has_next %}
-                                 | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
+                        </td>
+                        <td><a href="{% url 'edit' pk=e.pk %}">{{ e.serial_no }}</a></td>
+                        <td>{{ e.equipment_type.type_name }}</td>
+                        <td>{{ e.manufacturer }}</td>
+                        <td>{{ e.equipment_model }}</td>
+                        <td>{{ e.latest_checkout.client.name }}</td>
+                        <td>{{ e.latest_checkout.location }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+        <div class='btm-bar-wrapper'>
+            <div class='expanded align-center nav btm-bar'>
+                <div class='grid-margin-x'>
+                    <div class='grid-x'>
+                        <div class='small-3 large-3 cell'>
+                            <div class='export_button'>
+                                <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
+                            </div>
+                        </div>
+                        <div class='small-6 large-6 cell'>
+                            {% if is_paginated %}
+                                <div class='page_nav'>
+                                    {% if page_obj.has_previous %}
+                                        <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
+                                    {% endif %}
+                                    Page {{ page_obj.number }}
+                                    {% if page_obj.has_next %}
+                                         | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
-                    {% endif %}
-                </div>
-                <div class='small-3 large-3 cell'>
-                    <div class='paginate_by_sec'>
-                        <form id='paginate_form'>
-                            <span class='page_label'>Objects per Page</span>
-                            <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
-                            <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
-                        </form>
+                        <div class='small-3 large-3 cell'>
+                            <div class='paginate_by_sec'>
+                                <form id='paginate_form'>
+                                    <span class='page_label'>Objects per Page</span>
+                                    <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
+                                    <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
