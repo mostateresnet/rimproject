@@ -6,7 +6,7 @@
     border: 1px solid #9CEB31;
 }
 
-.barcode {
+.client {
     counter-reset: row_num;
 }
 
@@ -20,6 +20,12 @@
 
 .copyable input[type=text], .copyable .delete {
     margin: 0;
+}
+
+.textarea {
+    resize: none;
+    width: 98%;
+    overflow: hidden;
 }
 
 button[type=submit] {
