@@ -60,9 +60,32 @@ $(document).ready(function() {
                 input_element.val("");
             }
             input_element.toggleClass('focused', false);
+            input_element.toggleClass('duplicate', false);
             last_element.after(clone);
         })
     }
+
+    $('.copyable').on('keyup', 'input[type=text]', function() {
+        var values = {};
+
+        $(this).closest('.copyable').find('input[type=text]').each(function() {
+            var current_val = $(this).val().toLowerCase();
+            if(current_val in values && current_val != "") {
+                values[current_val]++;
+            } else {
+                values[current_val] = 1;
+            }
+        })
+
+        $(this).closest('.copyable').find('input[type=text]').each(function() {
+            var current_val = $(this).val().toLowerCase();
+            if(values[current_val] > 1) {
+                $(this).toggleClass("duplicate", true);
+            } else {
+                $(this).toggleClass("duplicate", false);
+            }
+        })
+    })
 
     $('.barcode, .client').on('keyup', 'input[type=text]', function() {
         var last_barcode = $('.barcode input[type=text]').last();
