@@ -167,7 +167,7 @@ $(document).ready(function() {
     })
 
 
-    // Function which detects when the [tab] or [tab+shift] button is clicked within a textarea.
+    // Function which detects when the [enter], [tab] or [tab+shift] button is clicked within a textarea.
     $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
 
         var code = e.keyCode || e.which;
@@ -250,7 +250,15 @@ $(document).ready(function() {
                 var last_room = $('.room textarea[type=text]').last();
                 
                 // Find next textarea in the same row
-                var next_textarea = current_class.nextAll().find('.textarea')[row_index];
+                var next_textarea = current_class.next().find('.textarea').eq(row_index);
+
+                var is_disabled = next_textarea.prop('disabled');
+
+                // If next textarea is disabled, skip   
+                if(is_disabled){
+                    next_textarea = $('.client textarea[type=text]')[row_index+1];
+
+                }
 
                // If at last row and last textarea, tab will move to submit button.
                if ($(this).is(last_room)){
@@ -270,14 +278,9 @@ $(document).ready(function() {
                 $(next_textarea).focus();
 
                }
-
             }
-
-
         }
-
         
-
     })
 
 
