@@ -26,8 +26,12 @@
     resize: none;
     width: 98%;
     overflow: hidden;
+<<<<<<< HEAD
     height: 2.475rem;
     min-height: 0px;
+=======
+    white-space: nowrap;
+>>>>>>> Added enter function to go to row below
 }
 
 button[type=submit] {
