@@ -26,6 +26,8 @@
     resize: none;
     width: 98%;
     overflow: hidden;
+    height: 2.475rem;
+    min-height: 0px;
 }
 
 button[type=submit] {
