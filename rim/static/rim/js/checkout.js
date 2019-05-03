@@ -167,105 +167,162 @@ $(document).ready(function() {
     })
 
 
-    // Function which detects when the tab button is clicked within a textarea, the tab will move horizontally to
-    // the next textarea.
+    // Function which detects when the [tab] or [tab+shift] button is clicked within a textarea.
     $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
 
         var code = e.keyCode || e.which;
-        // var first
-        if (code == '9'){
 
+        // If enter button is pressed.
+        if (code == 13 ){
+            e.preventDefault();
+
+            // Determine row index of the current textarea
+            var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+
+            //  Find the following row below 
+            var next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index+1)[0];
+    
+            
+            // If the row is empty, then go to submit button.
+            if (typeof next_row === 'undefined'){
+                $('#btn_submit').focus();
+            }
+
+            // Change focus to the last item
+            $(next_row).focus(); 
+             
+        }
+
+
+        // If [shift-tab] is pressed. 
+        if (e.shiftKey && code == 9) { 
             // Prevent the default tabbing action.
             e.preventDefault();
 
             // Get the current class of the textarea
             var current_class = $(this).closest('.copyable');
-
+          
             // Determine row index of the current textarea
             var row_index = $(this).closest('.copyable').find('.textarea').index(this);
-            var last_room = $('.room textarea[type=text]').last();
+  
+            // The first textarea on the current row.
+            var first_textarea = $('.client textarea[type=text]');
+            
+            // The first textarea on the first row & first column. 
+            var first_row_textarea = $('.client textarea[type=text]').first();
 
-            // Find next textarea in the same row
-            var next_textarea = current_class.nextAll().find('.textarea')[row_index];
-
-           // If at last row and last textarea, tab will move to submit button.
-           if ($(this).is(last_room)){
-                $('#btn_submit').focus();
-
-           }
-            // Else, Check if at last column / textarea to wrap around to next row
-           else {
-            if (current_class[0].classList[4] == 'room'){
-
-                // Get the class of the textarea in next row
-                current_class = $(this).closest('.copyable').parent().children();
-                next_textarea = current_class.find('.textarea')[row_index + 1];
+            // Find prev textarea in the same row
+            var prev_textarea = current_class.prev().find('.textarea').eq(row_index);
+       
+            //If at first row and first textarea, change to default tabbing.
+            if ($(this).is(first_row_textarea)){
+                return true;
+             
+            }
+            //Else, Check if at first column / first textarea to wrap around to prev row
+            else{
+                if ($(this).is(first_textarea)){
+                    var prev_textarea = $('.room textarea[type=text]')[row_index -1];
+                }
+                          
+                // Change focus to previous textarea 
+                $(prev_textarea).focus();
             }
 
-            // Change focus to next textarea
-            $(next_textarea).focus();
+        }
 
-           }
+        else{
+
+            // If [tab] is pressed.
+            if (code == '9'){
+
+                // Prevent the default tabbing action.
+                e.preventDefault();
+
+                // Get the current class of the textarea
+                var current_class = $(this).closest('.copyable');
+                
+                // Determine row index of the current textarea
+                var row_index = $(this).closest('.copyable').find('.textarea').index(this);
+                // The final textarea on the current row
+                var last_col = $('.room textarea[type=text]');
+                // The final textarea on the last row & last column. 
+                var last_room = $('.room textarea[type=text]').last();
+                
+                // Find next textarea in the same row
+                var next_textarea = current_class.nextAll().find('.textarea')[row_index];
+
+               // If at last row and last textarea, tab will move to submit button.
+               if ($(this).is(last_room)){
+                    $('#btn_submit').focus();
+                 
+               }
+                // Else, Check if at last column / textarea to wrap around to next row
+               else{
+                if ($(this).is(last_col)){
+                    
+                    // Get the class of the textarea in next row
+                    current_class = $(this).closest('.copyable').parent().children();
+                    next_textarea = current_class.find('.textarea')[row_index + 1];
+                }
+                          
+                // Change focus to next textarea 
+                $(next_textarea).focus();
+
+               }
+
+            }
+
 
         }
+
+        
+
     })
 
 
     // Function which separates pasted input into separate rows.
     $('.client , .barcode , .building , .room').on('input', 'textarea[type=text]', function(e) {
 
-            setTimeout(function(){
-                // Get input from textarea
-                var input = $(e.target).val();
 
-                //Check if input has whitespace
-                var has_space = hasWhiteSpace(input);
+        // Get input from textarea
+        var input = $(e.target).val();
 
-                if (has_space) {
-                    // Split the textarea string on newline / linebreak.
-                    var split_input = input.split(/\r\n|\n|\r/);
+        //Check if input has whitespace
+        var has_space = hasWhiteSpace(input);
 
-                    // Determine row index of the current textarea
-                    var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
-                    //var last_row_index = row_index + (split_input.length - 1);
+        if (has_space) {
+            // Split the textarea string on newline / linebreak.
+            var split_input = input.split(/\r\n|\n|\r/);
+           
+            // Determine row index of the current textarea
+            var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+            //var last_row_index = row_index + (split_input.length - 1);
+              
+            // For each value, which isn't an empty string.              
+            for(i = 0; i < split_input.length; i++) {
+                if (split_input[i] != ""){
 
-                    // For each value, which isn't an empty string.
-                    for(i = 0; i < split_input.length; i++) {
-                        if (split_input[i] != ""){
-
-                                //  Find the following row below
-                                var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];
-
-                                // If the row does not exist or is undefined, then insert a new row.
-                                if (typeof next_row === 'undefined'){
-                                    insert_row();
-                                }
-
-                                // Get the collection of class names of which column is being pasted into.
-                                var current_class = $(e.target).closest('.copyable');
-
-                                // Get the precise class name from array.
-                                var col_class = current_class[0].classList[3];
-
-                                // Create the selector for the appropriate class / column and row.
-                                if (col_class == 'location'){
-                                    var selector = '.'+current_class[0].classList[4] + ' textarea[type=text]';
-                                }
-                                else {
-                                    var selector = '.'+current_class[0].classList[3] + ' textarea[type=text]';
-                                }
-
-                                // Set the value for that row
-                                $(selector).eq(row_index).val(split_input[i]);
-                                // Increment to the next row
-                                row_index+=1;
+                        //  Find the following row below 
+                        var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];
+                        
+                        // If the row does not exist or is undefined, then insert a new row.
+                        if (typeof next_row === 'undefined'){
+                            insert_row();
                         }
-                    }
-                }
 
-         }, 100);
+                        // Paste input into the textareas of the column.
+                        $(e.target).closest('.copyable').find('textarea').eq(row_index).val(split_input[i]);
+                        // Change focus to the last item
+                        $(e.target).closest('.copyable').find('textarea').eq(row_index).focus();
+
+
+                        // Increment to the next row
+                        row_index+=1;
+                }   
+            }  
+        }
 
     })
-
 
 });
