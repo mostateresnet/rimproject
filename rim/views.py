@@ -36,7 +36,7 @@ class PaginateMixin(object):
 class HomeView(PaginateMixin, ListView):
     export_csv = False
     template_name = 'rim/home.html'
-    queryset = Equipment.objects.select_related('latest_checkout')
+    queryset = Equipment.objects.select_related('latest_checkout__client')
 
     valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
                     'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
@@ -111,7 +111,6 @@ class ListClientView(PaginateMixin, ListView):
     template_name = 'rim/client_list.html'
     model = Client
 
-
     def get_queryset(self):
         query = self.request.GET.get('search', '')
         queryset = Client.objects.filter(Q(name__icontains=query) | Q(bpn__iexact=query)).annotate(equipment_count=Count('checkout', filter=Q(checkout__equipment__latest_checkout__pk=F("checkout__pk"))))
@@ -138,10 +137,10 @@ class EditEquipmentView(UpdateView):
 
 class ClientView(DetailView):
     template_name = 'rim/client.html'
-    model = Client
+    model = Client 
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClientView, self).get_context_data(*args, **kwargs)
-        context['active'] = context['client'].checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
-        context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
+        context['active'] = context['client'].checkout_set.select_related('equipment', 'location').filter(equipment__latest_checkout__pk=F('pk'))
+        context['previous'] = context['client'].checkout_set.select_related('equipment', 'location').exclude(equipment__latest_checkout__pk=F('pk'))
         return context
