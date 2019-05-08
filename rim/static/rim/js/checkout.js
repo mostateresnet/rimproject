@@ -173,22 +173,32 @@ $(document).ready(function() {
 
         var code = e.keyCode || e.which;
 
-        // If enter button is pressed.
+        // If [enter] is pressed.
         if (code == 13 ){
             e.preventDefault();
 
             // Determine row index of the current textarea
             var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+            row_index +=1;
 
             //  Find the following row below 
-            var next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index+1)[0];
+            var next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
     
+            var is_disabled = next_row.prop('disabled');
+            while (is_disabled){
+                row_index +=1;
+                next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
+                is_disabled = next_row.prop('disabled');
+            }
+
+            // Change focus to next row.
+            $(next_row).focus();   
+            
             // If the row is empty, then go to submit button.
-            if (typeof next_row === 'undefined'){
+            if (next_row.length == 0){
                 $('#btn_submit').focus();
             }
-            // Change focus to the last item
-            $(next_row).focus();   
+
         }
 
 
