@@ -1,9 +1,9 @@
-.focused {
-    background-color: #e6e6e6;
-}
+/*.focused {
+    background-color: #BFCED6;
+}*/
 
 [type='text']:focus {
-    border: 1px solid #9CEB31;
+    border: 2px solid #A4D65E;
 }
 
 .client {
@@ -16,22 +16,24 @@
 
 .client .counter:before {
     content: counter(row_num);
+    padding-right: 1rem;
+    float: right;
 }
 
 .copyable input[type=text], .copyable .delete {
-    margin: 0;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .textarea {
     resize: none;
     width: 98%;
     overflow: hidden;
-<<<<<<< HEAD
+
     height: 2.475rem;
     min-height: 0px;
-=======
     white-space: nowrap;
->>>>>>> Added enter function to go to row below
+
 }
 
 button[type=submit] {
@@ -39,5 +41,15 @@ button[type=submit] {
 }
 
 .duplicate, .duplicate:focus {
-    background-color: #E7684D;
+    background-color: #EB002B;
+}
+.grid-x, .grid-padding-x {
+    padding-right: 1rem;
+}
+
+.large-3.cell.copyable.client{
+    padding-left: 2rem;
+}
+#client_col{
+    padding-left: 1rem;
 }
