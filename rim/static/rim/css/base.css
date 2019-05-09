@@ -1,6 +1,7 @@
 body {
-    background-color: gray;
+    background-color: #BFCED6;
     height: 100vh;
+    font-family: proxima-nova, Helvetica, Arial, sans-serif;
 }
 
 #wrapper {
@@ -15,12 +16,18 @@ body {
 }
 
 .nav {
-    background-color: #af2111;
+    background-color: #5E0009;
     color: white;
+    font-family: freight-text-pro, serif;
 }
 
 #title {
+    font-family: freight-text-pro, serif;
     font-size: 3em;
+    text-align: center;
+    background-image: url('../img/logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .menu a {
@@ -34,7 +41,7 @@ body {
 }
 
 .menu li:hover {
-    background-color: #8c0a01;
+    background-color: #425563;
     cursor: pointer;
 }
 
@@ -71,4 +78,25 @@ body {
 .btm-bar-wrapper {
     width: 100%;
     height: 70px;
+}
+
+.button {
+    background-color: #6BA4B8;
+}
+
+.button:hover, .button:focus {
+    background-color: #0093B2;
+}
+
+img {
+    width: 15%;
+    height: auto;
+}
+
+a {
+    color: #0093B2;
+}
+
+a:hover, a:focus {
+    color: #6BA4B8;
 }
