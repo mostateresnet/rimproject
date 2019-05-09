@@ -12,6 +12,7 @@ from django.utils.timezone import now, localtime
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
 from rim.forms import EquipmentForm
 
+
 class PaginateMixin(object):
     def get_paginate_by(self, queryset):
         obj_per_page = 15
@@ -40,7 +41,6 @@ class HomeView(PaginateMixin, ListView):
 
     valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
                     'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
-
 
     def get_ordering(self):
         self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
@@ -107,6 +107,7 @@ class HomeView(PaginateMixin, ListView):
         qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
+
 class ListClientView(PaginateMixin, ListView):
     template_name = 'rim/client_list.html'
     model = Client
@@ -123,11 +124,13 @@ class ListClientView(PaginateMixin, ListView):
         context['search_data'].update({'search': query})
         return context
 
+
 class AddEquipmentView(CreateView):
     template_name = 'rim/edit.html'
     model = Equipment
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
+
 
 class EditEquipmentView(UpdateView):
     template_name = 'rim/edit.html'
@@ -135,12 +138,14 @@ class EditEquipmentView(UpdateView):
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
+
 class ClientView(DetailView):
     template_name = 'rim/client.html'
-    model = Client 
+    model = Client
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClientView, self).get_context_data(*args, **kwargs)
-        context['active'] = context['client'].checkout_set.select_related('equipment', 'location').filter(equipment__latest_checkout__pk=F('pk'))
-        context['previous'] = context['client'].checkout_set.select_related('equipment', 'location').exclude(equipment__latest_checkout__pk=F('pk'))
+        checkouts = context['client'].checkout_set.select_related('equipment', 'location')
+        context['active'] = checkouts.filter(equipment__latest_checkout__pk=F('pk'))
+        context['previous'] = checkouts.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
