@@ -168,152 +168,25 @@ $(document).ready(function() {
     })
 
 
-    // Function which detects when the [enter], [tab] or [tab+shift] button is clicked within a textarea.
+   // Function which detects when the [enter], [tab] or [tab+shift] button is clicked within a textarea.
     $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
 
         var code = e.keyCode || e.which;
 
         // If [enter] is pressed.
         if (code == 13 ){
-            e.preventDefault();
-
-            // Determine row index of the current textarea
-            var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
-            row_index +=1;
-
-            //  Find the following row below 
-            var next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
-    
-            var is_disabled = next_row.prop('disabled');
-            while (is_disabled){
-                row_index +=1;
-                next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
-                is_disabled = next_row.prop('disabled');
-            }
-
-            // Change focus to next row.
-            $(next_row).focus();   
-            
-            // If the row is empty, then go to submit button.
-            if (next_row.length == 0){
-                $('#btn_submit').focus();
-            }
-
+            enterAction(e);
         }
-
 
         // If [shift-tab] is pressed. 
         if (e.shiftKey && code == 9) { 
-            // Prevent the default tabbing action.
-            e.preventDefault();
-            // Get the current class of the textarea
-            var current_class = $(this).closest('.copyable');
-            // Determine row index of the current textarea
-            var row_index = $(this).closest('.copyable').find('.textarea').index(this);
-            // The first textarea on the current row.
-            var first_textarea = $('.client textarea[type=text]');
-
-            // The first textarea on the first row & first column. 
-            var first_row_textarea = $('.client textarea[type=text]').first();
-            // Find prev textarea in the same row
-            var prev_textarea = current_class.prev().find('.textarea').eq(row_index);  
-            var is_disabled = prev_textarea.prop('disabled');
-          
-            //If at first row and first textarea, change to default tabbing.
-            if ($(this).is(first_row_textarea)){
-                return true;   
-            }
-            //Else, Check if at first column / first textarea to wrap around to prev row
-            else{     
-                
-                if ($(this).is(first_textarea)){
-                    row_index = row_index -1;
-                    prev_textarea = $('.room textarea[type=text]').eq(row_index);
-                    is_disabled = prev_textarea.prop('disabled');        
-                }
-            }
-
-            // Check if prev textarea is disabled.
-            while (is_disabled){
-                // Check if prev textarea is the first element in the row & is disabled.
-                // If first element, move to previous row.
-                if ($(prev_textarea).is(first_textarea) && (prev_textarea.prop('disabled'))){
-
-                    current_class = $(this).closest('.copyable').parent().children();
-                    row_index = row_index -1;
-                    prev_textarea = $('.room textarea[type=text]').eq(row_index);
-                }
-                else{
-                    // Get the class of the prev textarea
-                    current_class = $(prev_textarea).closest('.copyable');  
-                    // Find prev textarea element.
-                    prev_textarea = current_class.prev().find('.textarea').eq(row_index);   
-                }
-     
-                //Check if prev element is disabled
-                is_disabled = prev_textarea.prop('disabled');                 
-            }
-            // Change focus to previous textarea 
-            $(prev_textarea).focus();
+            shiftTabAction(e);
         }
 
         else{
-
             // If [tab] is pressed.
             if (code == '9'){
-                // Prevent the default tabbing action.
-                e.preventDefault();
-                // Get the current class of the textarea
-                var current_class = $(this).closest('.copyable');  
-                // Determine row index of the current textarea
-                var row_index = $(this).closest('.copyable').find('.textarea').index(this);
-                // The final textarea on the current row
-                var last_col = $('.room textarea[type=text]');
-                // The final textarea on the last row & last column. 
-                var last_room = $('.room textarea[type=text]').last(); 
-                // Find next textarea in the same row
-                var next_textarea = current_class.next().find('.textarea').eq(row_index);
-                // Check if next textarea is disabled.
-                var is_disabled = next_textarea.prop('disabled');
-
-                // If textarea element is the last on the row.
-                if ($(this).is(last_col)){ 
-                        // Get the class of the textarea in next row
-                        current_class = $(this).closest('.copyable').parent().children();
-                        row_index = row_index +1;
-                        next_textarea = current_class.find('.textarea').eq(row_index);
-                        is_disabled = next_textarea.prop('disabled');
-                }
-
-                // If textarea disabled, 
-                while (is_disabled){
-                    // Check if next textarea is the last element in the row & is disabled.
-                    // If last element, move to next row.
-                    if ($(next_textarea).is(last_col) && (next_textarea.prop('disabled'))){
-
-                        current_class = $(this).closest('.copyable').parent().children();
-                        row_index = row_index +1;
-                        next_textarea = current_class.find('.textarea:not([disabled])').eq(row_index);
-                    }
-                    else{
-                        // Get the class of the next textarea
-                        current_class = $(next_textarea).closest('.copyable').next();
-                        // Find next textarea element.
-                        next_textarea = current_class.find('.textarea').eq(row_index);
-                    }
-         
-                    // Check if next element is disabled
-                    is_disabled = next_textarea.prop('disabled');                 
-                }
-  
-                // Switch to next available element.
-                $(next_textarea).focus();
-
-               // If at last row and last textarea, tab will move to submit button.
-               if ($(this).is(last_room)){
-                    $('#btn_submit').focus();
-                 
-               }
+                tabAction(e);
             }
         }
     })
@@ -321,42 +194,193 @@ $(document).ready(function() {
 
     // Function which separates pasted input into separate rows.
     $('.client , .barcode , .building , .room').on('input', 'textarea[type=text]', function(e) {
+        pasteInput(e);
+    })
 
-        // Get input from textarea
-        var input = $(e.target).val();
 
-        //Check if input has whitespace
-        var has_space = hasWhiteSpace(input);
 
-        if (has_space) {
-            // Split the textarea string on newline / linebreak.
-            var split_input = input.split(/\r\n|\n|\r/);
-           
-            // Determine row index of the current textarea
-            var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
-              
-            // For each value, which isn't an empty string.              
-            for(i = 0; i < split_input.length; i++) {
-                if (split_input[i] != ""){
 
-                        //  Find the following row below 
-                        var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];
-                        
-                        // If the row does not exist or is undefined, then insert a new row.
-                        if (typeof next_row === 'undefined'){
-                            insert_row();
-                        }
-                        // Paste input into the textareas of the column.
-                        $(e.target).closest('.copyable').find('textarea').eq(row_index).val(split_input[i]);
-                        // Change focus to the last item
-                        $(e.target).closest('.copyable').find('textarea').eq(row_index).focus();
+    function pasteInput(e){
 
-                        // Increment to the next row
-                        row_index+=1;
-                }   
-            }  
+            // Get input from textarea
+            var input = $(e.target).val();
+
+            //Check if input has whitespace
+            var has_space = hasWhiteSpace(input);
+
+            if (has_space) {
+                // Split the textarea string on newline / linebreak.
+                var split_input = input.split(/\r\n|\n|\r/);
+               
+                // Determine row index of the current textarea
+                var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+                  
+                // For each value, which isn't an empty string.              
+                for(i = 0; i < split_input.length; i++) {
+                    if (split_input[i] != ""){
+                            //  Find the following row below 
+                            var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];
+                            
+                            // If the row does not exist or is undefined, then insert a new row.
+                            if (typeof next_row === 'undefined'){
+                                insert_row();
+                            }
+                            // Paste input into the textareas of the column.
+                            $(e.target).closest('.copyable').find('textarea').eq(row_index).val(split_input[i]);
+
+                            // Change focus to the last item
+                            $(e.target).closest('.copyable').find('textarea').eq(row_index).focus();
+
+                            // Increment to the next row
+                            row_index+=1;
+                    }   
+                }  
+            }
+
         }
 
-    })
+
+    // Function for moving to the textarea below once enter is clicked. 
+    function enterAction(e){
+        e.preventDefault();
+
+        // Determine row index of the current textarea
+        var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+        row_index +=1;
+
+        //  Find the following row below 
+        var next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
+
+        var is_disabled = next_row.prop('disabled');
+        while (is_disabled){
+            row_index +=1;
+            next_row = $(e.target).closest('.copyable').find('textarea[type=text]').eq(row_index);
+            is_disabled = next_row.prop('disabled');
+        }
+
+        // Change focus to next row.
+        $(next_row).focus();   
+        
+        // If the row is empty, then go to submit button.
+        if (next_row.length == 0){
+            $('#btn_submit').focus();
+        }
+    }
+
+    // Function for shift tabbing to previous textareas.
+    function shiftTabAction(e){
+        // Prevent the default tabbing action.
+        e.preventDefault();
+        
+        // Get the current class of the textarea
+        var current_class = $(e.target).closest('.copyable');
+        // Determine row index of the current textarea
+        var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+        // The first textarea on the current row.
+        var first_textarea = $('.client textarea[type=text]');
+
+        // The first textarea on the first row & first column. 
+        var first_row_textarea = $('.client textarea[type=text]').first();
+        // Find prev textarea in the same row
+        var prev_textarea = current_class.prev().find('.textarea').eq(row_index);  
+        var is_disabled = prev_textarea.prop('disabled');
+      
+        //If at first row and first textarea, change to default tabbing.
+        if ($(e.target).is(first_row_textarea)){
+            return true;   
+        }
+        //Else, Check if at first column / first textarea to wrap around to prev row
+        else{     
+            
+            if ($(e.target).is(first_textarea)){
+                row_index = row_index -1;
+                prev_textarea = $('.room textarea[type=text]').eq(row_index);
+                is_disabled = prev_textarea.prop('disabled');        
+            }
+        }
+
+        // Check if prev textarea is disabled.
+        while (is_disabled){
+            // Check if prev textarea is the first element in the row & is disabled.
+            // If first element, move to previous row.
+            if ($(prev_textarea).is(first_textarea) && (prev_textarea.prop('disabled'))){
+
+                current_class = $(e.target).closest('.copyable').parent().children();
+                row_index = row_index -1;
+                prev_textarea = $('.room textarea[type=text]').eq(row_index);
+            }
+            else{
+                // Get the class of the prev textarea
+                current_class = $(prev_textarea).closest('.copyable');  
+                // Find prev textarea element.
+                prev_textarea = current_class.prev().find('.textarea').eq(row_index);   
+            }
+
+            //Check if prev element is disabled
+            is_disabled = prev_textarea.prop('disabled');                 
+        }
+        // Change focus to previous textarea 
+        $(prev_textarea).focus();
+    }
+
+
+    // Function for horizontal tabbing. 
+        function tabAction(e){
+
+            // Prevent the default tabbing action.
+            e.preventDefault();
+           
+            // Get the current class of the textarea
+            var current_class = $(e.target).closest('.copyable');  
+            // Determine row index of the current textarea
+            var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
+            // The final textarea on the current row
+            var last_col = $('.room textarea[type=text]');
+            // The final textarea on the last row & last column. 
+            var last_room = $('.room textarea[type=text]').last(); 
+            // Find next textarea in the same row
+            var next_textarea = current_class.next().find('.textarea').eq(row_index);
+            // Check if next textarea is disabled.
+            var is_disabled = next_textarea.prop('disabled');
+
+            // If textarea element is the last on the row.
+            if ($(e.target).is(last_col)){ 
+                    // Get the class of the textarea in next row
+                    current_class = $(e.target).closest('.copyable').parent().children();
+                    row_index = row_index +1;
+                    next_textarea = current_class.find('.textarea').eq(row_index);
+                    is_disabled = next_textarea.prop('disabled');
+            }
+
+            // If textarea disabled. 
+            while (is_disabled){
+                // Check if next textarea is the last element in the row & is disabled.
+                // If last element, move to next row.
+                if ($(next_textarea).is(last_col) && (next_textarea.prop('disabled'))){
+
+                    current_class = $(e.target).closest('.copyable').parent().children();
+                    row_index = row_index +1;
+                    next_textarea = current_class.find('.textarea:not([disabled])').eq(row_index);
+                }
+                else{
+                    // Get the class of the next textarea
+                    current_class = $(next_textarea).closest('.copyable').next();
+                    // Find next textarea element.
+                    next_textarea = current_class.find('.textarea').eq(row_index);
+                }
+     
+                // Check if next element is disabled
+                is_disabled = next_textarea.prop('disabled');                 
+            }
+
+            // Switch to next available element.
+            $(next_textarea).focus();
+
+           // If at last row and last textarea, tab will move to submit button.
+           if ($(e.target).is(last_room)){
+                $('#btn_submit').focus();
+             
+           }
+        }
 
 });
