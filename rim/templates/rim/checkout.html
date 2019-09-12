@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="grid-x grid-padding-x">
-        <div class="large-3 cell copyable client">
+        <div class="large-3 cell copyable client" id = "client">
             <div class="grid-x grid-padding-x align-middle">
                 <div class="shrink cell">
                     <h3>Client</h3>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-3 cell copyable barcode">
+        <div class="large-3 cell copyable barcode" id = "barcode">
             <h3>Barcodes</h3>
             <div class="grid-x align-middle input_container">
                 <div class="cell">
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-3 cell copyable location building">
+        <div class="large-3 cell copyable location building" id = "building">
             <div class="grid-x grid-padding-x align-middle">
                 <div class="shrink cell">
                     <h3>Building</h3>
@@ -59,7 +59,7 @@
                 <textarea class = 'textarea' type="text" placeholder="{% trans 'Building' %}"></textarea>
             </div>
         </div>
-        <div class="large-3 cell copyable location room">
+        <div class="large-3 cell copyable location room" id = "room">
             <div class="grid-x grid-padding-x align-middle">
                 <div class="shrink cell">
                     <h3>Room</h3>
@@ -81,6 +81,9 @@
     <div class="grid-x align-center">
         <div class="large-2 cell">
             <button type='submit' id = "btn_submit" class='button expanded'>{% trans 'Submit' %}</button>
+        </div>
+         <div class="large-2 cell">
+            <button type='reset' id = "btn_reset" class='button expanded'>{% trans 'Reset' %}</button>
         </div>
     </div>
 
