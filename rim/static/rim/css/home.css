@@ -6,7 +6,12 @@
     content: " \02193";
 }
 
+.equipment_table {
+    height: 80%;
+    overflow-y: scroll;
+}
+
 .export_button {
     padding-left: 30%;
-    padding-top: 1.7em;
+    padding-top: .5em;
 }
