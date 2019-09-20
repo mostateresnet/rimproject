@@ -35,20 +35,9 @@ function hasWhiteSpace(s) {
 $(document).ready(function() {
     var localStorage = window.localStorage;
 
-
-//check for Navigation Timing API support
-    if (window.performance) {
-      console.info("window.performance works fine on this browser");
-    }
       if (performance.navigation.type == 1) {
-        console.info( "This page is reloaded" );
         restoreData();
-
-      } else {
-        console.info( "This page is not reloaded");
-      }
-
-
+      } 
 
     function switch_forms(){
         var client_names = $('.client textarea[type=text]');
@@ -219,8 +208,6 @@ $(document).ready(function() {
         pasteInput(e);
     })
 
-    // var localStorage = window.localStorage;
-
     // Autosave data into local storage.
     $('.copyable').on('blur', 'textarea[type=text]', function(){
         updateStorage();
@@ -272,46 +259,6 @@ $(document).ready(function() {
             })
         }) 
     }
-
-
-    // Process data and clear local storage when [Submit] button clicked.
-    $('#btn_submit').on('click', function (){
-
-            for (var row_index = 0; row_index < 10; row_index+=1){
-                var id1 = 'checkout_'+ 'client'+ '_'+row_index;
-                var id2 = 'checkout_'+ 'barcode'+ '_'+row_index;
-                var id3 = 'checkout_'+ 'building'+ '_'+row_index;
-                var id4 = 'checkout_'+ 'room'+ '_'+row_index;
-
-                var text1 = localStorage.getItem(id1);
-                var text2 = localStorage.getItem(id2);
-                var text3 = localStorage.getItem(id3);
-                var text4 = localStorage.getItem(id4);
-                console.log(row_index,  text1,  text2,  text3, text4);
-        }
-  
-        // localStorage.clear();
-
-    })
-
-    function printLData (){
-            for (var row_index = 0; row_index < 10; row_index+=1){
-                var id1 = 'checkout_'+ 'client'+ '_'+row_index;
-                var id2 = 'checkout_'+ 'barcode'+ '_'+row_index;
-                var id3 = 'checkout_'+ 'building'+ '_'+row_index;
-                var id4 = 'checkout_'+ 'room'+ '_'+row_index;
-
-                var text1 = localStorage.getItem(id1);
-                var text2 = localStorage.getItem(id2);
-                var text3 = localStorage.getItem(id3);
-                var text4 = localStorage.getItem(id4);
-                console.log(row_index,  text1,  text2,  text3, text4);
-        }
-  
-        // localStorage.clear();
-
-    }
-
 
 
     // Function which updates the local storage for all textareas.
@@ -394,8 +341,8 @@ $(document).ready(function() {
                 for(i = 0; i < split_input.length; i++) {                                           // For each value, which isn't an empty string.  
                     if (split_input[i] != ""){
                             
-                            var next_row = $('.client textarea[type=text]').eq(row_index+1)[0];     // Find the following row below 
-                            
+                            var next_row = $('.copyable').first().find('.textarea').eq(row_index+1)[0]; 
+                  
                             if (typeof next_row === 'undefined'){               // If the row does not exist or is undefined, then insert a new row.
                                 insert_row();
                             }
@@ -489,8 +436,10 @@ $(document).ready(function() {
             e.preventDefault();                                                 // Prevent the default tabbing action.
             var current_class = $(e.target).closest('.copyable');               // Get the current class of the textarea
             var row_index = $(e.target).closest('.copyable').find('.textarea').index(e.target);
-            var last_col = $('.room textarea[type=text]');                          // The final textarea on the current row
-            var last_room = $('.room textarea[type=text]').last();                  // The final textarea on the last row & last column. 
+
+            var last_col = $('.copyable').last().find('.textarea');                     // The last textarea on the current row
+            var last_room = $(last_col).last();                                         // The final textarea on the last row & last column.
+    
             var next_textarea = current_class.next().find('.textarea').eq(row_index); // Find next textarea in the same row
             var is_disabled = next_textarea.prop('disabled');                       // Check if next textarea is disabled.
 
