@@ -34,11 +34,8 @@ function hasWhiteSpace(s) {
 
 $(document).ready(function() {
     var localStorage = window.localStorage;
-
-      if (performance.navigation.type == 1) {
-        restoreData();
-      } 
-
+    restoreData();
+      
     function switch_forms(){
         var client_names = $('.client textarea[type=text]');
         if ($('input[name=checkform]:checked').prop('id') == 'checkin') {
@@ -81,26 +78,10 @@ $(document).ready(function() {
         })
     }
 
-    $('.copyable').on('keyup', 'textarea[type=text]', function() {
-        var values = {};
 
-        $(this).closest('.copyable').find('textarea[type=text]').each(function() {
-            var current_val = $(this).val().toLowerCase();
-            if(current_val in values && current_val != "") {
-                values[current_val]++;
-            } else {
-                values[current_val] = 1;
-            }
-        })
+    $('.copyable').on('keyup', 'textarea[type=text]', function(e) {  
+        findDuplicates(e);
 
-        $(this).closest('.copyable').find('textarea[type=text]').each(function() {
-            var current_val = $(this).val().toLowerCase();
-            if(values[current_val] > 1) {
-                $(this).toggleClass("duplicate", true);
-            } else {
-                $(this).toggleClass("duplicate", false);
-            }
-        })
     })
 
     $('.copyable').on('keyup', 'textarea[type=text]', function() {
@@ -125,6 +106,8 @@ $(document).ready(function() {
             })
         }
     })
+
+
 
     $('.copyable').on('focus', 'textarea[type=text]', function(){
         var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
@@ -213,7 +196,6 @@ $(document).ready(function() {
         updateStorage();
     })
 
-
     // Function to reset the checkout form.
     $('#btn_reset').on('click', function(){
         // Reset each textarea.
@@ -225,11 +207,31 @@ $(document).ready(function() {
     })
 
 
+    function findDuplicates(e){
+        var values = {};
+
+        $(e.target).closest('.copyable').find('textarea[type=text]').each(function() {
+            var current_val = $(this).val().toLowerCase();
+            if(current_val in values && current_val != "") {
+                values[current_val]++;
+            } else {
+                values[current_val] = 1;
+            }
+        })
+
+        $(e.target).closest('.copyable').find('textarea[type=text]').each(function() {
+            var current_val = $(this).val().toLowerCase();
+            if(values[current_val] > 1) {
+                $(this).toggleClass("duplicate", true);
+            } else {
+                $(this).toggleClass("duplicate", false);
+            }
+        })
+    }
 
     function restoreData(){
-        var row_index = 0;
+        
         var row_count = 0;
-
         // Determine how many rows are needed.
         do{
             var id = 'checkout_'+ $('#client').attr('id') + '_'+row_count;
@@ -246,6 +248,7 @@ $(document).ready(function() {
 
         // Fill the rows with data from localStorage. 
         $('.copyable').each(function(){
+            row_index = 0;
 
             var text_area = $(this).find('textarea[type=text]').eq(row_index);
             var text_area_all = $(this).find('textarea[type=text]');
@@ -256,10 +259,15 @@ $(document).ready(function() {
                 var id = 'checkout_'+ current_class+ '_'+row_index;
                 var text = localStorage.getItem(id);
                 $(this).val(text);
-            })
-        }) 
-    }
 
+            })
+
+            // Detect duplicates in restored data
+            var col_textarea = {target:text_area};
+            findDuplicates(col_textarea);
+
+        })     
+    }
 
     // Function which updates the local storage for all textareas.
     function updateStorage(){
