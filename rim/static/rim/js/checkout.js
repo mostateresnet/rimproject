@@ -36,6 +36,97 @@ $(document).ready(function() {
     var localStorage = window.localStorage;
     restoreData();
       
+    $('input[name=checkform]').on('click change', switch_forms);
+
+
+    $('.copyable').on('keyup', 'textarea[type=text]', function(e) {  
+        findDuplicates(e);
+        lastEmptyRow(e);
+
+    })
+
+    var RMS_LOOKUP_TIMER;
+
+    $('.client').on('keyup', 'textarea[type=text]', function(e) {
+        verifyMnumber(e);
+    })
+
+
+    $('.copyable').on('focus', 'textarea[type=text]', function(){
+        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
+        $('.copyable').each(function(){
+            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', true);
+        })
+    })
+
+    $('.copyable').on('blur', 'textarea[type=text]', function(){
+        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
+        $('.copyable').each(function(){
+            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', false);
+        })
+        // Autosave data into local storage.
+        updateStorage();
+    })
+
+
+    $('.room').on('click', '.delete', function() {
+        var row_index = $(this).closest('.copyable').find('.delete').index(this);
+
+        if ($('.barcode textarea[type=text]').length == 1){
+            insert_row();
+        }
+        $('.copyable').each(function(){
+
+            $(this).find('.input_container').eq(row_index).remove();
+            id = 'checkout_'+ $(this).closest('.copyable').attr('id') + '_'+row_index;
+            localStorage.removeItem(id);
+
+            // Check for duplicated values in each column
+            var text_area = $(this).find('textarea[type=text]').first();
+            var textarea_object = {target: text_area}
+            findDuplicates(textarea_object);
+            
+        })
+        updateStorage();
+    })
+
+
+   // Function which detects when the [enter], [tab] or [tab+shift] button is clicked within a textarea.
+    $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
+
+        var code = e.keyCode || e.which;
+        // If [enter] is pressed.
+        if (code == 13 ){
+            enterAction(e);
+        }
+        // If [shift-tab] is pressed. 
+        if (e.shiftKey && code == 9) { 
+            shiftTabAction(e);
+        }
+        else{
+            // If [tab] is pressed.
+            if (code == '9'){
+                tabAction(e);
+            }
+        }
+    })
+
+    // Function which separates pasted input into separate rows.
+    $('.client , .barcode , .building , .room').on('input paste', 'textarea[type=text]', function(e) {
+        pasteInput(e);
+        findDuplicates(e);
+    })
+
+    // Function to reset the checkout form.
+    $('#btn_reset').on('click', function(){
+        // Reset each textarea.
+        $('.copyable').find('.textarea').each(function(){
+            $(this).val('');
+        })
+        localStorage.clear();
+        location.reload();
+    })
+
     function switch_forms(){
         var client_names = $('.client textarea[type=text]');
         if ($('input[name=checkform]:checked').prop('id') == 'checkin') {
@@ -58,8 +149,7 @@ $(document).ready(function() {
             }
         }
     }
-
-    $('input[name=checkform]').on('click change', switch_forms);
+    
     //Take all of the copyable columns (Client, Building, Room) and find
     function insert_row() {
         $('.copyable').each(function(){
@@ -78,13 +168,31 @@ $(document).ready(function() {
         })
     }
 
+    function verifyMnumber(e){
+        $(e.target).toggleClass('queried', false); // make sure this gets checked against RMS again
 
-    $('.copyable').on('keyup', 'textarea[type=text]', function(e) {  
-        findDuplicates(e);
+        // don't try to look anything up until 300ms after the user is done typing/pasting
+        clearTimeout(RMS_LOOKUP_TIMER);
+        RMS_LOOKUP_TIMER = setTimeout(rms_location, 300);
 
-    })
+        var current_name = $(e.target).val();
+        var regex = /^[mM8]\d{8}$/;
+        var row_index = $(e.target).closest('.copyable').find('textarea[type=text]').index(e.target);
+        var last_client = $('.client textarea[type=text]').last();
+        if(regex.test(current_name)){
+            $('.location').each(function(){
+                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', true);
+            })
+           
+        } else {
+            $('.location').each(function(){
+                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', false);
+            })
+        }
+    }
+ 
+    function lastEmptyRow(e){
 
-    $('.copyable').on('keyup', 'textarea[type=text]', function() {
         var add_row = false;
         var remove_row = true;
         $('.copyable').each(function() {
@@ -105,107 +213,7 @@ $(document).ready(function() {
                 $(this).find('.input_container').eq(row_index).remove();
             })
         }
-    })
-
-
-
-    $('.copyable').on('focus', 'textarea[type=text]', function(){
-        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
-        $('.copyable').each(function(){
-            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', true);
-        })
-    })
-    $('.copyable').on('blur', 'textarea[type=text]', function(){
-        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
-        $('.copyable').each(function(){
-            $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', false);
-        })
-    })
-
-    var RMS_LOOKUP_TIMER;
-    $('.client').on('keyup', 'textarea[type=text]', function() {
-        $(this).toggleClass('queried', false); // make sure this gets checked against RMS again
-
-        // don't try to look anything up until 300ms after the user is done typing/pasting
-        clearTimeout(RMS_LOOKUP_TIMER);
-        RMS_LOOKUP_TIMER = setTimeout(rms_location, 300);
-
-        var current_name = $(this).val();
-        var regex = /^[mM8]\d{8}$/;
-        var row_index = $(this).closest('.copyable').find('textarea[type=text]').index(this);
-        var last_client = $('.client textarea[type=text]').last();
-        if(regex.test(current_name)){
-            $('.location').each(function(){
-                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', true);
-            })
-           
-        } else {
-            $('.location').each(function(){
-                $(this).find('textarea[type=text]').eq(row_index).prop('disabled', false);
-            })
-        }
-    })
-
-    $('.room').on('click', '.delete', function() {
-        var row_index = $(this).closest('.copyable').find('.delete').index(this);
-        if ($('.barcode textarea[type=text]').length == 1){
-            insert_row();
-        }
-        $('.copyable').each(function(){
-            $(this).find('.input_container').eq(row_index).remove();
-            id = 'checkout_'+ $(this).closest('.copyable').attr('id') + '_'+row_index;
-            localStorage.removeItem(id);
-            
-        })
-        updateStorage();
- 
-    })
-
-
-   // Function which detects when the [enter], [tab] or [tab+shift] button is clicked within a textarea.
-    $('.client , .barcode , .building , .room').on('keydown', 'textarea[type=text]', function(e) {
-
-        var code = e.keyCode || e.which;
-
-        // If [enter] is pressed.
-        if (code == 13 ){
-            enterAction(e);
-        }
-
-        // If [shift-tab] is pressed. 
-        if (e.shiftKey && code == 9) { 
-            shiftTabAction(e);
-        }
-
-        else{
-            // If [tab] is pressed.
-            if (code == '9'){
-                tabAction(e);
-            }
-        }
-    })
-
-
-    // Function which separates pasted input into separate rows.
-    $('.client , .barcode , .building , .room').on('input', 'textarea[type=text]', function(e) {
-        pasteInput(e);
-    })
-
-    // Autosave data into local storage.
-    $('.copyable').on('blur', 'textarea[type=text]', function(){
-        updateStorage();
-    })
-
-    // Function to reset the checkout form.
-    $('#btn_reset').on('click', function(){
-        // Reset each textarea.
-        $('.copyable').find('.textarea').each(function(){
-            $(this).val('');
-        })
-        localStorage.clear();
-        location.reload();
-    })
-
+    }
 
     function findDuplicates(e){
         var values = {};
@@ -260,6 +268,11 @@ $(document).ready(function() {
                 var text = localStorage.getItem(id);
                 $(this).val(text);
 
+                // If data is in the client column, verify the M number.
+                if (current_class == "client"){
+                    var client_textarea = {target:this};
+                    verifyMnumber(client_textarea);
+                }
             })
 
             // Detect duplicates in restored data
@@ -274,8 +287,6 @@ $(document).ready(function() {
 
         // Clear the old values for new values
         localStorage.clear();
-
-        // var last_element = $('.room textarea[type=text]').last();
         var last_element = $('.copyable textarea[type=text]').last();
         var last_element_index = $(last_element).closest('.copyable').find('textarea[type=text]').index(last_element);
         var row_index = 0;
@@ -327,7 +338,6 @@ $(document).ready(function() {
                             save_index++;
                         }
                     }
-                
                     // Else, still current row, do not increment counter. 
                     else{
                         localStorage.setItem(id, text);
@@ -355,7 +365,17 @@ $(document).ready(function() {
                                 insert_row();
                             }
                             // Paste input into the textareas of the column.
-                            $(e.target).closest('.copyable').find('textarea').eq(row_index).val(split_input[i]);                           
+                            $(e.target).closest('.copyable').find('textarea').eq(row_index).val(split_input[i]);
+
+                            var current_textarea = $(e.target).closest('.copyable').find('textarea').eq(row_index);
+                            var current_class = $(e.target).closest('.copyable').attr('id');
+
+                            // If data is in the client column, verify the M number.
+                            if (current_class == "client"){
+                                var client_textarea = {target:current_textarea};
+                                verifyMnumber(client_textarea);
+                            }
+
                             $(e.target).closest('.copyable').find('textarea').eq(row_index).focus(); // Change focus to the last item
                             row_index+=1; // Increment to the next row
                     }   
@@ -464,7 +484,6 @@ $(document).ready(function() {
                 // Check if next textarea is the last element in the row & is disabled.
                 // If last element, move to next row.
                 if ($(next_textarea).is(last_col) && (next_textarea.prop('disabled'))){
-
                     current_class = $(e.target).closest('.copyable').parent().children();
                     row_index = row_index +1;
                     next_textarea = current_class.find('.textarea:not([disabled])').eq(row_index);
