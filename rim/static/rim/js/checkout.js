@@ -119,12 +119,15 @@ $(document).ready(function() {
 
     // Function to reset the checkout form.
     $('#btn_reset').on('click', function(){
-        // Reset each textarea.
-        $('.copyable').find('.textarea').each(function(){
-            $(this).val('');
-        })
-        localStorage.clear();
-        location.reload();
+
+        if (confirm("Do you want to clear the form?")) {
+            // Reset each textarea.
+            $('.copyable').find('.textarea').each(function(){
+                $(this).val('');
+            })
+            localStorage.clear();
+            location.reload();
+        } 
     })
 
     function switch_forms(){
@@ -149,7 +152,7 @@ $(document).ready(function() {
             }
         }
     }
-    
+
     //Take all of the copyable columns (Client, Building, Room) and find
     function insert_row() {
         $('.copyable').each(function(){
@@ -501,5 +504,4 @@ $(document).ready(function() {
                 $('#btn_submit').focus();
            }
         }
-
 });
