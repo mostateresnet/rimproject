@@ -65,7 +65,7 @@ $(document).ready(function() {
             $(this).find('textarea[type=text]').eq(row_index).toggleClass('focused', false);
         })
         // Autosave data into local storage.
-        updateStorage();
+        updateStorage(this);
     })
 
 
@@ -87,7 +87,7 @@ $(document).ready(function() {
             findDuplicates(textarea_object);
             
         })
-        updateStorage();
+        updateStorageDelete(row_index);
     })
 
 
@@ -130,6 +130,7 @@ $(document).ready(function() {
         } 
     })
 
+
     function switch_forms(){
         var client_names = $('.client textarea[type=text]');
         if ($('input[name=checkform]:checked').prop('id') == 'checkin') {
@@ -148,6 +149,7 @@ $(document).ready(function() {
             })   
         }
     }
+
 
     //Take all of the copyable columns (Client, Building, Room) and find
     function insert_row() {
@@ -236,17 +238,27 @@ $(document).ready(function() {
         })
     }
 
+
     function restoreData(){
         
         var row_count = 0;
-        // Determine how many rows are needed.
-        do{
-            var id = 'checkout_'+ $('#client').attr('id') + '_'+row_count;
-            var text = localStorage.getItem(id);
-            var next_row = $('.client textarea[type=text]').eq(row_count+1);
+        while(row_count < localStorage.length){
 
+            restore_row = false;
+            // Determine if row in localstorage contains data.
+            for (i = 0; i < $('.copyable').length; i++){
+                var copyable_class = $('.copyable')[i];
+                var id = 'checkout_'+ $(copyable_class).attr('id') + '_'+ row_count;
+                var text = localStorage.getItem(id);
+                var next_row = $('.client textarea[type=text]').eq(row_count+1);
+
+                if (text != null){          // If there is text in any column of the row, row is valid
+                    restore_row = true;
+                    break;
+                }
+            }
             // If data exists and row does not exist, insert new row.
-            if (text != null && next_row.length == 0){
+            if (restore_row && next_row.length == 0){
                 insert_row();
 
                 // For each new row, populate it with data
@@ -270,72 +282,51 @@ $(document).ready(function() {
             }
             row_count  ++;
         }
-        while(text != null);    
     }
+
+
+
+    // Function which updates index of data in local storage on row deletion
+    function updateStorageDelete(row_index){
+
+        var last_element_index = $('.copyable:last textarea[type=text]').length - 1;
+        while(row_index <= last_element_index){
+
+            // Move the rows up & re-index the localStorage keys
+            for (i = 0; i < $('.copyable').length; i++){
+                var copyable_class = $('.copyable')[i];
+                var cur_id = 'checkout_'+ $(copyable_class).attr('id') + '_'+ row_index;
+                var next_id = 'checkout_'+ $(copyable_class).attr('id') + '_'+ (parseInt(row_index) + parseInt(1));
+                var text = localStorage.getItem(next_id);
+
+                // Continue moving rows up & rewriting the key:value at index
+                if (row_index < last_element_index){
+                    if (text != null){
+                        localStorage.setItem(cur_id, text);
+                    }
+                    else{
+                        localStorage.setItem(cur_id, "");
+                    }
+                }
+                // If at last row, clear the values
+                else if (row_index == last_element_index) {
+                        localStorage.removeItem(cur_id);
+                }
+            }
+            row_index++;
+        }  
+    }
+
 
     // Function which updates the local storage for all textareas.
-    function updateStorage(){
-
-        // Clear the old values for new values
-        localStorage.clear();
-        var last_element_index = $('.copyable:last textarea[type=text]').length - 1;
-
-        var row_index = 0;
-        var save_index = 0;
-
-        // While not the last line
-        while (row_index <= last_element_index){
-
-            empty_flag = true;      // Set a flag for each row. Assume row is empty.
-
-            $('.copyable').each(function(){
-                
-                var text_area = $(this).find('textarea[type=text]').eq(row_index);
-                var current_class = $(this).attr('id');
-
-                var id = 'checkout_'+ current_class + '_'+save_index;
-                var last_textarea = $('#room').find('textarea[type=text]').eq(row_index);
-                var text = $(text_area).val();
-
-                // If currently on the check-in form
-                if ($('input[name=checkform]:checked').prop('id') == 'checkin' && text == 'ResNet') {
-                    var client_names = $('.client textarea[type=text]').eq(row_index);
-                    text = $(client_names).data('content');
-                }
-
-                // If there is an valid value in the row, row is not empty.
-                if (text != ""){
-                    empty_flag = false;
-                }
-
-                // If at last textarea in the row 
-                if (text_area.is(last_textarea)){
-
-                      // If row is empty. Then remove the values from localStorage. 
-                    if (empty_flag == true){
-
-                        $('.copyable').each(function(){
-                            id = 'checkout_'+ $(this).closest('.copyable').attr('id') + '_'+save_index;
-                            localStorage.removeItem(id);
-                        })
-                        // Move to next row
-                        row_index++;
-                    }
-
-                    // Else there is data in previous textareas, continue; 
-                    else{
-                        localStorage.setItem(id, text);
-                        row_index++;
-                        save_index++;
-                    }
-                }
-                // Else, still current row, do not increment counter. 
-                else{
-                    localStorage.setItem(id, text);
-                }
-            })
-        }
+    function updateStorage(current_text_area){
+        var current_class = $(current_text_area).closest('.copyable').attr('id');
+        var row_index = $(current_text_area).closest('.copyable').find('.textarea').index(current_text_area); // Determine row index of the current textarea
+        var id = 'checkout_'+ current_class + '_'+row_index;
+        var text = $(current_text_area).val();
+        localStorage.setItem(id, text);
     }
+
 
     function pasteInput(e){
 
