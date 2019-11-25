@@ -146,6 +146,7 @@ $(document).ready(function() {
         else {
             client_names.each(function(){
                 $(this).prop('disabled', false).val($(this).data('content'));
+                verifyMnumber({target:this});
             })   
         }
     }
