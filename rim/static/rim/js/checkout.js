@@ -146,8 +146,10 @@ $(document).ready(function() {
         else {
             client_names.each(function(){
                 $(this).prop('disabled', false).val($(this).data('content'));
+                // On form change run mNumber verification & duplication check. 
                 verifyMnumber({target:this});
-            })   
+                findDuplicates({target:this});
+            }) 
         }
     }
 
