@@ -39,7 +39,7 @@ class HomeView(PaginateMixin, ListView):
     queryset = Equipment.objects.select_related('latest_checkout')
 
     valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
-                    'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
+                    'mac_address', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
 
     def get_ordering(self):

@@ -9,7 +9,7 @@ class CheckoutInline(admin.TabularInline):
 
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = ['serial_no', 'equipment_type', 'manufacturer', 'equipment_model', 'count']
-    search_fields = ['service_tag', 'smsu_tag', 'serial_no', 'equipment_model', 'equipment_type__type_name', 'manufacturer']
+    search_fields = ['service_tag', 'mac_address', 'serial_no', 'equipment_model', 'equipment_type__type_name', 'manufacturer']
     inlines = [CheckoutInline]
 
 class EquipmentTypeAdmin(admin.ModelAdmin):
