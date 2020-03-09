@@ -11,14 +11,15 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name='equipment',
-            name='physical_address',
+            old_name='physical_address',
+            new_name='mac_address',
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='equipment',
             name='mac_address',
-            field=models.CharField(blank=True, max_length=30, verbose_name='MAC address'),
+            field=models.CharField(max_length=30, blank=True, verbose_name='MAC address')
         ),
         migrations.AlterField(
             model_name='client',
