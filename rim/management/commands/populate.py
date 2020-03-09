@@ -50,7 +50,7 @@ class Command(BaseCommand):
                     usb_ports=i['usb_ports'],
                     video_card=i['video_card'],
                     removable_media=i['removable_media'],
-                    physical_address=i['physical_address'],
+                    mac_address=i['mac_address'],
                     purchase_price=i['purchase_price'],
                     purchase_info=i['purchase_info']
                 )
