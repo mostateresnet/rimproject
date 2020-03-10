@@ -17,7 +17,7 @@
                         {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
                     </th>
                     <th>
-                        {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Host Name/Serial No.' %}
+                        {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Hostname/Serial No.' %}
                     </th>
                     <th>
                         {% include 'rim/includes/header_link.html' with ordering='equipment_type__type_name' title='Equipment Type' %}
@@ -48,8 +48,8 @@
                         </td>
                         <td>
                             <a href="{% url 'edit' pk=e.pk %}">
-                                {% if e.host_name != '' %}
-                                    {{ e.host_name }}
+                                {% if e.hostname != '' %}
+                                    {{ e.hostname }}
                                 {% else %}
                                     {{ e.serial_no }}
                                 {% endif %}
