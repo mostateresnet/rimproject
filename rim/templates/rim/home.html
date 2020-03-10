@@ -17,7 +17,7 @@
                         {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
                     </th>
                     <th>
-                        {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Serial No.' %}
+                        {% include 'rim/includes/header_link.html' with ordering='serial_no' title='Host Name/Serial No.' %}
                     </th>
                     <th>
                         {% include 'rim/includes/header_link.html' with ordering='equipment_type__type_name' title='Equipment Type' %}
@@ -46,7 +46,15 @@
                                 {{ e.latest_checkout.timestamp }}
                             {% endif %}
                         </td>
-                        <td><a href="{% url 'edit' pk=e.pk %}">{{ e.serial_no }}</a></td>
+                        <td>
+                            <a href="{% url 'edit' pk=e.pk %}">
+                                {% if e.host_name != '' %}
+                                    {{ e.host_name }}
+                                {% else %}
+                                    {{ e.serial_no }}
+                                {% endif %}
+                            </a>
+                        </td>
                         <td>{{ e.equipment_type.type_name }}</td>
                         <td>{{ e.manufacturer }}</td>
                         <td>{{ e.equipment_model }}</td>

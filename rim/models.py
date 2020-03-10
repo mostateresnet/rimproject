@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial number')
+    host_name = models.CharField(max_length=100, blank=True)
     equipment_model = models.CharField(max_length=30)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
     count = models.IntegerField(blank=True, null=True)

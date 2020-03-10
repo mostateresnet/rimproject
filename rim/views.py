@@ -38,9 +38,8 @@ class HomeView(PaginateMixin, ListView):
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout')
 
-    valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
-                    'mac_address', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
-
+    valid_params = ['serial_no', 'host_name', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address', 
+                    'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
         self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
@@ -51,7 +50,7 @@ class HomeView(PaginateMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         if self.export_csv:
-            keys = ['serial_no', 'equipment_model', 'manufacturer',
+            keys = ['serial_no', 'host_name', 'equipment_model', 'manufacturer',
                     'equipment_type__type_name', 'latest_checkout__client__name',
                     'latest_checkout__client__bpn', 'latest_checkout__location__building', 'latest_checkout__location__room']
             verbose_keys = []
