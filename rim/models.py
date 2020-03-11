@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
 from django.conf import settings
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator
 from django.utils.translation import ugettext_lazy as _
 
 class Equipment(models.Model):
@@ -10,7 +10,7 @@ class Equipment(models.Model):
     hostname = models.CharField(max_length=100, blank=True)
     equipment_model = models.CharField(max_length=30)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
-    count = models.IntegerField(blank=True, null=True)
+    count = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     manufacturer = models.CharField(max_length=30, blank=True)
     service_tag = models.CharField(max_length=30, blank=True)
     smsu_tag = models.CharField(max_length=30, blank=True, verbose_name='SMSU tag')
@@ -20,11 +20,11 @@ class Equipment(models.Model):
     memory = models.CharField(max_length=10, blank=True)
     other_connectivity = models.CharField(max_length=30, blank=True)
     hard_drive = models.CharField(max_length=30, blank=True)
-    usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports')
+    usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports', validators=[MinValueValidator(0)])
     video_card = models.CharField(max_length=30, blank=True)
     removable_media = models.CharField(max_length=30, blank=True)
     mac_address = models.CharField(max_length=30, blank=True, verbose_name='MAC address')
-    purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     purchase_info = models.CharField(max_length=100, blank=True)
     latest_checkout = models.ForeignKey('Checkout', blank=True, null=True, on_delete=models.SET_NULL, related_name='+')
 
