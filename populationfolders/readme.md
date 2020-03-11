@@ -7,7 +7,7 @@ B:  To create the files of data to populate the database with you need to run a
     1. run the equipmentcreator.py
         1.1 Required Files:
             Serial number file, model name file, manufacturer name file,
-            servicetag file, smsu tag number file, physical address file,
+            servicetag file, smsu tag number file, mac address file,
             purchase price file, and the blank final
             save file titled equipmentlist.txt
     2. run the locationcreator.py

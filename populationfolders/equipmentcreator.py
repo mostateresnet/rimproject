@@ -16,7 +16,7 @@ def EquipmentCreator():
     manufacturerfile = "manufacturer.txt"
     servicetagfile = 'servicetag.txt'
     smsufile = 'smsutag.txt'
-    physicaladdrssfile = 'physicaladdress.txt'
+    macaddrssfile = 'macaddress.txt'
     purchasepricefile = 'purchaseprice.txt'
 
     # open the files
@@ -25,7 +25,7 @@ def EquipmentCreator():
     manf = open(manufacturerfile, 'r')
     servtagf = open(servicetagfile, 'r')
     smsutagf = open(smsufile, 'r')
-    physicalf = open(physicaladdrssfile, 'r')
+    macf = open(macaddrssfile, 'r')
     purchasef = open(purchasepricefile, 'r')
     savef = open('equipmentlist.txt', 'w')
 
@@ -46,7 +46,7 @@ def EquipmentCreator():
     usbports = [2, 4, 8]
     videocards = ["Integrated", "1050", "1070"]
     removablemedia = ["NONE", "SD"]
-    physicaladdress = []
+    macaddress = []
     purchaseprice = []
     purchaseinfo = ["Bookstore", "GovConnections", "Computer Services"]
     equipmentlist = []
@@ -73,9 +73,9 @@ def EquipmentCreator():
         smsut = smsut.rstrip()
         smsutag.append("M" + smsut + "-" + str(random.randint(0, 9)))
 
-    for mac in physicalf:
+    for mac in macf:
         mac = mac.rstrip()
-        physicaladdress.append(mac)
+        macaddress.append(mac)
 
     for pp in purchasef:
         pp = pp[:6]
@@ -103,7 +103,7 @@ def EquipmentCreator():
             'usb_ports': usbports[random.randint(0, 2)],
             'video_card': videocards[random.randint(0, 2)],
             'removable_media': removablemedia[random.randint(0, 1)],
-            'physical_address': physicaladdress[i],
+            'mac_address': macaddress[i],
             'purchase_price': purchaseprice[i],
             'purchase_info': purchaseinfo[random.randint(0, 2)]
         }
@@ -119,7 +119,7 @@ def EquipmentCreator():
     manf.close()
     servtagf.close()
     smsutagf.close()
-    physicalf.close()
+    macf.close()
     purchasef.close()
     savef.close()
 

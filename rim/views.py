@@ -2,7 +2,7 @@ import csv
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.db.models import Count, Max, Q, F
+from django.db.models import Count, Max, Q, F, Case, When, CharField
 from django.db.models.functions import Lower
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.utils.translation import ugettext_lazy as _
@@ -36,11 +36,16 @@ class PaginateMixin(object):
 class HomeView(PaginateMixin, ListView):
     export_csv = False
     template_name = 'rim/home.html'
-    queryset = Equipment.objects.select_related('latest_checkout')
+    queryset = Equipment.objects.select_related('latest_checkout').annotate(
+        serial_hostname=Case(
+            When(hostname__exact='', then='serial_no'),
+            default='hostname',
+            output_field=CharField(),
+        )
+    )
 
-    valid_params = ['serial_no', 'equipment_type__type_name', 'latest_checkout__client__name', 'equipment_model', 'service_tag',
-                    'smsu_tag', 'manufacturer', 'latest_checkout__location__building', 'latest_checkout__location__room']
-
+    valid_params = ['serial_no', 'hostname', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address', 
+                    'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
         self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
@@ -51,7 +56,7 @@ class HomeView(PaginateMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         if self.export_csv:
-            keys = ['serial_no', 'equipment_model', 'manufacturer',
+            keys = ['serial_no', 'hostname', 'equipment_model', 'manufacturer',
                     'equipment_type__type_name', 'latest_checkout__client__name',
                     'latest_checkout__client__bpn', 'latest_checkout__location__building', 'latest_checkout__location__room']
             verbose_keys = []

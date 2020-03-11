@@ -1,5 +1,4 @@
 {% load i18n %}
-
 <div class='grid-container'>
     <div class='grid-margin-x'>
         <form method=GET>
@@ -7,6 +6,14 @@
             <div class="grid-x">
                 <div class='small-3 large-3 cell'>
                     {% trans 'Serial Number' %}<input type='text' name='serial_no' value='{{ search_data.serial_no }}'/>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
+                </div>
+
+                <div class='small-3 large-3 cell'>
+                    {% trans 'Equipment Model' %}<input type='text' name='equipment_model' value='{{ search_data.equipment_model }}'/>
                 </div>
 
                 <div class='small-3 large-3 cell'>
@@ -18,28 +25,20 @@
                         {% endfor %}
                     </select>
                 </div>
-
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
-                </div>
-
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Equipment Model' %}<input type='text' name='equipment_model' value='{{ search_data.equipment_model }}'/>
-                </div>
             </div>
 
             <div class="grid-x">
 
                 <div class='small-3 large-3 cell'>
+                    {% trans 'MAC Address' %}<input type='text' name='mac_address' value='{{ search_data.mac_address }}'/>
+                </div>
+                
+                <div class='small-3 large-3 cell'>
                     {% trans 'Service Tag' %}<input type='text' name='service_tag' value='{{ search_data.service_tag }}'/>
                 </div>
-
-                <div class='small-3 large-3 cell'>
-                    {% trans 'SMSU Tag' %}<input type='text' name='smsu_tag' value='{{ search_data.smsu_tag }}'/>
-                </div>
-
+                
                 <div class='small-2 large-2 cell'>
-                    {% trans 'Manufacturer' %}<input type='text' name='manufacturer' value='{{ search_data.manufacturer }}'/>
+                    {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
                 </div>
 
                 <div class='small-2 large-2 cell'>
