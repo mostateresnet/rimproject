@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
 from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
 from rim.forms import EquipmentForm
 
@@ -33,7 +34,7 @@ class PaginateMixin(object):
         return response
 
 
-class HomeView(PaginateMixin, ListView):
+class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
     export_csv = False
     template_name = 'rim/home.html'
     queryset = Equipment.objects.select_related('latest_checkout').annotate(
@@ -112,7 +113,7 @@ class HomeView(PaginateMixin, ListView):
         qset = qset.select_related('latest_checkout__location', 'equipment_type')
         return qset
 
-class ListClientView(PaginateMixin, ListView):
+class ListClientView(PaginateMixin, LoginRequiredMixin, ListView):
     template_name = 'rim/client_list.html'
     model = Client
 
@@ -129,19 +130,19 @@ class ListClientView(PaginateMixin, ListView):
         context['search_data'].update({'search': query})
         return context
 
-class AddEquipmentView(CreateView):
+class AddEquipmentView(LoginRequiredMixin, CreateView):
     template_name = 'rim/edit.html'
     model = Equipment
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
-class EditEquipmentView(UpdateView):
+class EditEquipmentView(LoginRequiredMixin, UpdateView):
     template_name = 'rim/edit.html'
     model = Equipment
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
-class ClientView(DetailView):
+class ClientView(LoginRequiredMixin, DetailView):
     template_name = 'rim/client.html'
     model = Client
 

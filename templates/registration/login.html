@@ -7,6 +7,7 @@
 {% block content %}
 
 <div class="login_form">
+  <div class='login_title'>{% trans 'Login' %}</div>
   <form class="login" method="POST">
     {% csrf_token %}
     <div class="grid-x">
@@ -22,5 +23,4 @@
     <button type='submit' class='button'>{% trans 'Submit' %}</button>
   </form>
 </div>
-  
 {% endblock %}

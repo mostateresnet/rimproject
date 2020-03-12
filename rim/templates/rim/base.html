@@ -24,14 +24,19 @@
             {% block body %}
                 {% block header %}
                     <div class='nav'>
-                        <div id='title'>RIM</div>
-                        <div data-sticky-container>
-                            <ul class='expanded menu align-center sticky nav' data-sticky data-margin-top="0">
-                                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
-                                <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
-                                <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
-                            </ul>
-                        </div>
+                        {% if request.user.is_authenticated %}
+                            <div class='logout'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
+                        {% endif %}
+                        <div id='title'>RIM</div>                       
+                        {% if request.user.is_authenticated %}                            
+                            <div data-sticky-container>
+                                <ul class='expanded menu align-center sticky nav' data-sticky data-margin-top="0">
+                                    <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                                    <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
+                                    <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endblock %}
                 {% block content %}
