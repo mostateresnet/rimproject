@@ -10,7 +10,7 @@ Useful info and commands:
 1.  Use `pipenv install <package-name>` to install a package
     and `pipenv uninstall <package-name>` to uninstall.
 
-    ```diff !WARNING```: do not use `pip install <package-name>` to install packages as `pip` bypasses the `pipenv` dependency manager and therefore a package installed this way will not be added to the `Pipfile.lock`.
+    `WARNING`: do not use `pip install <package-name>` to install packages as `pip` bypasses the `pipenv` dependency manager and therefore a package installed this way will not be added to the `Pipfile.lock`.
 
 2. `pipenv install` creates a new environment AND installs all dependencies listed in `Pipfile.lock`.
 3. `Pipfile.lock` gets updated only when hashes of the dependencies don't match (e.g. when a dependency gets updated).
