@@ -8,10 +8,12 @@
     {% block css %}
         <link rel='stylesheet' type='text/css' href='{% static "rim/css/foundation/foundation.css" %}'>
         <link rel='stylesheet' type='text/css' href='{% static "rim/css/base.css" %}'>
+        <link rel="stylesheet" type="text/css" href='{% static "rim/css/foundation/responsive-tables.css" %}'>
     {% endblock %}
     {% block javascript %}
         <script type='text/javascript' src='{% static "rim/js/libraries/jquery.min.js" %}'></script>
         <script type='text/javascript' src='{% static "rim/js/libraries/foundation.min.js" %}'></script>
+        <script type='text/javascript' src='{% static "rim/js/libraries/responsive-tables.js" %}'></script>
         <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
     {% endblock %}
     <title>{% block title %}{% trans 'RIM' %}{% endblock %}</title>
