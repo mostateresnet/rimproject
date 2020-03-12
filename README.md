@@ -1,3 +1,17 @@
 To launch a virtual environment for the project follow these steps:
 
-1. Install `pipenv` if not yet installed using `sudo apt install pipenv` command.
+1. Install `pip` if not yet installed.
+2. Install `pipenv` if not yet installed.
+3. Open the project folder and run `pipenv install` to create a new environment.
+4. Run `pipenv shell` to switch to the environment we have just created.
+
+
+Useful info and commands:
+1.  Use `pipenv install <package-name>` to install a package
+    and `pipenv uninstall <package-name>` to uninstall.
+
+    ```diff !WARNING```: do not use `pip install <package-name>` to install packages as `pip` bypasses the `pipenv` dependency manager and therefore a package installed this way will not be added to the `Pipfile.lock`.
+
+2. `pipenv install` creates a new environment AND installs all dependencies listed in `Pipfile.lock`.
+3. `Pipfile.lock` gets updated only when hashes of the dependencies don't match (e.g. when a dependency gets updated).
+4. `pipenv --rm` lets you remove ALL environments you have created before.
