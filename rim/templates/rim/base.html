@@ -23,7 +23,7 @@
         <div id='container'>
             {% block body %}
                 {% block header %}
-                    <div class='nav'>
+                    <div class='nav' id="topnav">
                         {% if request.user.is_authenticated %}
                             <div class='logout'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
                         {% endif %}
