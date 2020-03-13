@@ -24,7 +24,7 @@ class Equipment(models.Model):
     video_card = models.CharField(max_length=30, blank=True)
     removable_media = models.CharField(max_length=30, blank=True)
     mac_address = models.CharField(max_length=30, blank=True, verbose_name='MAC address')
-    purchase_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
+    purchase_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     purchase_info = models.CharField(max_length=100, blank=True)
     latest_checkout = models.ForeignKey('Checkout', blank=True, null=True, on_delete=models.SET_NULL, related_name='+')
 
