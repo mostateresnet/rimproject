@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(document).foundation();
+    
     function set_page_cookie(per_page) {
         var expire_date = new Date();
         //Sets the expire_date to be a year from now
@@ -19,5 +19,5 @@ $(document).ready(function() {
             window.location.reload();
         }
     })
-
+    $(document).foundation();
 });

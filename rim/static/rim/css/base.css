@@ -100,3 +100,13 @@ a {
 a:hover, a:focus {
     color: #6BA4B8;
 }
+
+@media only screen and (max-width: 1234px){
+    #container{
+        min-width: 100vw;
+        padding: 3px;
+    }
+    table.responsive th {
+        white-space: inherit;
+    }
+}
