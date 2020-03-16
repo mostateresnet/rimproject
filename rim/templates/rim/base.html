@@ -27,12 +27,18 @@
                 {% block header %}
                     <div class='nav'>
                         <div id='title'>RIM</div>
-                        <div data-sticky-container>
-                            <ul class='expanded menu align-center sticky nav' data-sticky data-margin-top="0">
-                                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
-                                <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
-                                <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
-                            </ul>
+                        <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="medium" data-animate="slide-in-right slide-out-right">
+                            <div class="title-bar-title">Menu</div>
+                            <button class="menu-icon" type="button" data-toggle="nav_menu"></button>
+                          </div>
+                        <div id="nav_menu" data-sticky-container>
+                            
+                                <ul class='expanded medium-horizontal menu align-center sticky nav' data-responsive-menu="drilldown medium-dropdown" data-sticky data-margin-top="0" >
+                                    <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                                    <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
+                                    <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
+                                </ul>
+                           
                         </div>
                     </div>
                 {% endblock %}
