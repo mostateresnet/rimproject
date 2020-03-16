@@ -25,8 +25,12 @@
         <div id='container'>
             {% block body %}
                 {% block header %}
-                    <div class='nav'>
+                    <div class='nav' id="topnav">
+                        {% if request.user.is_authenticated %}
+                            <div class='logout'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
+                        {% endif %}
                         <div id='title'>RIM</div>
+                        {% if request.user.is_authenticated %}  
                         <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="medium" data-animate="slide-in-right slide-out-right">
                             <div class="title-bar-title">Menu</div>
                             <button class="menu-icon" type="button" data-toggle="nav_menu"></button>
@@ -38,8 +42,8 @@
                                     <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
                                     <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
                                 </ul>
-                           
-                        </div>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endblock %}
                 {% block content %}

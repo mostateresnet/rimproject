@@ -4,7 +4,8 @@ To launch a virtual environment for the project follow these steps:
 2. Install `pipenv` if not yet installed.
 3. Open the project folder and run `pipenv install` to create a new environment.
 4. Run `pipenv shell` to switch to the environment we have just created.
-
+5. Run `python manage.py runserver` to run the  server.
+6. Access the server by going to [localhost:8000](http://localhost:8000) using your browser.
 
 Useful info and commands:
 1.  Use `pipenv install <package-name>` to install a package
