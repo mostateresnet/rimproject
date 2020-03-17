@@ -1,3 +1,4 @@
+
 body {
     background-color: #BFCED6;
     height: 100vh;
@@ -15,7 +16,7 @@ body {
     background-color: white;
 }
 
-.nav, .title-bar,.is-drilldown ul li a, .logout a{
+.nav, .title-bar,.is-drilldown ul li a, .logout a, #search_fields_button{
     background-color: #5E0009;
     color: white;
     font-family: freight-text-pro, serif;
@@ -80,9 +81,12 @@ body {
     height: 70px;
 }
 
+button {
+    outline: none; 
+}
+
 .button {
-    background-color: #6BA4B8;
-    
+    background-color: #6BA4B8;   
 }
 
 .button:hover, .button:focus {
@@ -137,13 +141,34 @@ a:hover, a:focus {
 #topnav {
     position: relative;
 }
+/* Hides client and host name fields for  */
+#small_screen_search_fields{
+    display: none;
+}
 
-@media only screen and (max-width: 1234px){
+@media only screen and (max-width: 1023px){
     #container{
         min-width: 100vw;
         padding: 3px;
     }
     table.responsive th {
         white-space: inherit;
+    }
+    /* leaves Client Name and Host Name visible when the rest gets hidden
+    in a dropdown menu on small screens. Works only on the first 2 elements of the 
+    first grid-x element */
+    #small_screen_search_fields{
+        display: inherit;
+    }
+    #search_fields_button{
+        margin-top: 3px;
+        padding: 0;
+        height: 0;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    #search_fields_toggle_bar{
+        margin-bottom: 5px;
     }
 }
