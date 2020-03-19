@@ -9,7 +9,9 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
     <script type='text/javascript' src='{% static "rim/js/home.js" %}'></script>
+    <script type='text/javascript' src='{% static "rim/js/libraries/hide_menu.js" %}'></script>
 {% endblock %}
 
 {% block content %}

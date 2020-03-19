@@ -1,18 +1,4 @@
 $(document).ready(function() {
-    //Controls search field depending on orientation, dropdown list state, etc.
-    function hide_menu(){
-        let equipment_table = document.getElementsByClassName("equipment-table");
-        let nav_menu = document.getElementById("nav_menu");
-        let style, vw;
-        //Quick and dirty solution to collapse the opened menu when equipment_table is clicked (because it occupies the majority of the page)
-        equipment_table[0].addEventListener("click", () => {
-            vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            style = getComputedStyle(nav_menu);
-            display = style.getPropertyValue('display');
-            if(nav_menu.style.display != "none" && vw < 1024)
-                nav_menu.style.display = "none";
-        })
-    }
 
     function set_search_fields() {
         //Obtain the elements we need
@@ -84,6 +70,6 @@ $(document).ready(function() {
             dropdown_button.innerText = "More Options"
         })
     }
+
     set_search_fields();
-    hide_menu();
 })

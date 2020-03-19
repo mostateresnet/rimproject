@@ -2,6 +2,11 @@
 {% load i18n %}
 {% load static %}
 
+{% block javascript %}
+    {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/libraries/hide_menu.js" %}'></script>
+{% endblock %}
+
 {% block content %}
     <div class='grid-x grid-padding-x'>
         <div class='small-7 large-7 cell'>

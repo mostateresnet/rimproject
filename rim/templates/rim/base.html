@@ -14,6 +14,7 @@
         <script type='text/javascript' src='{% static "rim/js/libraries/jquery.min.js" %}'></script>
         <script type='text/javascript' src='{% static "rim/js/libraries/foundation.min.js" %}'></script>
         <script type='text/javascript' src='{% static "rim/js/libraries/responsive-tables.js" %}'></script>
+        <script type='text/javascript' src='{% static "rim/js/libraries/hide_menu.js" %}'></script>
         <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
     {% endblock %}
     <title>{% block title %}{% trans 'RIM' %}{% endblock %}</title>
@@ -31,7 +32,7 @@
                         {% endif %}
                         <div id='title'>RIM</div>
                         {% if request.user.is_authenticated %}  
-                        <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="large" data-animate="slide-in-right slide-out-right">
+                        <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="large">
                             <div class="title-bar-title">Menu</div>
                             <button class="menu-icon" type="button" data-toggle="nav_menu"></button>
                         </div>
