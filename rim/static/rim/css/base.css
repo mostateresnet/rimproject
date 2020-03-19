@@ -142,24 +142,14 @@ a:hover, a:focus {
     position: relative;
 }
 /* Hides client and host name fields for  */
-#small_screen_search_fields{
-    display: none;
-}
 
-@media only screen and (max-width: 1023px){
+
+@media only screen and (max-width: 1200px){
     #container{
         min-width: 100vw;
         padding: 3px;
     }
-    table.responsive th {
-        white-space: inherit;
-    }
-    /* leaves Client Name and Host Name visible when the rest gets hidden
-    in a dropdown menu on small screens. Works only on the first 2 elements of the 
-    first grid-x element */
-    #small_screen_search_fields{
-        display: inherit;
-    }
+
     #search_fields_button{
         margin-top: 3px;
         padding: 0;

@@ -3,15 +3,7 @@
     
         <form method=GET>
             {{ form.non_field_errors }}
-            <div class="grid-x" id="small_screen_search_fields" >
-                <div class='small-auto large-3 cell'>
-                    {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
-                </div>
-
-                <div class='small-auto large-3 cell'>
-                    {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
-                </div>
-            </div>
+           
             <div id="search_fields">
                 <div class="grid-x" >
                     <div class='small-auto large-3 cell'>
@@ -68,7 +60,18 @@
                     </div>
                 </div>
             </div>
-            <div class="title-bar" data-responsive-toggle="search_fields" data-hide-for="large" id="search_fields_toggle_bar">
+
+            <div class="grid-x" id="small_screen_search_fields" >
+                <div class='small-auto large-3 cell'>
+                    {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
+                </div>
+
+                <div class='small-auto large-3 cell'>
+                    {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
+                </div>
+            </div>
+
+            <div class="title-bar hide-for-large" data-responsive-toggle="search_fields" data-hide-for="large" id="search_fields_toggle_bar">
                 <button class="dropdown button tiny" type="button" data-toggle="search_fields" id="search_fields_button">More Options</button>
              </div>
             
