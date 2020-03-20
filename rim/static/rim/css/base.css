@@ -1,4 +1,6 @@
-
+.export_button a:visited{
+    color:inherit;
+}
 body {
     background-color: #BFCED6;
     height: 100vh;
@@ -66,14 +68,14 @@ body {
 }
 
 .page_link {
-    width: 15%;
+    /* width: 15%; */
 }
 
 .btm-bar {
     position: fixed;
     bottom: 0;
     width: 70%;
-    height: 5%;
+    height: 6vh;
 }
 
 .btm-bar-wrapper {
@@ -145,6 +147,11 @@ a:hover, a:focus {
 
 
 @media only screen and (max-width: 1200px){
+
+    .btm-bar {
+        width: 100%;
+    }
+
     #container{
         min-width: 100vw;
         padding: 3px;
@@ -161,4 +168,39 @@ a:hover, a:focus {
     #search_fields_toggle_bar{
         margin-bottom: 5px;
     }
+
+}
+@media only screen and (max-width: 769px){
+
+    body {
+         line-height: normal; 
+    }
+    
+    #title {
+        font-family: freight-text-pro, serif;
+        font-size: 7vh;
+    }
+
+    .btm-bar .cell{
+        display: flex;
+        justify-content: center;
+    }
+    #paginate_form{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .page_nav{
+        display: flex;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+    #paginate_form{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        font-size: 1.2em;
+    }
+
 }

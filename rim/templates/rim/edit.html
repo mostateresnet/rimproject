@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class='addtitle'>
+    <div class='add_title'>
         {% if object.pk %}
             {% blocktrans with equipment_name=equipment|stringformat:'s' %}
                 Edit {{ equipment_name }}
@@ -50,7 +50,7 @@
             </div>
             <div class='grid-x'>
                 <div class='small-3 large-3 cell'>
-                    <button type='submit' class='button'>{% trans 'Submit' %}</button>
+                    <button type='submit' class='button' id="submit_button">{% trans 'Submit' %}</button>
                 </div>
             </div>
         </form>

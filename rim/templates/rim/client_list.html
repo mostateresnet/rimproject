@@ -7,12 +7,17 @@
     <script type='text/javascript' src='{% static "rim/js/libraries/hide_menu.js" %}'></script>
 {% endblock %}
 
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/client.css" %}'>
+{% endblock %}
+
 {% block content %}
     <div class='grid-x grid-padding-x'>
         <div class='small-7 large-7 cell'>
             <h1>{% trans 'Client List' %}</h1>
         </div>
-        <div class ='small-5 large-5 cell'>
+        <div class ='small-5 large-5 cell' id="search_box">
             <form method=GET action="{% url 'client_list' %}">
                 <input type='text' placeholder='{% trans "Search by Name or M-number" %}' name='search' value='{{ searchterm }}'>
                 <button type='submit' class='button' value='submit'>{% trans 'Submit' %}</button>
