@@ -81,11 +81,15 @@
                             {% if is_paginated %}
                                 <div class='page_nav'>
                                     {% if page_obj.has_previous %}
-                                        <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
-                                    {% endif %}
-                                    Page {{ page_obj.number }}
-                                    {% if page_obj.has_next %}
-                                         | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
+                                    <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a>
+                                         <div id="page_number">
+                                            |
+                                            {% endif %}
+                                            Page {{ page_obj.number }}
+                                            {% if page_obj.has_next %}
+                                            | 
+                                        </div>
+                                    <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
                                     {% endif %}
                                 </div>
                             {% endif %}
