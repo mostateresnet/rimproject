@@ -41,8 +41,13 @@
    
 }
 @media only screen and (max-width: 479px){
+    /* Input fields occupy a whole line each on small screens */
     .grid-x > .small-4 {
         width: -webkit-fill-available;
+    }
+    /* The submit button is closer to the last input field than default */
+    .grid-x :last-child input {
+        margin-bottom: 0;
     }
    
 }

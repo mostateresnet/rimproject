@@ -1,12 +1,23 @@
-.export_button a:visited{
-    color:inherit;
-}
 body {
     background-color: #BFCED6;
     height: 100vh;
     font-family: proxima-nova, Helvetica, Arial, sans-serif;
 }
-
+.btm-bar .grid-margin-x .grid-x .cell, .page_nav{
+        
+    display: flex;
+    justify-content: center;
+}
+.grid-margin-x{
+    margin: 0;
+}
+#page_number {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+#page_submit {
+    margin-right: 10px;
+}
 #wrapper {
     width: 100%;
 }
@@ -27,6 +38,7 @@ body {
 #title {
     font-family: freight-text-pro, serif;
     font-size: 3em;
+    min-height: 50px;
     text-align: center;
     background-image: url('../img/logo.png');
     background-repeat: no-repeat;
@@ -63,18 +75,15 @@ body {
 }
 
 .page_nav {
-    font-size: 1.2em;
-}
-
-.page_link {
-    /* width: 15%; */
+    font-size: 1.1em;
 }
 
 .btm-bar {
     position: fixed;
     bottom: 0;
     width: 70%;
-    height: 6vh;
+    height: 7vh;
+    font-size: 1.1em;
 }
 
 .btm-bar-wrapper {
@@ -145,7 +154,7 @@ a:hover, a:focus {
 /* Hides client and host name fields for  */
 
 
-@media only screen and (max-width: 1230px){
+@media only screen and (max-width: 1262px){
 
     .btm-bar {
         width: 100%;
@@ -177,7 +186,7 @@ a:hover, a:focus {
     
     #title {
         font-family: freight-text-pro, serif;
-        font-size: 7vh;
+        font-size: 9vw;
     }
 
     .btm-bar .cell{
@@ -188,18 +197,23 @@ a:hover, a:focus {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
+        font-size: 1.1em;
     }
 
     .page_nav{
         display: flex;
         margin-bottom: 10px;
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
-    #paginate_form{
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        font-size: 1.2em;
-    }
+}
 
+@media only screen and (max-width: 520px){
+    .btm-bar {
+        position: inherit;
+    }
+    .btm-bar .grid-margin-x .grid-x {
+        display: block;
+        background-color: #5E0009;
+    }
+    
 }

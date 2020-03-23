@@ -11,7 +11,6 @@
     {{ block.super }}
     <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
     <script type='text/javascript' src='{% static "rim/js/home.js" %}'></script>
-    <script type='text/javascript' src='{% static "rim/js/libraries/hide_menu.js" %}'></script>
 {% endblock %}
 
 {% block content %}
@@ -72,23 +71,21 @@
             <div class='expanded align-center nav btm-bar'>
                 <div class='grid-margin-x'>
                     <div class='grid-x'>
-                        <div class=' large-3 cell auto hide-for-small-only'>
+                        <div class='large-3 cell auto show-for-medium'>
                             <button class='export_button'>
                                 <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
                             </button>
                         </div>
-                        <div class=' large-6 cell auto'>
+                        <div class='large-6 cell auto'>
                             {% if is_paginated %}
                                 <div class='page_nav'>
                                     {% if page_obj.has_previous %}
                                     <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a>
+                                    {% endif %}
                                          <div id="page_number">
-                                            |
-                                            {% endif %}
-                                            Page {{ page_obj.number }}
-                                            {% if page_obj.has_next %}
-                                            | 
+                                            | Page {{ page_obj.number }} | 
                                         </div>
+                                    {% if page_obj.has_next %}
                                     <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
                                     {% endif %}
                                 </div>

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     function set_search_fields() {
-        //Obtain the elements we need
+        //Obtain or create the elements we need
         let vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         let search_fields_dropdown_state = false;
         let small_display_search_fields = document.getElementById("small_screen_search_fields");
@@ -67,7 +67,8 @@ $(document).ready(function() {
                 small_display_search_fields_parent_element.insertBefore(small_display_search_fields, dropdown_button_bar)
             }
             //resets the dropdown button text to avoid "Less Options" text on a collapsed menu on resize
-            dropdown_button.innerText = "More Options"
+            if(!search_fields_dropdown_state)
+                dropdown_button.innerText = "More Options"
         })
     }
 
