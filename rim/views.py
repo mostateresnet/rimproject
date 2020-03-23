@@ -3,7 +3,7 @@ import csv
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max, Q, F, Case, When, CharField
-from django.db.models.functions import Lower
+from django.db.models.functions import Lower, Concat
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
@@ -41,6 +41,10 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
         serial_hostname=Case(
             When(hostname__exact='', then='serial_no'),
             default='hostname',
+            output_field=CharField(),
+        ),
+        latest_checkout__location=Concat(
+            'latest_checkout__location__building', 'latest_checkout__location__room',
             output_field=CharField(),
         )
     )
