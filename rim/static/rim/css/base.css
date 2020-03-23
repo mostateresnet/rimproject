@@ -3,79 +3,18 @@ body {
     height: 100vh;
     font-family: proxima-nova, Helvetica, Arial, sans-serif;
 }
-.btm-bar .grid-margin-x .grid-x .cell, .page_nav{
-        
+
+a {
+    color: #0093B2;
+}
+
+a:hover, a:focus {
+    color: #6BA4B8;
+}
+
+.btm-bar .grid-margin-x .grid-x .cell, .page_nav {       
     display: flex;
     justify-content: center;
-}
-.grid-margin-x{
-    margin: 0;
-}
-#page_number {
-    margin-left: 3px;
-    margin-right: 3px;
-}
-#page_submit {
-    margin-right: 10px;
-}
-#wrapper {
-    width: 100%;
-}
-
-#container {
-    width: 70%;
-    margin:auto;
-    border: 1px solid black;
-    background-color: white;
-}
-
-.nav, .title-bar,.is-drilldown ul li a, .logout a, #search_fields_button{
-    background-color: #5E0009;
-    color: white;
-    font-family: freight-text-pro, serif;
-}
-
-#title {
-    font-family: freight-text-pro, serif;
-    font-size: 3em;
-    min-height: 50px;
-    text-align: center;
-    background-image: url('../img/logo.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-.menu a {
-    color: white;
-    width: 100%;
-    text-align: center;
-}
-
-.menu li {
-    border-top: 1px solid black;
-}
-
-.menu li:hover {
-    background-color: #425563;
-    cursor: pointer;
-}
-
-.page_label {
-    font-size: .6em;
-}
-
-.page_input {
-    width: 20%;
-    display: inline;
-}
-
-.page_button {
-    margin-top: .5em;
-    margin-left: 1em;
-}
-
-.page_nav {
-    font-size: 1.1em;
 }
 
 .btm-bar {
@@ -103,31 +42,25 @@ button {
     background-color: #0093B2;
 }
 
-img {
-    width: 15%;
-    height: auto;
+#container {
+    width: 70%;
+    margin:auto;
+    border: 1px solid black;
+    background-color: white;
 }
 
-a {
-    color: #0093B2;
+.grid-margin-x {
+    margin: 0;
 }
 
-a:hover, a:focus {
-    color: #6BA4B8;
-}
-
-.title-bar {
-    justify-content: flex-end;
-    height: 0px;
-}
-.title-bar-title, .menu-icon  {
-    padding-right: 0;
-    margin-bottom: 15px;
-    margin-right: 0px !important;
-}
 .is-drilldown ul {
     flex-direction: column;
 
+}
+
+img {
+    width: 15%;
+    height: auto;
 }
 
 .login_title {
@@ -148,9 +81,92 @@ a:hover, a:focus {
     
 }
 
+.menu a {
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+
+.menu li {
+    border-top: 1px solid black;
+}
+
+.menu li:hover {
+    background-color: #425563;
+    cursor: pointer;
+}
+
+.nav, .title-bar,.is-drilldown ul li a, .logout a, #search_fields_button {
+    background-color: #5E0009;
+    color: white;
+    font-family: freight-text-pro, serif;
+}
+
+#page_number {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+#page_submit {
+    margin-right: 10px;
+}
+
+#paginate_form {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 1.1em;
+}
+
+.page_label {
+    font-size: .8em;
+    align-self: center;
+    padding: 2px;
+}
+
+.page_input {
+    width: 20%;
+    display: inline;
+    align-self: flex-end;
+}
+
+.page_button {
+    margin-top: .5em;
+    margin-left: 1em;
+}
+
+.page_nav {
+    font-size: 1.1em;
+}
+
+#title {
+    font-family: freight-text-pro, serif;
+    font-size: 3em;
+    min-height: 50px;
+    text-align: center;
+    background-image: url('../img/logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.title-bar {
+    justify-content: flex-end;
+    height: 0px;
+}
+.title-bar-title, .menu-icon {
+    padding-right: 0;
+    margin-bottom: 15px;
+    margin-right: 0px !important;
+}
+
+
 #topnav {
     position: relative;
 }
+#wrapper {
+    width: 100%;
+}
+
 /* Hides client and host name fields for  */
 
 
@@ -184,20 +200,13 @@ a:hover, a:focus {
          line-height: normal; 
     }
     
-    #title {
-        font-family: freight-text-pro, serif;
-        font-size: 9vw;
-    }
-
     .btm-bar .cell{
         display: flex;
         justify-content: center;
     }
-    #paginate_form{
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        font-size: 1.1em;
+
+    .large-3.cell.auto.show-for-medium {
+        flex-grow: 0.5;
     }
 
     .page_nav{
@@ -205,9 +214,12 @@ a:hover, a:focus {
         margin-bottom: 10px;
         font-size: 1.1em;
     }
-    .large-3.cell.auto.show-for-medium {
-        flex-grow: 0.5;
+
+    #title {
+        font-family: freight-text-pro, serif;
+        font-size: 9vw;
     }
+    
 }
 
 @media only screen and (max-width: 520px){
@@ -219,4 +231,10 @@ a:hover, a:focus {
         background-color: #5E0009;
     }
     
+}
+
+@media only screen and (min-height: 768px){
+    .btm-bar {
+        height: 6vh;
+    }
 }

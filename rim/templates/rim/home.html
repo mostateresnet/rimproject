@@ -76,7 +76,7 @@
                                 <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
                             </button>
                         </div>
-                        <div class='large-6 cell auto'>
+                        <div class='cell auto'>
                             {% if is_paginated %}
                                 <div class='page_nav'>
                                     {% if page_obj.has_previous %}
