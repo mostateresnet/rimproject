@@ -154,7 +154,7 @@ a:hover, a:focus {
 /* Hides client and host name fields for  */
 
 
-@media only screen and (max-width: 1262px){
+@media only screen and (max-width: 1268px){
 
     .btm-bar {
         width: 100%;
@@ -204,6 +204,9 @@ a:hover, a:focus {
         display: flex;
         margin-bottom: 10px;
         font-size: 1.1em;
+    }
+    .large-3.cell.auto.show-for-medium {
+        flex-grow: 0.5;
     }
 }
 
