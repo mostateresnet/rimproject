@@ -21,7 +21,7 @@ a:hover, a:focus {
     position: fixed;
     bottom: 0;
     width: 70%;
-    height: 7vh;
+    max-height: 55px;
     font-size: 1.1em;
 }
 
@@ -130,7 +130,7 @@ img {
     align-self: flex-end;
 }
 
-.page_button {
+.page_button, .export_button {
     margin-top: .5em;
     margin-left: 1em;
 }
