@@ -42,6 +42,7 @@
     }
    
 }
+
 @media only screen and (max-width: 479px){
     /* Input fields occupy a whole line each on small screens */
     .grid-x > .small-4 {

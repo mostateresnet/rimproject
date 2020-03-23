@@ -169,7 +169,6 @@ img {
 
 /* Hides client and host name fields for  */
 
-
 @media only screen and (max-width: 1268px){
 
     .btm-bar {
@@ -194,6 +193,7 @@ img {
     }
 
 }
+
 @media only screen and (max-width: 769px){
 
     body {
