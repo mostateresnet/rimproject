@@ -50,7 +50,6 @@ button {
 
 .is-drilldown ul {
     flex-direction: column;
-
 }
 
 img {
@@ -189,6 +188,11 @@ img {
          line-height: normal; 
     }
     
+    .btm-bar {
+        position: inherit;
+        width: 100%;
+    }
+
     .btm-bar .cell{
         display: flex;
         justify-content: center;
@@ -212,11 +216,6 @@ img {
 }
 
 @media only screen and (max-width: 520px){
-    .btm-bar {
-        position: inherit;
-        width: 100%;
-    }
-
     .btm-bar .grid-margin-x .grid-x {
         display: block;
         background-color: #5E0009;
