@@ -160,7 +160,8 @@ img {
 @media only screen and (max-width: 1268px){
 
     .btm-bar {
-        width: 99%;
+        position: inherit;
+        width: 100%;
     }
 
     #container{
@@ -187,11 +188,7 @@ img {
     body {
          line-height: normal; 
     }
-    
-    .btm-bar {
-        position: inherit;
-        width: 100%;
-    }
+   
 
     .btm-bar .cell{
         display: flex;
