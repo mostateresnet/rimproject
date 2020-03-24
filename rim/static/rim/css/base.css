@@ -25,11 +25,6 @@ a:hover, a:focus {
     font-size: 1.1em;
 }
 
-.btm-bar-wrapper {
-    width: 100%;
-    height: 70px;
-}
-
 button {
     outline: none; 
 }
@@ -78,7 +73,6 @@ img {
     margin-right: 7px;
     position: absolute;
     right: 0;  
-    
 }
 
 .menu a {
@@ -159,20 +153,15 @@ img {
     margin-right: 0px !important;
 }
 
-
 #topnav {
     position: relative;
 }
-#wrapper {
-    width: 100%;
-}
 
-/* Hides client and host name fields for  */
 
 @media only screen and (max-width: 1268px){
 
     .btm-bar {
-        width: 100%;
+        width: 99%;
     }
 
     #container{
@@ -225,7 +214,9 @@ img {
 @media only screen and (max-width: 520px){
     .btm-bar {
         position: inherit;
+        width: 100%;
     }
+
     .btm-bar .grid-margin-x .grid-x {
         display: block;
         background-color: #5E0009;
@@ -235,6 +226,6 @@ img {
 
 @media only screen and (min-height: 768px){
     .btm-bar {
-        height: 6vh;
+        height: 7vh;
     }
 }

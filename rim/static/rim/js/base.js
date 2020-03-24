@@ -5,6 +5,7 @@ $(document).ready(function() {
         expire_date.setTime(expire_date.getTime() + (365*24*60*60*1000))
         document.cookie = "paginate=" + per_page +";expires=" + expire_date.toUTCString() +";path=/";
     }
+    
     function hide_menu(){
         let topnav = document.getElementById("topnav");
         let style, vw;
