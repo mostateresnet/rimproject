@@ -48,8 +48,8 @@ class HomeView(PaginateMixin, ListView):
                     'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
-        self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
         default_order ='-latest_checkout__timestamp'
+        self.order = self.request.GET.get('order', default_order)
         
         if not self.order_is_valid(self.order):
             self.order = default_order
