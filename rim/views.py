@@ -1,10 +1,11 @@
 import csv
+import json
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max, Q, F, Case, When, CharField
 from django.db.models.functions import Lower
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, View
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
 from django.forms.utils import pretty_name
@@ -151,3 +152,26 @@ class ClientView(LoginRequiredMixin, DetailView):
         context['active'] = context['client'].checkout_set.filter(equipment__latest_checkout__pk=F('pk'))
         context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
+
+class CheckSerialView(View):
+    def post(self, request):
+        data = json.loads(request.POST.get('serial_nums', '[]'))
+        data = [x.upper() for x in data]
+
+        #Check the database for existing serial numbers
+        existing_serial_nums = Equipment.objects.filter(serial_no__in=data).values_list('serial_no', flat=True)
+        errors = []
+        for num in existing_serial_nums:
+            errors.append(f"Equipment with serial number '{num}' already exists.")
+        
+        #Check user input for duplicate serial numbers
+        duplicate_serial_nums = []
+        for d in data:
+            if data.count(d) > 1:
+                if d not in duplicate_serial_nums:
+                    duplicate_serial_nums.append(d)
+        for num in duplicate_serial_nums:
+            errors.append(f"Serial number '{num}' has been entered more than once")
+
+        return_data = {'context': errors}
+        return JsonResponse(return_data)
