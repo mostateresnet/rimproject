@@ -9,7 +9,6 @@
 
 {% block javascript %}
     {{ block.super }}
-    <script type='text/javascript' src='{% static "rim/js/base.js" %}'></script>
     <script type='text/javascript' src='{% static "rim/js/home.js" %}'></script>
 {% endblock %}
 
@@ -82,16 +81,14 @@
                                     {% if page_obj.has_previous %}
                                     <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a>
                                     {% endif %}
-                                         <div id="page_number">
-                                            | Page {{ page_obj.number }} | 
-                                        </div>
+                                    <div id="page_number">| Page {{ page_obj.number }} |</div>
                                     {% if page_obj.has_next %}
                                     <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
                                     {% endif %}
                                 </div>
                             {% endif %}
                         </div>
-                        <div class=' large-3 cell auto'>
+                        <div class='cell auto'>
                             <div class='paginate_by_sec'>
                                 <form id='paginate_form'>
                                     <span class='page_label'>Objects per Page</span>
