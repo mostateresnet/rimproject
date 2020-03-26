@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max, Q, F, Case, When, CharField
-from django.db.models.functions import Lower
+from django.db.models.functions import Lower, Concat
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, View
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
@@ -12,7 +12,7 @@ from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
-from rim.forms import EquipmentForm
+from rim.forms import EquipmentForm, EquipmentFormSet
 
 class PaginateMixin(object):
     def get_paginate_by(self, queryset):
