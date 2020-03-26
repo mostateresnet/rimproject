@@ -42,6 +42,10 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
             When(hostname__exact='', then='serial_no'),
             default='hostname',
             output_field=CharField(),
+        ),
+        latest_checkout__location=Concat(
+            'latest_checkout__location__building', 'latest_checkout__location__room',
+            output_field=CharField(),
         )
     )
 
