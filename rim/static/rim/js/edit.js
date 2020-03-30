@@ -10,12 +10,12 @@ $(document).ready(function() {
 
     function check_serial_nums() {
         var existing_serial_nums = [];
-        $('#serial_no_errors').remove()
         $.ajax({
             url: SERIAL_NUM_CHECK_URL,
             data: {'serial_nums': JSON.stringify($('#id_serial_no').val().trim().split('\n'))},
             type: 'POST',
             success: function(data) {
+                $('#serial_no_errors').remove()
                 $('.button').prop('disabled', false);
                 errors = data['context'];
                 if (errors.length != 0) {
