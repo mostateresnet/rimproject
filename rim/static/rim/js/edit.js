@@ -9,17 +9,14 @@ $(document).ready(function() {
     })
 
     function check_serial_nums() {
-        $('.button').prop('disabled', false);
         var existing_serial_nums = [];
         $('#serial_no_errors').remove()
-        $.ajaxSetup({
-            headers: { "X-CSRFToken": csrftoken }
-        });
         $.ajax({
             url: SERIAL_NUM_CHECK_URL,
             data: {'serial_nums': JSON.stringify($('#id_serial_no').val().trim().split('\n'))},
             type: 'POST',
             success: function(data) {
+                $('.button').prop('disabled', false);
                 errors = data['context'];
                 if (errors.length != 0) {
                     $('.button').prop('disabled', true);
