@@ -7,6 +7,14 @@
     <link rel='stylesheet' type='text/css' href='{% static "rim/css/add.css" %}'>
 {% endblock %}
 
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        var SERIAL_NUM_CHECK_URL ="{% url 'check_serial_nums' %}";
+    </script>
+    <script type='text/javascript' src='{% static "rim/js/edit.js" %}'></script>
+{% endblock %}
+
 {% block content %}
     <div class='addtitle'>
         {% if object.pk %}

@@ -19,49 +19,7 @@ $(document).ready(function() {
             window.location.reload();
         }
     })
-
-    var timer;
-    $('#id_serial_no').on('input', function(e) {
-        clearTimeout(timer)
-        timer = setTimeout(check_serial_nums, 300);
-    })
-
-    function check_serial_nums() {
-        var existing_serial_nums = [];
-        $('#serial_no_errors').remove()
-        $.ajaxSetup({
-            headers: { "X-CSRFToken": getCookie("csrftoken") }
-        });
-        $.ajax({
-            url: "/check_serial_nums/",
-            data: {'serial_nums': JSON.stringify($('#id_serial_no').val().trim().split('\n'))},
-            type: 'POST',
-            success: function(data) {
-                existing_serial_nums = data['context'];
-                if (existing_serial_nums.length != 0) {
-                    add_errors(existing_serial_nums);
-                }
-            }
-        });
-    }
-
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-        function csrfSafeMethod(method) {
+    function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
@@ -72,26 +30,22 @@ $(document).ready(function() {
             }
         }
     });
-
-    function add_errors(errors) {
-        var errorListElement = makeErrorList(errors);
-        errorListElement.classList.add('errorlist')
-        input = document.getElementById('id_serial_no');
-        
-        input.parentElement.insertBefore(errorListElement, input);
-    }
-
-    function makeErrorList(errors) {
-        var list = document.createElement('ul');
-    
-        for (var i = 0; i < errors.length; i++) {
-            var item = document.createElement('li');
-            item.appendChild(document.createTextNode(errors[i]));
-            list.appendChild(item);
-        }
-        list.classList.add('errorlist')
-        list.setAttribute('id', 'serial_no_errors')
-        return list;
-    }
-
 });
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
