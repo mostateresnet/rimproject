@@ -1,66 +1,84 @@
 {% load i18n %}
 <div class='grid-container'>
-    <div class='grid-margin-x'>
+    
         <form method=GET>
             {{ form.non_field_errors }}
-            <div class="grid-x">
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Serial Number' %}<input type='text' name='serial_no' value='{{ search_data.serial_no }}'/>
-                </div>
+           
+            <div id="search_fields">
+                <div class="grid-x" >
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
+                    </div>
 
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
-                </div>
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
+                    </div>
+                
+                
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'Equipment Model' %}<input type='text' name='equipment_model' value='{{ search_data.equipment_model }}'/>
+                    </div>
 
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Equipment Model' %}<input type='text' name='equipment_model' value='{{ search_data.equipment_model }}'/>
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'Equipment Type' %}
+                        <select name='equipment_type__type_name'>
+                            <option value=""></option>
+                            {% for type in equipment_types %}
+                                <option value="{{ type.type_name }}" {% if search_data.equipment_type__type_name == type.type_name %}selected{% endif %}>{{ type.type_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
+                
+            
+                <div class="grid-x">
 
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Equipment Type' %}
-                    <select name='equipment_type__type_name'>
-                        <option value=""></option>
-                        {% for type in equipment_types %}
-                            <option value="{{ type.type_name }}" {% if search_data.equipment_type__type_name == type.type_name %}selected{% endif %}>{{ type.type_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'MAC Address' %}<input type='text' name='mac_address' value='{{ search_data.mac_address }}'/>
+                    </div>
+                    
+                    <div class='small-auto large-3 cell'>
+                        {% trans 'Service Tag' %}<input type='text' name='service_tag' value='{{ search_data.service_tag }}'/>
+                    </div>
+                    
+                    <div class='small-auto large-2 cell'>
+                        {% trans 'Serial Number' %}<input type='text' name='serial_no' value='{{ search_data.serial_no }}'/>
+                    </div>
+
+                    <div class='small-auto large-2 cell'>
+                        {% trans 'Building' %}
+                        <select name='latest_checkout__location__building'>
+                            <option value=""></option>
+                            {% for building in buildings %}
+                                <option value="{{ building }}" {% if search_data.latest_checkout__location__building == building %}selected{% endif %}>{{ building }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class='small-auto large-2 cell'>
+                        {% trans 'Room' %}<input type='text' name='latest_checkout__location__room' value='{{ search_data.latest_checkout__location__room }}'/>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid-x">
-
-                <div class='small-3 large-3 cell'>
-                    {% trans 'MAC Address' %}<input type='text' name='mac_address' value='{{ search_data.mac_address }}'/>
-                </div>
-                
-                <div class='small-3 large-3 cell'>
-                    {% trans 'Service Tag' %}<input type='text' name='service_tag' value='{{ search_data.service_tag }}'/>
-                </div>
-                
-                <div class='small-2 large-2 cell'>
+            <div class="grid-x" id="small_screen_search_fields" >
+                <div class='small-auto large-3 cell'>
                     {% trans 'Client Name' %}<input type='text' name='latest_checkout__client__name' value='{{ search_data.latest_checkout__client__name }}'/>
                 </div>
 
-                <div class='small-2 large-2 cell'>
-                    {% trans 'Building' %}
-                    <select name='latest_checkout__location__building'>
-                        <option value=""></option>
-                        {% for building in buildings %}
-                            <option value="{{ building }}" {% if search_data.latest_checkout__location__building == building %}selected{% endif %}>{{ building }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class='small-2 large-2 cell'>
-                    {% trans 'Room' %}<input type='text' name='latest_checkout__location__room' value='{{ search_data.latest_checkout__location__room }}'/>
+                <div class='small-auto large-3 cell'>
+                    {% trans 'Hostname' %}<input type='text' name='hostname' value='{{ search_data.hostname }}'/>
                 </div>
             </div>
 
+            <div class="title-bar hide-for-large" data-responsive-toggle="search_fields" data-hide-for="large" id="search_fields_toggle_bar">
+                <button class="dropdown button tiny" type="button" data-toggle="search_fields" id="search_fields_button">More Options</button>
+             </div>
+            
             <div class='grid-x'>
-                <div class='small-3 large-3 cell'>
+                <div class='small-auto large-3 cell'>
                     <button type='submit' class='button'>{% trans 'Search' %}</button>
                 </div>
             </div>
         </form>
-    </div>
 </div>

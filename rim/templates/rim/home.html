@@ -7,10 +7,16 @@
     <link rel='stylesheet' type='text/css' href='{% static "rim/css/home.css" %}'>
 {% endblock %}
 
+{% block javascript %}
+    {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/home.js" %}'></script>
+{% endblock %}
+
 {% block content %}
+
     <div class='equipment-table'>
         {% include 'rim/includes/search.html' %}
-        <table>
+        <table class="responsive">
             <thead>
                 <tr>
                     <th>
@@ -57,37 +63,37 @@
                         <td>{{ e.latest_checkout.client.name }}</td>
                         <td>{{ e.latest_checkout.location }}</td>
                     </tr>
-                    {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
         <div class='btm-bar-wrapper'>
             <div class='expanded align-center nav btm-bar'>
                 <div class='grid-margin-x'>
                     <div class='grid-x'>
-                        <div class='small-3 large-3 cell'>
-                            <div class='export_button'>
+                        <div class='large-3 cell auto show-for-medium'>
+                            <button class='export_button'>
                                 <a class='button' href='{% url "export" %}?{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Export CSV</a>
-                            </div>
+                            </button>
                         </div>
-                        <div class='small-6 large-6 cell'>
+                        <div class='cell auto'>
                             {% if is_paginated %}
                                 <div class='page_nav'>
                                     {% if page_obj.has_previous %}
-                                        <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a> |
+                                        <a class='page_link' href='?page={{ page_obj.previous_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Previous</a>
                                     {% endif %}
-                                    Page {{ page_obj.number }}
+                                        <div id="page_number">| Page {{ page_obj.number }} |</div>
                                     {% if page_obj.has_next %}
-                                         | <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
+                                        <a class='page_link' href='?page={{ page_obj.next_page_number }}&amp;{{ search_data.urlencode }}&amp;order={% if current_order_desc %}-{% endif %}{{ current_ordering_name }}'>Next</a>
                                     {% endif %}
                                 </div>
                             {% endif %}
                         </div>
-                        <div class='small-3 large-3 cell'>
+                        <div class='cell auto'>
                             <div class='paginate_by_sec'>
                                 <form id='paginate_form'>
                                     <span class='page_label'>Objects per Page</span>
                                     <input id='page_input' class='page_input' type='text' name='paginate_by' value='{{ paginator.per_page }}'/>
-                                    <input type='submit' id='page_submit' class='button page_button' value='Submit'/>
+                                    <button type='submit' id='page_submit' class='button page_button' value='Submit'>Submit</button>
                                 </form>
                             </div>
                         </div>
