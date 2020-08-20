@@ -53,11 +53,28 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
                     'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
-        self.order = self.request.GET.get('order', '-latest_checkout__timestamp')
+        default_order ='-latest_checkout__timestamp'
+        self.order = self.request.GET.get('order', default_order)
+        
+        if not self.order_is_valid(self.order):
+            self.order = default_order
+            
         if self.order[0] == '-':
             return [Lower(self.order[1:]).desc()]
         else:
             return [Lower(self.order).asc()]
+    
+    @staticmethod
+    def order_is_valid(order):
+        valid_sorts = ['latest_checkout__timestamp', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model', 
+                        'latest_checkout__client__name', 'latest_checkout__location']
+        if order[0] == '-':
+            if order[1:] not in valid_sorts:
+                return False
+        else:
+            if order not in valid_sorts:
+                return False
+        return True
 
     def get(self, request, *args, **kwargs):
         if self.export_csv:
