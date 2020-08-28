@@ -18,7 +18,7 @@ class TestHttpResponse(TestCase):
                 return key
 
     # test_http_response iterates through the pages and checks if all pages all returning HTTP 200(OK) 
-    # response, otherwise the test will be failed and the name of the faulty page will be printed to the console
+    # response, otherwise the test will be failed and the name/returned code of the faulty page will be printed to the console
     # and a ConnectionError will be raised
     def test_http_response(self):
         client = Client()
