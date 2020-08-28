@@ -30,7 +30,7 @@ class TestHttpResponse(TestCase):
             except AssertionError as e:
                 passedFlag = False
                 currentUrlKey = self.get_key(url)
-                e = "The " + currentUrlKey + " page did not return a valid HTTP 200(OK) response"
+                e = "The " + currentUrlKey + " page returned " + str(response.status_code) + " (expected 200)"
                 print('\n' + e)
         if (not passedFlag):
             raise ConnectionError
