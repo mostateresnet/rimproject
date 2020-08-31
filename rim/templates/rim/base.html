@@ -27,10 +27,10 @@
                 {% block header %}
                     <div class='nav' id="topnav">
                         {% if request.user.is_authenticated %}
-                            <div class='logout'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
+                            <div class='logout'><a class ="button" href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
                         {% endif %}
                         <div id='title'>RIM</div>
-                        {% if request.user.is_authenticated %}  
+                        {% if request.user.is_authenticated %}
                         <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="large">
                             <div class="title-bar-title">Menu</div>
                             <button class="menu-icon" type="button" data-toggle="nav_menu"></button>
