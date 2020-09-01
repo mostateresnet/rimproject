@@ -27,7 +27,7 @@ a:hover, a:focus {
 
 button {
     outline: none;
-} 
+}
 
 .button {
     background-color: #6BA4B8;
@@ -123,7 +123,7 @@ img {
     align-self: flex-end;
 }
 
-.page_button, .export_button,{
+.page_button, .export_button {
     margin-top: .5em;
     margin-left: 1em;
 }
