@@ -1,15 +1,27 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
+from django.contrib.auth.models import AnonymousUser, User
+from django.urls import reverse
+from rim import urls
 
 # Create your tests here.
 class TestHttpResponse(TestCase):
-    # Url dictionary to hold names for existing rim web pages, add as neccessary 
-    urlDictionary = {
-        "Admin Panel": '/admin/',
-        "Home": '/',
-        "Add": '/add/',
-        "Edit": '/edit/1',
-        "Client": '/client/1'
-    }
+    def setUp(self):
+        # Url dictionary to hold names for existing rim web pages, add as neccessary 
+        urlDictionary = {
+            "Home": reverse('home'),
+            "Add": reverse('add'),
+            "Edit": reverse('edit', args = [1]),
+            "Client": reverse('client', args = [1]),
+            "Client List": reverse('client_list')
+        }
+        self.urlDictionary = urlDictionary
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(
+            username='test', email='', password='test')
+        c = Client()
+        c.login(username='test', password='test')
+    
+
 
     # get_key looks up they key in urlDictionary based on the provided value
     def get_key(self, val):
