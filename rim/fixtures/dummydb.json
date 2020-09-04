@@ -1,0 +1,80 @@
+[
+    {
+      "model": "contenttypes.contenttype",
+      "pk": 1,
+      "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+      }
+    },
+    {
+        "model": "rim.equipment",
+        "pk": 1,
+        "fields": {
+          "serial_no": "bNUeA5LEN8Ui",
+          "hostname": "",
+          "equipment_model": "BW-20",
+          "equipment_type": 1,
+          "count": 1,
+          "manufacturer": "ABS Computer Technologies",
+          "service_tag": "2086206-9",
+          "smsu_tag": "M71459677-1",
+          "cpu": "i7",
+          "optical_drive": "DVD-RW",
+          "size": "11.8in",
+          "memory": "8GB",
+          "other_connectivity": "Bluetooth Wifi",
+          "hard_drive": "256GB",
+          "usb_ports": 4,
+          "video_card": "1050",
+          "removable_media": "SD",
+          "mac_address": "A9:CB:52:CE:F7:E7",
+          "purchase_price": "949.27",
+          "purchase_info": "Bookstore",
+          "latest_checkout": 1
+        }
+      },
+      {
+        "model": "rim.equipmenttype",
+        "pk": 1,
+        "fields": {
+          "type_name": "Laptop"
+        }
+      },
+      {
+        "model": "rim.checkout",
+        "pk": 1,
+        "fields": {
+          "client": 1,
+          "timestamp": "2018-05-25T00:33:41Z",
+          "location": 1,
+          "equipment": 1
+        }
+      },
+      {
+        "model": "rim.location",
+        "pk": 1,
+        "fields": {
+          "building": "Blair",
+          "room": "522"
+        }
+      },
+      {
+        "model": "rim.client",
+        "pk": 1,
+        "fields": {
+          "name": "Rodney Brown",
+          "bpn": "M99278791",
+          "note": "Test Account"
+        }
+      },
+      {
+        "model": "auth.permission",
+        "pk": 1,
+        "fields": {
+          "name": "Can add log entry",
+          "content_type": 1,
+          "codename": "add_logentry"
+        }
+      }
+]

@@ -5,7 +5,9 @@ from rim import urls
 
 # Create your tests here.
 class TestHttpResponse(TestCase):
+    fixtures = ['dummydb.json']
     def setUp(self):
+        
         # Url dictionary to hold names for existing rim web pages, add as neccessary 
         urlDictionary = {
             "Home": reverse('home'),
@@ -20,6 +22,7 @@ class TestHttpResponse(TestCase):
             username='test', email='', password='test')
         c = Client()
         c.login(username='test', password='test')
+
     
 
 
