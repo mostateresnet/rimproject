@@ -12,7 +12,7 @@ a:hover, a:focus {
     color: #6BA4B8;
 }
 
-.btm-bar .grid-margin-x .grid-x .cell, .page_nav {       
+.btm-bar .grid-margin-x .grid-x .cell, .page_nav {
     display: flex;
     justify-content: center;
 }
@@ -26,11 +26,11 @@ a:hover, a:focus {
 }
 
 button {
-    outline: none; 
+    outline: none;
 }
 
 .button {
-    background-color: #6BA4B8;   
+    background-color: #6BA4B8;
 }
 
 .button:hover, .button:focus {
@@ -68,10 +68,10 @@ img {
 }
 
 .logout {
-    margin-top: 5px;
-    margin-right: 7px;
+    margin-top: .5em;
+    margin-right: .5em;
     position: absolute;
-    right: 0;  
+    right: 0;
 }
 
 .menu a {
@@ -89,7 +89,7 @@ img {
     cursor: pointer;
 }
 
-.nav, .title-bar,.is-drilldown ul li a, .logout a, #search_fields_button {
+.nav, .title-bar,.is-drilldown ul li a, #search_fields_button {
     background-color: #5E0009;
     color: white;
     font-family: freight-text-pro, serif;
@@ -186,9 +186,9 @@ img {
 @media only screen and (max-width: 769px){
 
     body {
-         line-height: normal; 
+         line-height: normal;
     }
-   
+
 
     .btm-bar .cell{
         display: flex;
@@ -209,7 +209,7 @@ img {
         font-family: freight-text-pro, serif;
         font-size: 9vw;
     }
-    
+
 }
 
 @media only screen and (max-width: 520px){
@@ -217,7 +217,7 @@ img {
         display: block;
         background-color: #5E0009;
     }
-    
+
 }
 
 @media only screen and (min-height: 768px){

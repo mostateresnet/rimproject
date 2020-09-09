@@ -8,7 +8,7 @@
     {% block css %}
         <link rel='stylesheet' type='text/css' href='{% static "rim/css/foundation/foundation.min.css" %}'>
         <link rel='stylesheet' type='text/css' href='{% static "rim/css/base.css" %}'>
-        <link rel="stylesheet" type="text/css" href='{% static "rim/css/foundation/responsive-tables.css" %}'>
+        <link rel='stylesheet' type='text/css' href='{% static "rim/css/foundation/responsive-tables.css" %}'>
     {% endblock %}
     {% block javascript %}
         <script type='text/javascript' src='{% static "rim/js/libraries/jquery.min.js" %}'></script>
@@ -25,12 +25,12 @@
         <div id='container'>
             {% block body %}
                 {% block header %}
-                    <div class='nav' id="topnav">
+                    <div class="nav" id="topnav">
                         {% if request.user.is_authenticated %}
-                            <div class='logout'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
+                            <div class="logout show-for-medium"><a class="button" href="{% url 'logout' %}">{% trans 'Log Out' %}</a></div>
                         {% endif %}
                         <div id='title'>RIM</div>
-                        {% if request.user.is_authenticated %}  
+                        {% if request.user.is_authenticated %}
                         <div class="title-bar" data-responsive-toggle="nav_menu" data-hide-for="large">
                             <div class="title-bar-title">Menu</div>
                             <button class="menu-icon" type="button" data-toggle="nav_menu"></button>
@@ -40,6 +40,7 @@
                                 <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
                                 <li><a href="{% url 'add' %}">{% trans 'Add' %}</a></li>
                                 <li><a href="{% url 'client_list' %}">{% trans 'Clients' %}</a></li>
+                                <li class='show-for-small-only'><a href="{% url 'logout' %}">{% trans 'Log Out' %}</a></li>
                             </ul>
                         </div>
                         {% endif %}
