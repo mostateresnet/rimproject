@@ -2,7 +2,7 @@ Steps to get started:
 1. Install `Python` if not yet installed.
 2. Install `pip` if not yet installed.
 3. Install `pipenv` if not yet installed.
-4. Create and launch a virtual environment <br/>
+4. Create and launch a virtual environment. <br/>
 <tab/>To launch a virtual environment for the project follow these steps:
     1. Open the project folder and run `pipenv install` to create a new environment and install all dependencies.
     2. Run `pipenv shell` to switch to the environment we have just created.
