@@ -1,5 +1,5 @@
 ********************************************************************************
-A: verify that you have json installed
+A:  Verify that you have json installed
 
 B:  To create the files of data to populate the database with you need to run a
     few scripts to create the files. If you have already created the files then
