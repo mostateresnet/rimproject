@@ -1,16 +1,16 @@
 Steps to get started:
-    1. Install Python if not yet installed.
-    2. Install `pip` if not yet installed.
-    3. Install `pipenv` if not yet installed.
-    4. Create and launch a virtual environment
-        To launch a virtual environment for the project follow these steps:
-        4.1 Open the project folder and run `pipenv install` to create a new environment and install all dependencies.
-        4.2 Run `pipenv shell` to switch to the environment we have just created.
-    5. Migrate using `python manage.py migrate` command.
-    6. Populate the RIM database using `python manage.py populate` command (for additional info refer to `./populationfolders/readme.md`).
-    7. Create a local super user to login into the RIM web interface using `python manage.py createsuperuser` command. Follow instructions in the CLI.
-    8. Run `python manage.py runserver` to run the  server.
-    9. Access the server by going to [localhost:8000](http://localhost:8000) using your browser.
+1. Install `Python` if not yet installed.
+2. Install `pip` if not yet installed.
+3. Install `pipenv` if not yet installed.
+4. Create and launch a virtual environment
+    To launch a virtual environment for the project follow these steps:
+    1. Open the project folder and run `pipenv install` to create a new environment and install all dependencies.
+    2. Run `pipenv shell` to switch to the environment we have just created.
+5. Migrate using `python manage.py migrate` command.
+6. Populate the RIM database using `python manage.py populate` command (for additional info refer to `./populationfolders/readme.md`).
+7. Create a local super user to login into the RIM web interface using `python manage.py createsuperuser` command. Follow instructions in the CLI.
+8. Run `python manage.py runserver` to run the  server.
+9. Access the server by going to [localhost:8000](http://localhost:8000) using your browser.
 
 
 Useful info and commands:
