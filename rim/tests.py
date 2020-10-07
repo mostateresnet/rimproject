@@ -20,8 +20,7 @@ class TestHttpResponse(TestCase):
         self.factory = RequestFactory()
         self.user = User.objects.create_user(
             username='test', email='', password='test')
-        self.c = Client()
-        self.c.login(username='test', password='test')
+        self.client.login(username='test', password='test')
 
 
     # get_key looks up they key in urlDictionary based on the provided value
@@ -33,11 +32,10 @@ class TestHttpResponse(TestCase):
     # test_http_response iterates through the pages and checks if all pages all returning HTTP 200(OK) 
     # response. If the test doesn't pass it returns the response code and the name of the page that returned it.
     def test_http_response(self):
-        passedFlag = True
-        for url in self.urlDictionary.values():
-            response = self.c.get(url, follow=True)
+        for name, url in self.urlDictionary.items():
+            response = self.client.get(url, follow=True)
             expected_url = url
-            self.assertEqual(response.status_code, 200, 'The %s page returned %d (expected 200)' % (self.get_key(url), response.status_code))
+            self.assertEqual(response.status_code, 200, 'The %s page returned %d (expected 200)' % (url, response.status_code))
 #End of TestHttpResponse class
         
 
