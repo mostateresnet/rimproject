@@ -22,20 +22,12 @@ class TestHttpResponse(TestCase):
             username='test', email='', password='test')
         self.client.login(username='test', password='test')
 
-
-    # get_key looks up they key in urlDictionary based on the provided value
-    def get_key(self, val):
-        for key, value in self.urlDictionary.items():
-            if val == value:
-                return key
-
     # test_http_response iterates through the pages and checks if all pages all returning HTTP 200(OK) 
-    # response. If the test doesn't pass it returns the response code and the name of the page that returned it.
+    # response. If the test doesn't pass it returns the name, address, and response code of the page that returned it.
     def test_http_response(self):
         for name, url in self.urlDictionary.items():
             response = self.client.get(url, follow=True)
-            expected_url = url
-            self.assertEqual(response.status_code, 200, 'The %s page returned %d (expected 200)' % (url, response.status_code))
+            self.assertEqual(response.status_code, 200, 'The %s page at %s returned %d (expected 200)' % (name, url, response.status_code))
 #End of TestHttpResponse class
         
 
