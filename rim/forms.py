@@ -26,7 +26,7 @@ class EquipmentForm(forms.ModelForm):
 
     def clean_serial_no(self):
         data = self.cleaned_data['serial_no']
-
+        data = data.upper()
         if self.instance._state.adding:
             # "Add" page allows bulk serial numbers
             data = set(x for x in data.splitlines() if x)

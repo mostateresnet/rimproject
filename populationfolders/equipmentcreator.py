@@ -30,7 +30,7 @@ def EquipmentCreator():
     savef = open('equipmentlist.txt', 'w')
 
     # create lists to hold the various sections of the equipment dict.
-    serials = []
+    serials = set()
     models = []
     types = ["Desktop", "Laptop", "Tablet"]
     count = 1
@@ -55,7 +55,7 @@ def EquipmentCreator():
     for serial in serialf:
         serial = serial.rstrip('\"\r\n')
         serial = serial.lstrip('\"')
-        serials.append(serial)
+        serials.add(serial.upper())
 
     for model in modelf:
         model = model.rstrip()
@@ -87,7 +87,7 @@ def EquipmentCreator():
     # create the dictionary rows in the equipmentlist
     for i in range(looplen):
         equipdict = {
-            "serial_no": serials[i],
+            "serial_no": serials.pop(),
             'equipment_model': models[i],
             'equipment_type': types[random.randint(0, 2)],
             'count': count,

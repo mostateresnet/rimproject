@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator, MinValueValidator
 from django.utils.translation import ugettext_lazy as _
 
 class Equipment(models.Model):
-    serial_no = models.CharField(max_length=100, verbose_name='Serial number')
+    serial_no = models.CharField(max_length=100, verbose_name='Serial number', unique=True)
     hostname = models.CharField(max_length=100, blank=True)
     equipment_model = models.CharField(max_length=30)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE)
