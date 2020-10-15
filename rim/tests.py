@@ -8,7 +8,7 @@ class TestHttpResponse(TestCase):
     fixtures = ['dummydb.json']
     def setUp(self):
         
-        # Url dictionary to hold names for existing rim web pages, add as neccessary 
+        # Url dictionary to hold names and addresses for existing rim web pages, add as neccessary 
         self.urlDictionary = {
             "Home": reverse('home'),
             "Add": reverse('add'),
