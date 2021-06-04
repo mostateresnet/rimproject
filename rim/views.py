@@ -209,7 +209,8 @@ class CheckSerialView(LoginRequiredMixin, View):
         data = json.loads(request.POST.get('serial_nums', '[]'))
         data = [x.upper() for x in data]
 
-        #Check the database for existing serial numbers existing_serial_nums = Equipment.objects.filter(serial_no__in=data).values_list('serial_no', flat=True)
+        #Check the database for existing serial numbers
+        existing_serial_nums = Equipment.objects.filter(serial_no__in=data).values_list('serial_no', flat=True)
         errors = []
         for num in existing_serial_nums:
             errors.append(f"Equipment with serial number '{num}' already exists.")
