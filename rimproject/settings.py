@@ -33,6 +33,8 @@ LOGOUT_URL = reverse_lazy('logout')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '&%n!h^i(d32o8$m57bsdiac1+x4#!&gajktv6(5voo^wf*u8ss'
 
+API_SECRET = 'test_secret_key'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -48,7 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'rim',
+    'rimapi'
 ]
 
 MIDDLEWARE = [
@@ -110,6 +114,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 
 # Internationalization
