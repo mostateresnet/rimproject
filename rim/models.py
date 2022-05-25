@@ -17,7 +17,7 @@ class Equipment(models.Model):
     cpu = models.CharField(max_length=64, blank=True, verbose_name='CPU')
     optical_drive = models.CharField(max_length=30, blank=True)
     size = models.CharField(max_length=10, blank=True)
-    memory = models.CharField(max_length=10, blank=True)
+    memory = models.CharField(max_length=255, blank=True)
     other_connectivity = models.CharField(max_length=30, blank=True)
     storage = models.JSONField(blank=True, default=list)
     usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports', validators=[MinValueValidator(0)])
@@ -35,7 +35,7 @@ class Equipment(models.Model):
         return '%s' % (self.equipment_model)
 
 class EquipmentType(models.Model):
-    type_name = models.CharField(max_length=30, verbose_name='Equipment Type',)
+    type_name = models.CharField(max_length=30, verbose_name='Equipment Type', unique=True)
 
     def __str__(self):
         return '%s' % (self.type_name)

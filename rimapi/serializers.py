@@ -15,11 +15,12 @@ class EquipmentSerializer(serializers.ModelSerializer):
     Serial = serializers.CharField(max_length=100, source='serial_no')
     Storage = serializers.JSONField(required=False, source='storage')
     Users = serializers.JSONField(required=False, source='users_info')
-    equipment_type = serializers.PrimaryKeyRelatedField(queryset=EquipmentType.objects.all())
+    EquipmentType = serializers.SlugRelatedField(queryset=EquipmentType.objects.all(), slug_field='type_name', required=False, allow_null=True, source='equipment_type')
 
     class Meta:
         model = Equipment
-        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'equipment_type')
+        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType')
+
 
 class ApiErrorSerializer(serializers.ModelSerializer):
     class Meta:
