@@ -11,7 +11,7 @@ class EquipmentSerializer(serializers.ModelSerializer):
     Manufacturer = serializers.CharField(max_length=30, required=False, source='manufacturer')
     Model = serializers.CharField(max_length=30, source='equipment_model')
     NICs = serializers.JSONField(required=False, source='network_cards')
-    RAM = serializers.CharField(max_length=10, required=False, source='memory')
+    RAM = serializers.CharField(max_length=255, required=False, source='memory')
     Serial = serializers.CharField(max_length=100, source='serial_no')
     Storage = serializers.JSONField(required=False, source='storage')
     Users = serializers.JSONField(required=False, source='users_info')

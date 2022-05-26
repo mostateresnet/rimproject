@@ -12,6 +12,6 @@ def get_client_ip(request):
     return ip
 
 def validate_req_hash(data, key):
-    if all (k in data for k in ('hash', key)) and not ('' == data['hash'] == data[key]) and data['hash'].lower() == sha256((str(data[key]) + API_SECRET).encode('utf-8')).hexdigest():
+    if data.get(key) and data.get('hash') and data['hash'].lower() == sha256((str(data[key]) + API_SECRET).encode('utf-8')).hexdigest():
         return True
     return False
