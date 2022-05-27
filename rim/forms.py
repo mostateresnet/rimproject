@@ -14,7 +14,7 @@ class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        exclude = ['latest_checkout']
+        exclude = ['latest_checkout', 'storage', 'GPU', 'network_cards', 'displays', 'users_info']
 
     def __init__(self, *args, **kwargs):
         super(EquipmentForm, self).__init__(*args, **kwargs)
