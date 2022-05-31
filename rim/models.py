@@ -34,6 +34,10 @@ class Equipment(models.Model):
     def __str__(self):
         return '%s' % (self.equipment_model)
 
+    def save(self, *args, **kwargs):
+        self.serial_no = self.serial_no.upper()
+        super(Equipment, self).save(*args, **kwargs)
+
 class EquipmentType(models.Model):
     type_name = models.CharField(max_length=30, verbose_name='Equipment Type', unique=True)
 
