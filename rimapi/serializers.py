@@ -17,6 +17,9 @@ class EquipmentSerializer(serializers.ModelSerializer):
     Users = serializers.JSONField(required=False, source='users_info')
     EquipmentType = serializers.SlugRelatedField(queryset=EquipmentType.objects.all(), slug_field='type_name', required=False, allow_null=True, source='equipment_type')
 
+    def validate_Serial(self, value):
+        return value.upper()
+
     class Meta:
         model = Equipment
         fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType')
