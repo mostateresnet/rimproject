@@ -3,59 +3,97 @@
 {% load i18n %}
 
 {% block css %}
-    {{ block.super }}
-    <link rel='stylesheet' type='text/css' href='{% static "rim/css/add.css" %}'>
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "rim/css/add.css" %}'>
 {% endblock %}
 
 {% block javascript %}
-    {{ block.super }}
-    <script>
-        var SERIAL_NUM_CHECK_URL ="{% url 'check_serial_nums' %}";
-    </script>
-    <script type='text/javascript' src='{% static "rim/js/edit.js" %}'></script>
+{{ block.super }}
+<script>
+    var SERIAL_NUM_CHECK_URL = "{% url 'check_serial_nums' %}";
+    var json_fields = JSON.parse(unescape('{{form.json_fields.value | safe}}'));
+</script>
+<script type='text/javascript' src='{% static "rim/js/edit.js" %}'></script>
+<script type="text/javascript" src='{% static "rim/js/dynamic_fields.js" %}'>
+</script>
 {% endblock %}
 
 {% block content %}
-    <div class='add_title'>
-        {% if object.pk %}
-            {% blocktrans with equipment_name=equipment|stringformat:'s' %}
-                Edit {{ equipment_name }}
-            {% endblocktrans %}
-        {% else %}
-            {% trans 'Add an item' %}
-        {% endif %}
-    </div>
-    <div class='addform'>
-        <form method=POST class='addform'> {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="grid-x">
-                {% with form.visible_fields|first as field %}
-                    <div class='cell-block-y large-3 addcell cell {% if field.field.required %}required{% endif %}'>
+<div class='add_title'>
+    {% if object.pk %}
+    {% blocktrans with equipment_name=equipment|stringformat:'s' %}
+    Edit {{ equipment_name }}
+    {% endblocktrans %}
+    {% else %}
+    {% trans 'Add an item' %}
+    {% endif %}
+</div>
+<div class='addform'>
+    <form method=POST class='addform' name="add_edit_form"> {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="grid-x">
+            {% with form.visible_fields|first as field %}
+            <div class='cell-block-y large-3 addcell cell {% if field.field.required %}required{% endif %}'>
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {{ field }}
+            </div>
+            {% endwith %}
+            <div class="cell large-9 cell-block-y">
+                <div class="grid-x">
+                    {% for field in form.visible_fields|slice:"1:" %}
+                    <div class='small-4 large-4 addcell cell {% if field.field.required %}required{% endif %}'>
                         {{ field.label_tag }}
                         {{ field.errors }}
                         {{ field }}
                     </div>
-                {% endwith %}
-                <div class="cell large-9 cell-block-y">
-                    <div class="grid-x">
-                        {% for field in form.visible_fields|slice:"1:" %}
-                            <div class='small-4 large-4 addcell cell {% if field.field.required %}required{% endif %}'>
-                                {{ field.label_tag }}
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
-                            {% if not forloop.first and not forloop.last and forloop.counter|divisibleby:3 %}
-                                </div><div class="grid-x">
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% if not forloop.first and not forloop.last and forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="grid-x">
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-            <div class='grid-x'>
-                <div class='small-3 large-3 cell'>
-                    <button type='submit' class='button' id="submit_button">{% trans 'Submit' %}</button>
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+
+        </div>
+        <div class='cell large-9 cell-block-y'>
+            <div class="cell cell-block-y">
+                <div class="grid-x" id="display_inputs">
+
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="cell cell-block-y">
+                <div class="grid-x" id="storage_inputs">
+
+                </div>
+            </div>
+            <div class="cell cell-block-y">
+                <div class="grid-x" id="gpu_inputs">
+
+                </div>
+            </div>
+            <div class="cell cell-block-y">
+                <div class="grid-x" id="nic_inputs">
+
+                </div>
+            </div>
+            <div class="grid-x" style="justify-content: center;">
+                <button type="button" class="button" onclick="addInputs('display')">Add Display</button>
+                <button type="button" class="button" onclick="addInputs('storage')">Add Storage</button>
+                <button type="button" class="button" onclick="addInputs('gpu')">Add GPU</button>
+                <button type="button" class="button" onclick="addInputs('nic')">Add NIC</button>
+
+            </div>
+        </div>
+
+        <div class='grid-x'>
+            <div class='small-3 large-3 cell'>
+                <button type='button' class='button' id="submit_button" onclick="submitAddEditForm()">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -20,7 +20,6 @@ class Equipment(models.Model):
     memory = models.CharField(max_length=255, blank=True)
     other_connectivity = models.CharField(max_length=30, blank=True)
     storage = models.JSONField(blank=True, default=list)
-    usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports', validators=[MinValueValidator(0)])
     GPU = models.JSONField(blank=True, default=list)
     network_cards = models.JSONField(blank=True, default=list)
     displays = models.JSONField(blank=True, default=list)
