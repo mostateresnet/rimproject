@@ -11,7 +11,7 @@
 {{ block.super }}
 <script>
     var SERIAL_NUM_CHECK_URL = "{% url 'check_serial_nums' %}";
-    var json_fields = JSON.parse(unescape('{{form.json_fields.value | safe}}'));
+    var json_fields = JSON.parse(unescape(`{{form.json_fields.value | safe}}`));
 </script>
 <script type='text/javascript' src='{% static "rim/js/edit.js" %}'></script>
 <script type="text/javascript" src='{% static "rim/js/dynamic_fields.js" %}'>
@@ -81,17 +81,17 @@
                 </div>
             </div>
             <div class="grid-x" style="justify-content: center;">
-                <button type="button" class="button" onclick="addInputs('display')">Add Display</button>
-                <button type="button" class="button" onclick="addInputs('storage')">Add Storage</button>
-                <button type="button" class="button" onclick="addInputs('gpu')">Add GPU</button>
-                <button type="button" class="button" onclick="addInputs('nic')">Add NIC</button>
+                <button type="button" class="button" onclick="addInputs('display')">{% trans 'Add Display' %}</button>
+                <button type="button" class="button" onclick="addInputs('storage')">{% trans 'Add Storage' %}</button>
+                <button type="button" class="button" onclick="addInputs('gpu')">{% trans 'Add GPU' %}</button>
+                <button type="button" class="button" onclick="addInputs('nic')">{% trans 'Add NIC' %}</button>
 
             </div>
         </div>
 
         <div class='grid-x'>
             <div class='small-3 large-3 cell'>
-                <button type='button' class='button' id="submit_button" onclick="submitAddEditForm()">Submit</button>
+                <button type='button' class='button' id="submit_button" onclick="submitAddEditForm()">{% trans 'Submit' %}</button>
             </div>
         </div>
     </form>

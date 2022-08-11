@@ -16,7 +16,6 @@ class EquipmentForm(forms.ModelForm):
         self.fields['purchase_price'].widget.attrs['min'] = 0
         self.fields['json_fields'].initial = json.dumps(
             {"storage": self.instance.storage, "GPU": self.instance.GPU, "network_cards": self.instance.network_cards, "displays": self.instance.displays})
-
         if self.instance._state.adding:
             # "Add" page allows bulk serial numbers
             self.fields['serial_no'].widget = forms.Textarea()
