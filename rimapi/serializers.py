@@ -1,4 +1,3 @@
-from re import search
 from rest_framework import serializers
 from rim.models import Equipment, EquipmentType
 from .models import ApiError
