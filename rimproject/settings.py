@@ -144,6 +144,6 @@ STATIC_URL = '/static/'
 
 # override settings with settings_local
 try:
-    from keyformproject.settings_local import *  # pylint: disable=wildcard-import,unused-wildcard-import,wrong-import-position
+    from rimproject.settings_local import *  # pylint: disable=wildcard-import,unused-wildcard-import,wrong-import-position
 except ImportError:
     pass
