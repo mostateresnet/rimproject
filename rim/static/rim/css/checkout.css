@@ -1,0 +1,78 @@
+/*.focused {
+    background-color: #BFCED6;
+}*/
+
+[type='text']:focus {
+    border: 2px solid #A4D65E;
+}
+
+.client {
+    counter-reset: row_num;
+}
+
+.client .counter {
+    counter-increment: row_num;
+}
+
+.client .counter:before {
+    content: counter(row_num);
+    padding-right: 1rem;
+    float: right;
+}
+
+.copyable input[type=text], .copyable .delete {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.textarea {
+    resize: none;
+    width: 98%;
+    overflow: hidden;
+    height: 2.475rem;
+    min-height: 0px;
+    white-space: nowrap;
+}
+
+.duplicate, .duplicate:focus {
+    background-color: #EB002B;
+}
+.grid-x, .grid-padding-x {
+    padding-right: 1rem;
+}
+
+.large-3.cell.copyable.client{
+    padding-left: 2rem;
+}
+#client_col{
+    padding-left: 1rem;
+}
+#btn_reset{
+    color: black;
+    background-color: white;
+}
+#btn_reset:hover, .button:focus {
+    background-color: #EB002B;
+}
+
+.btm-bar {
+    position: fixed;
+    bottom: 0;
+    width: 70%;
+    height: 5%;
+}
+
+.btm-bar-wrapper {
+    width: 100%;
+    height: 70px;
+}
+.submit_button {
+    padding-left: 35%;
+    padding-right: 10%;
+    padding-top: .5em;
+}
+.reset_button {
+    padding-left: 10%;
+    padding-right: 35%;
+    padding-top: .5em;
+}

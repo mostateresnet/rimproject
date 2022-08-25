@@ -1,0 +1,101 @@
+{% extends "rim/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/checkout.js" %}'></script>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/checkout.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div class="grid-x grid-padding-x grid-padding-y align-center">
+        <div class="large-3 text-center cell">
+            <input type="radio" checked=checked name="checkform" id="checkout"><label for="checkout">Checkout</label>
+            <input type="radio" name="checkform" id="checkin"><label for="checkin">Check-In</label>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-3 cell copyable client" id = "client">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Client</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="client_clone" type="checkbox"><label for="client_clone">Copy</label>
+                    
+                </div>
+            </div>
+            <div class="grid-x input_container">
+                <div class="small-1 cell counter">
+                </div>
+                <div class='small-11 cell'>
+                    <textarea class = 'textarea' type="text" placeholder="{% trans 'Name or M-Number' %}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="large-3 cell copyable barcode" id = "barcode">
+            <h3>Barcodes</h3>
+            <div class="grid-x align-middle input_container">
+                <div class="cell">
+                    <textarea  class = 'textarea' type="text" placeholder="{% trans 'Barcodes' %}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="large-3 cell copyable location building" id = "building">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Building</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="building_clone" type="checkbox"><label for="building_clone">Copy?</label>
+                </div>
+            </div>
+            <div class="input_container">
+                <textarea class = 'textarea' type="text" placeholder="{% trans 'Building' %}"></textarea>
+            </div>
+        </div>
+        <div class="large-3 cell copyable location room" id = "room">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Room</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="room_clone" type="checkbox"><label for="room_clone">Copy?</label>
+                </div>
+            </div>
+            <div class="grid-x align-middle input_container">
+                <div class="small-11 cell">
+                    <textarea class = 'textarea'  type="text" placeholder="{% trans 'Room Number' %}"></textarea>
+                </div>
+                <div class="small-1 cell">
+                    <button class="button small delete">&cross;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='btm-bar-wrapper'>
+                <div class='expanded align-center nav btm-bar'>
+                    <div class='grid-margin-x'>
+                        <div class='grid-x'>
+                            <div class='small-3 large-3 cell'>
+                                <div class='submit_button'>
+                                    <button type='submit' id = "btn_submit" class='button expanded'>{% trans 'Submit' %}</button>
+                                </div>
+                            </div>
+                            <div class='small-6 large-6 cell'>
+                            </div>
+                            <div class='small-3 large-3 cell'>
+                                <div class='reset_button'>
+                                    <button type='reset' id = "btn_reset" class='button expanded'>{% trans 'Clear Form' %}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

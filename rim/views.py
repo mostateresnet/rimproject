@@ -163,6 +163,37 @@ class EditEquipmentView(LoginRequiredMixin, UpdateView):
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
+class CheckoutView(LoginRequiredMixin, CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
+
+    def post(self, request, *args, **kwargs):
+        try:
+            from django_rms.models import RmsrealRmgtTBuildings, RmsrealRmgtTRoomPerson
+        except ImportError:
+            raise Http404('RMS is not installed')
+
+        # just assume they're m-numbers for now
+        m_numbers = [q.upper().strip() for q in request.POST.getlist('queries[]')]
+
+        # keep track of which row was queried
+        queried_rows = request.POST.getlist('queried_rows[]')
+
+        results = dict(RmsrealRmgtTRoomPerson.objects.filter(ck_rms_id__rmsrealppletstudentprofile__ix_student_number__in=m_numbers, ck_move_in_date__lte=now(), room_person_move_out_date__gte=now()).values_list('ck_rms_id__rmsrealppletstudentprofile__ix_student_number', 'ck_bed_space_id'))
+        building_names = dict(RmsrealRmgtTBuildings.objects.values_list('pk_building_id', 'buildings_name'))
+        response = {}
+        for m_number, queried_row in zip(m_numbers, queried_rows):
+            bedspace = results.get(m_number)
+            if bedspace:
+                building = building_names[bedspace[:2]]
+                room = bedspace[3:-1]
+                response[queried_row] = [m_number, building, room]
+
+        return JsonResponse(response)
+
+
 class ClientView(LoginRequiredMixin, DetailView):
     template_name = 'rim/client.html'
     model = Client
@@ -173,7 +204,7 @@ class ClientView(LoginRequiredMixin, DetailView):
         context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
 
-class CheckSerialView(View):
+class CheckSerialView(LoginRequiredMixin, View):
     def post(self, request):
         data = json.loads(request.POST.get('serial_nums', '[]'))
         data = [x.upper() for x in data]
@@ -195,3 +226,9 @@ class CheckSerialView(View):
 
         return_data = {'context': errors}
         return JsonResponse(return_data)
+
+class CheckoutView(LoginRequiredMixin, CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
