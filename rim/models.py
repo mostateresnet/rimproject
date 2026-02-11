@@ -30,6 +30,7 @@ class Equipment(models.Model):
     purchase_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     purchase_info = models.CharField(max_length=100, blank=True)
     latest_checkout = models.ForeignKey('Checkout', blank=True, null=True, on_delete=models.SET_NULL, related_name='+')
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '%s' % (self.equipment_model)

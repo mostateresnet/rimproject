@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max, Q, F, Case, When, CharField
-from django.db.models.functions import Lower, Concat
+from django.db.models.functions import Lower, Concat, Coalesce, Greatest
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, View
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
@@ -46,27 +46,31 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
         latest_checkout__location=Concat(
             'latest_checkout__location__building', 'latest_checkout__location__room',
             output_field=CharField(),
-        )
+        ),
+        last_updated=Greatest(
+            'last_modified',
+            Coalesce('latest_checkout__timestamp', 'last_modified'),
+        ),
     )
 
-    valid_params = ['serial_no', 'hostname', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address', 
+    valid_params = ['serial_no', 'hostname', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address',
                     'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
-        default_order ='-latest_checkout__timestamp'
+        default_order = '-last_updated'
         self.order = self.request.GET.get('order', default_order)
-        
+
         if not self.order_is_valid(self.order):
             self.order = default_order
-            
+
         if self.order[0] == '-':
             return [Lower(self.order[1:]).desc()]
         else:
             return [Lower(self.order).asc()]
-    
+
     @staticmethod
     def order_is_valid(order):
-        valid_sorts = ['latest_checkout__timestamp', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model', 
+        valid_sorts = ['last_updated', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model',
                         'latest_checkout__client__name', 'latest_checkout__location']
         if order[0] == '-':
             if order[1:] not in valid_sorts:

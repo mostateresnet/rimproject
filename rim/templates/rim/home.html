@@ -20,7 +20,7 @@
             <thead>
                 <tr>
                     <th>
-                        {% include 'rim/includes/header_link.html' with ordering='latest_checkout__timestamp' title='Date Checked Out' %}
+                        {% include 'rim/includes/header_link.html' with ordering='last_updated' title='Last Updated' %}
                     </th>
                     <th>
                         {% include 'rim/includes/header_link.html' with ordering='serial_hostname' title='Hostname/Serial No.' %}
@@ -46,11 +46,7 @@
                 {% for e in equipment_list %}
                     <tr>
                         <td>
-                            {% if e.latest_checkout == None %}
-                                &nbsp;
-                            {% else %}
-                                {{ e.latest_checkout.timestamp }}
-                            {% endif %}
+                            {{ e.last_updated }}
                         </td>
                         <td>
                             <a href="{% url 'edit' pk=e.pk %}">
