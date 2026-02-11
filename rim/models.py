@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial number', unique=True)
     hostname = models.CharField(max_length=100, blank=True)
-    equipment_model = models.CharField(max_length=30)
+    equipment_model = models.CharField(max_length=64)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE, blank=True, null=True)
     count = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     manufacturer = models.CharField(max_length=30, blank=True)
@@ -18,6 +18,7 @@ class Equipment(models.Model):
     optical_drive = models.CharField(max_length=30, blank=True)
     size = models.CharField(max_length=10, blank=True)
     memory = models.CharField(max_length=255, blank=True)
+    operating_system = models.ForeignKey('OperatingSystem', on_delete=models.SET_NULL, blank=True, null=True)
     other_connectivity = models.CharField(max_length=30, blank=True)
     storage = models.JSONField(blank=True, default=list)
     usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports', validators=[MinValueValidator(0)])
@@ -44,6 +45,17 @@ class EquipmentType(models.Model):
 
     def __str__(self):
         return '%s' % (self.type_name)
+
+class OperatingSystem(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    order = models.IntegerField(blank=True, default=0)
+    disabled = models.BooleanField(blank=True, default=False)
+
+    def __str__(self):
+        return '%s' % (self.name)
+
+    class Meta:
+        ordering = ['order']
 
 class Checkout(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
