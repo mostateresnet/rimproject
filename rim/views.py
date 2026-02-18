@@ -43,7 +43,7 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
             default='hostname',
             output_field=CharField(),
         ),
-        latest_checkout__location=Concat(
+        latest_checkout__location_str=Concat(
             'latest_checkout__location__building', 'latest_checkout__location__room',
             output_field=CharField(),
         ),
@@ -71,7 +71,7 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
     @staticmethod
     def order_is_valid(order):
         valid_sorts = ['last_updated', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model',
-                        'latest_checkout__client__name', 'latest_checkout__location']
+                        'latest_checkout__client__name', 'latest_checkout__location_str']
         if order[0] == '-':
             if order[1:] not in valid_sorts:
                 return False
