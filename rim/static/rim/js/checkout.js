@@ -179,6 +179,8 @@ $(document).ready(function() {
         clearTimeout(RMS_LOOKUP_TIMER);
         RMS_LOOKUP_TIMER = setTimeout(rms_location, 300);
 
+        return;
+
         var current_name = $(e.target).val();
         var regex = /^[mM8]\d{8}$/;
         var row_index = $(e.target).closest('.copyable').find('textarea[type=text]').index(e.target);
