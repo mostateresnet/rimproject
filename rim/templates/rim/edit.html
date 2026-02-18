@@ -27,7 +27,7 @@
             {% trans 'Add an item' %}
         {% endif %}
     </div>
-    <div class="grid-x grid-padding-x grid-padding-y {% if object.pk %}edit_form{% else %}add_form{% endif %}">
+    <div class="grid-x grid-padding-x {% if object.pk %}edit_form{% else %}add_form{% endif %}">
         <div class="large-auto cell">
             <form method="POST" name="add_edit_form">
                 {% csrf_token %}
@@ -35,31 +35,50 @@
                     {{ hidden }}
                 {% endfor %}
                 {{ form.non_field_errors }}
-                <div class="grid-x grid-padding-x grid-padding-y">
-                    {% for field in form.visible_fields %}
-                        <div class='{% if not object.pk and forloop.first %}cell-block-y large-3{% else %}small-12 medium-4{% endif %} cell {% if field.field.required %}required{% endif %}'>
-                            {{ field.label_tag }}
-                            {{ field.errors }}
-                            {{ field }}
+
+                {% if not object.pk %}
+                    {# TODO: Look into using Foundation Grid Frames as a possibly better solution #}
+
+                    <div class="grid-x grid-padding-x grid-padding-y">
+                        <div class="cell large-3 cell-block-y">
+                            {% with field=form.visible_fields.0 %}
+                                <div class='cell {% if field.field.required %}required{% endif %}'>
+                                    {{ field.label_tag }}
+                                    {{ field.errors }}
+                                    {{ field }}
+                                </div>
+                            {% endwith %}
                         </div>
-                        {% if not object.pk and forloop.first %}
-                            <div class="cell-block-y large-9 cell"><div class="grid-x grid-padding-x grid-padding-y">
-                        {% endif %}
-                        {% if not forloop.first and not forloop.last %}
-                            {% if not object.pk and forloop.counter|add:"2"|divisibleby:3 or object.pk and forloop.counter|divisibleby:3 %}
-                                </div><div class="grid-x grid-padding-x grid-padding-y">
-                            {% endif %}
-                        {% endif %}
-                        {% if not object.pk and forloop.last %}
-                            {# Close out the extra cell-block-y & grid-x <div> #}
-                            </div></div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="grid-x grid-padding-x grid-padding-y" id="display_inputs"></div>
-                <div class="grid-x grid-padding-x grid-padding-y" id="storage_inputs"></div>
-                <div class="grid-x grid-padding-x grid-padding-y" id="gpu_inputs"></div>
-                <div class="grid-x grid-padding-x grid-padding-y" id="nic_inputs"></div>
+                        <div class="cell large-9 cell-block-y">
+                            <div class="form-fields grid-x grid-padding-x grid-padding-y small-up-1 medium-up-3">
+                                {% for field in form.visible_fields|slice:'1:' %}
+                                    <div class='cell {% if field.field.required %}required{% endif %}'>
+                                        {{ field.label_tag }}
+                                        {{ field.errors }}
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <div class="form-fields grid-x grid-padding-x grid-padding-y small-up-1 medium-up-3">
+                        {% for field in form.visible_fields %}
+                            <div class='cell {% if field.field.required %}required{% endif %}'>
+                                {{ field.label_tag }}
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
+
+
+
                 <div class="button-group align-center">
                     <button type="button" class="button" onclick="addInputs('display')">{% trans 'Add Display' %}</button>
                     <button type="button" class="button" onclick="addInputs('storage')">{% trans 'Add Storage' %}</button>
@@ -76,7 +95,7 @@
         {% if object.pk %}
             <div class="large-3 cell">
                 <div class="grid-y medium-grid-frame grid-padding-x grid-padding-y">
-                    <div class="cell large-1">
+                    <div class="cell shrink">
                         <button type='submit' class='button expanded'>{% trans 'Checkout' %}</button>
                     </div>
                     <div class="cell large-auto medium-cell-block-container">
