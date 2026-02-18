@@ -12,7 +12,9 @@ from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
-from rim.forms import EquipmentForm
+from rim.forms import EquipmentForm, CheckoutClientForm, CheckoutLocationForm, CheckoutForm
+
+
 class PaginateMixin(object):
     def get_paginate_by(self, queryset):
         obj_per_page = 15
@@ -236,3 +238,54 @@ class CheckoutView(LoginRequiredMixin, CreateView):
     model = Checkout
     success_url = reverse_lazy('home')
     fields = ['client', 'location', 'equipment']
+
+    def post(self, request):
+        response = {}
+
+        if 'submit' in request.POST:
+            right_now = now()
+
+            for i, row_data in json.loads(request.POST.get('data', '[]')).items():
+                if not any(row_data.values()):
+                    continue
+
+                response[i] = {'errors': {}}
+
+                try:
+                    equipment = Equipment.objects.get(Q(hostname__iexact=row_data['barcode'])|Q(serial_no__iexact=row_data['barcode']))
+                except Equipment.DoesNotExist:
+                    equipment = None
+                    response[i]['errors']['barcode'] = [_('Invalid Barcode')]
+
+                client_form = CheckoutClientForm({'name': row_data['client']})
+                if client_form.is_valid():
+                    client = client_form.save(commit=False)
+                else:
+                    client = None
+                    response[i]['errors']['client'] = [_('Invalid Client')]
+
+                location_form = CheckoutLocationForm({'building': row_data['building'], 'room': row_data['room']})
+                if location_form.is_valid():
+                    location = location_form.save(commit=False)
+                else:
+                    location = None
+                    response[i]['errors'].update(location_form.errors)
+
+                related_objects = [equipment, client, location]
+                if all(related_objects):
+                    for obj in related_objects:
+                        obj.save()
+
+                checkout_form = CheckoutForm({'equipment': equipment, 'client': client, 'location': location, 'timestamp': right_now})
+                if checkout_form.is_valid():
+                    checkout_form.save()
+                else:
+                    response[i]['errors']['checkout'] = [_('General Failure')]
+
+                if response[i]['errors']:
+                    response[i]['status'] = 'fail'
+                else:
+                    response[i]['status'] = 'success'
+                    del response[i]['errors']
+
+        return JsonResponse(response)

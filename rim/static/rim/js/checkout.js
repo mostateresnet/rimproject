@@ -45,6 +45,45 @@ $(document).ready(function() {
 
     })
 
+    $('#btn_submit').click(function(e) {
+        var data = {}
+
+        var len = $('.copyable:first textarea[type=text]').length;
+        for (var row_index = 0; row_index < len; row_index++) {
+            var row_data = {};
+            $('.copyable').each(function(){
+                let textarea = $(this).find('textarea[type=text]').eq(row_index);
+                row_data[textarea.attr('name')] = textarea.val();
+            })
+
+            data[row_index] = row_data;
+        }
+
+        $('.callout.alert').toggleClass(['callout', 'alert'], false);
+
+        $.post(
+            window.location.href.split('?')[0],
+            {
+                submit: 'submit',
+                data: JSON.stringify(data),
+            },
+            function(response) {
+                $.each(response, function(row_index, row_response) {
+                    if (row_response['status'] != 'success') {
+                        $.each(row_response['errors'], function(field, errors) {
+                            $(`.copyable [name=${field}]`).eq(row_index).closest('div').toggleClass(['callout', 'alert'], true);
+                        });
+                    }
+                });
+                $.each(response, function(row_index, row_response) {
+                    if (row_response['status'] == 'success') {
+                        $('.copyable .delete').eq(row_index).click();
+                    }
+                });
+            }
+        );
+    });
+
     var RMS_LOOKUP_TIMER;
 
     $('.client').on('keyup', 'textarea[type=text]', function(e) {

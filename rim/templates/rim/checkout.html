@@ -33,7 +33,7 @@
                 <div class="small-1 cell counter">
                 </div>
                 <div class='small-11 cell'>
-                    <textarea class = 'textarea' type="text" placeholder="{% trans 'Name or M-Number' %}"></textarea>
+                    <textarea class = 'textarea' type="text" name="client" placeholder="{% trans 'Name or M-Number' %}"></textarea>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <h3>Barcode</h3>
             <div class="grid-x align-middle input_container">
                 <div class="cell">
-                    <textarea class = 'textarea' type="text" placeholder="{% trans 'Serial Number/Barcode' %}"></textarea>
+                    <textarea class = 'textarea' type="text" name="barcode" placeholder="{% trans 'Serial Number/Barcode' %}"></textarea>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="input_container">
-                <textarea class = 'textarea' type="text" placeholder="{% trans 'Building' %}"></textarea>
+                <textarea class = 'textarea' type="text" name="building" placeholder="{% trans 'Building' %}"></textarea>
             </div>
         </div>
         <div class="large-3 cell copyable location room" id = "room">
@@ -69,7 +69,7 @@
             </div>
             <div class="grid-x align-middle input_container">
                 <div class="small-11 cell">
-                    <textarea class = 'textarea' type="text" placeholder="{% trans 'Room Number' %}"></textarea>
+                    <textarea class = 'textarea' type="text" name="room" placeholder="{% trans 'Room Number' %}"></textarea>
                 </div>
                 <div class="small-1 cell">
                     <button class="button small delete">&cross;</button>

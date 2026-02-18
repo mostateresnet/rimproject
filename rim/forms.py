@@ -1,7 +1,8 @@
+import re
 import json
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from rim.models import Equipment
+from rim.models import Equipment, Client, Location, Checkout
 
 
 class EquipmentForm(forms.ModelForm):
@@ -52,3 +53,90 @@ class EquipmentForm(forms.ModelForm):
         self.instance.network_cards = dynamic_json['network_cards']
         self.instance.displays = dynamic_json['displays']
         return super(EquipmentForm, self).save(commit)
+
+
+class CheckoutClientForm(forms.ModelForm):
+    def clean(self):
+        if 'name' in self.cleaned_data:
+            name = self.cleaned_data['name']
+            bpn = ''
+            bpn_matches = Client.bpn_validator.regex.search(name)
+
+            if bpn_matches:
+                bpn = bpn_matches.group(0)
+                name = name.replace(bpn, '')
+
+            name = ' '.join(name.split())
+            if name == name.lower():
+                name = name.title()
+
+            bpn = bpn.upper()
+
+            return {'name': name or bpn, 'bpn': bpn}
+
+        return self.cleaned_data
+
+    def save(self, commit=True):
+        self.instance = super(CheckoutClientForm, self).save(commit=False)
+
+        if self.cleaned_data['bpn']:
+            query = {'bpn__iexact': self.cleaned_data['bpn']}
+        else:
+            query = {'name__iexact': self.cleaned_data['name']}
+
+        try:
+            self.instance = Client.objects.get(**query)
+        except Client.DoesNotExist:
+            self.instance = Client(**self.cleaned_data)
+
+        if commit:
+            self.instance.save()
+        return self.instance
+
+
+    class Meta:
+        model = Client
+        fields = ['name', 'bpn']
+
+
+class CheckoutLocationForm(forms.ModelForm):
+    def clean_building(self):
+        building = self.cleaned_data['building']
+
+        building = ' '.join(building.split())
+        if building == building.lower():
+            building = building.title()
+
+        return building
+
+    def clean_room(self):
+        room = self.cleaned_data['room']
+
+        room = ' '.join(room.split())
+        # Remove leading zeros from any part of the room number
+        room = ''.join([x[:-1].lstrip('0') + x[-1:] for x in re.split(r'(\d+)', room)])
+
+        return room
+
+    def save(self, commit=True):
+        self.instance = super(CheckoutLocationForm, self).save(commit=False)
+
+        try:
+            self.instance = Location.objects.get(building__iexact=self.cleaned_data['building'], room__iexact=self.cleaned_data['room'])
+        except Location.DoesNotExist:
+            self.instance = Location(**self.cleaned_data)
+
+        if commit:
+            self.instance.save()
+        return self.instance
+
+
+    class Meta:
+        model = Location
+        exclude = []
+
+
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Checkout
+        exclude = []
