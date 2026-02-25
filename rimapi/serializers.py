@@ -8,7 +8,7 @@ class EquipmentSerializer(serializers.ModelSerializer):
     GPUs = serializers.JSONField(required=False, source='GPU')
     Hostname = serializers.CharField(max_length=100, required=False, source='hostname')
     Manufacturer = serializers.CharField(max_length=30, required=False, source='manufacturer')
-    Model = serializers.CharField(max_length=30, source='equipment_model')
+    Model = serializers.CharField(max_length=64, source='equipment_model')
     NICs = serializers.JSONField(required=False, source='network_cards')
     RAM = serializers.CharField(max_length=255, required=False, source='memory')
     Serial = serializers.CharField(max_length=100, source='serial_no')
