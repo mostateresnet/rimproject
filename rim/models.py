@@ -27,6 +27,8 @@ class Equipment(models.Model):
     displays = models.JSONField(blank=True, default=list)
     users_info = models.JSONField(blank=True, default=list)
     removable_media = models.CharField(max_length=30, blank=True)
+    autopilot_hash = models.CharField(max_length=8192, blank=True)
+    netboot_guid = models.CharField(max_length=64, blank=True, verbose_name='Netboot GUID')
     mac_address = models.CharField(max_length=30, blank=True, verbose_name='MAC address')
     purchase_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     purchase_info = models.CharField(max_length=100, blank=True)

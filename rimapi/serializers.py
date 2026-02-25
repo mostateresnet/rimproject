@@ -15,13 +15,15 @@ class EquipmentSerializer(serializers.ModelSerializer):
     Storage = serializers.JSONField(required=False, source='storage')
     Users = serializers.JSONField(required=False, source='users_info')
     EquipmentType = serializers.SlugRelatedField(queryset=EquipmentType.objects.all(), slug_field='type_name', required=False, allow_null=True, source='equipment_type')
+    AutopilotHash = serializers.CharField(max_length=8192, required=False, source='autopilot_hash')
+    NetbootGUID = serializers.CharField(max_length=64, required=False, source='netboot_guid')
 
     def validate_Serial(self, value):
         return value.upper()
 
     class Meta:
         model = Equipment
-        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType')
+        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType', 'AutopilotHash', 'NetbootGUID')
 
 
 class ApiErrorSerializer(serializers.ModelSerializer):
