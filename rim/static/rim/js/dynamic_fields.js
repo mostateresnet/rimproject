@@ -1,19 +1,19 @@
-let storage_form = (id, model = '', size = '') => `<div class='small-4 large-4 addcell cell'>
+let storage_form = (id, model = '', size = '') => `<div class='storage cell'>
         <label>Storage #${id + 1}</label>
         <input id="storage_model_${id}" type="text" placeholder="Model" value="${model}"/>
         <input id="storage_size_${id}" type="text" placeholder="Size" value="${size}" />
         </div>`;
-let gpu_form = (id, name = '') => `<div class='small-4 large-4 addcell cell'>
+let gpu_form = (id, name = '') => `<div class='gpu cell'>
         <label>GPU #${id + 1}</label>
         <input id="gpu_name_${id}" type="text" placeholder="Name" value="${name}"/>
         </div>`;
-let nic_form = (id, mac = '', name = '', type = '') => `<div class='small-4 large-4 addcell cell'>
+let nic_form = (id, mac = '', name = '', type = '') => `<div class='nic cell'>
         <label>Network Card #${id + 1}</label>
         <input id="nic_mac_${id}" type="text" placeholder="MAC" value="${mac}"/>
         <input id="nic_name_${id}" type="text" placeholder="Name" value="${name}" />
         <input id="nic_type_${id}" type="text" placeholder="Type" value="${type}" />
         </div>`;
-let display_form = (id, height = '', manufacturer = '', code = '', resolution = '', serial = '', name = '', width = '') => `<div class='small-4 large-4 addcell cell'>
+let display_form = (id, height = '', manufacturer = '', code = '', resolution = '', serial = '', name = '', width = '') => `<div class='display cell'>
         <label>Display #${id + 1}</label>
         <input id="display_height_${id}" type="text" placeholder="Height in MM" value="${height}"/>
         <input id="display_manufacturer_${id}" type="text" placeholder="Manufacturer" value="${manufacturer}" />
@@ -28,29 +28,38 @@ let storages = 0, gpus = 0, nics = 0, displays = 0;
 
 function populateInputs() {
     for (const s of json_fields['storage'])
-        document.getElementById('storage_inputs').innerHTML += storage_form(storages++, s['Model'], s['Size']);
+        addInputs('storage', [s['Model'], s['Size']]);
 
     for (const g of json_fields['GPU'])
-        document.getElementById('gpu_inputs').innerHTML += gpu_form(gpus++, g['Name']);
+        addInputs('gpu', [g['Name']]);
 
     for (const n of json_fields['network_cards'])
-        document.getElementById('nic_inputs').innerHTML += nic_form(nics++, n['MAC'], n['Name'], n['Type']);
+        addInputs('nic', [n['MAC'], n['Name'], n['Type']]);
 
     for (const d of json_fields['displays'])
-        document.getElementById('display_inputs').innerHTML += display_form(displays++, d["HeightInMillimeters"],
+        addInputs('display', [d["HeightInMillimeters"],
             d["ManufacturerName"], d["ProductCodeID"], d["Resolution"], d["SerialNumberID"], d["UserFriendlyName"],
-            d["WidthInMillimeters"]);
+            d["WidthInMillimeters"]]);
 }
 
-function addInputs(field) {
+function addInputs(field, values = []) {
+    let form_fields = $('form .form-fields')
+    let last_field = form_fields.find(`.${field}.cell:last`);
+    if (last_field.length == 0)
+        last_field = form_fields.find('.cell:last');
+
     switch (field) {
-        case 'storage': document.getElementById('storage_inputs').innerHTML += storage_form(storages++);
+        case 'storage':
+            last_field.after(storage_form(storages++, ...values));
             break;
-        case 'gpu': document.getElementById('gpu_inputs').innerHTML += gpu_form(gpus++);
+        case 'gpu':
+            last_field.after(gpu_form(gpus++, ...values));
             break;
-        case 'nic': document.getElementById('nic_inputs').innerHTML += nic_form(nics++);
+        case 'nic':
+            last_field.after(nic_form(nics++, ...values));
             break;
-        case 'display': document.getElementById('display_inputs').innerHTML += display_form(displays++);
+        case 'display':
+            last_field.after(display_form(displays++, ...values));
             break;
 
     }

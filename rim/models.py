@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 class Equipment(models.Model):
     serial_no = models.CharField(max_length=100, verbose_name='Serial number', unique=True)
     hostname = models.CharField(max_length=100, blank=True)
-    equipment_model = models.CharField(max_length=30)
+    equipment_model = models.CharField(max_length=64)
     equipment_type = models.ForeignKey('EquipmentType', on_delete=models.CASCADE, blank=True, null=True)
     count = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
     manufacturer = models.CharField(max_length=30, blank=True)
@@ -18,6 +18,7 @@ class Equipment(models.Model):
     optical_drive = models.CharField(max_length=30, blank=True)
     size = models.CharField(max_length=10, blank=True)
     memory = models.CharField(max_length=255, blank=True)
+    operating_system = models.ForeignKey('OperatingSystem', on_delete=models.SET_NULL, blank=True, null=True)
     other_connectivity = models.CharField(max_length=30, blank=True)
     storage = models.JSONField(blank=True, default=list)
     usb_ports = models.IntegerField(blank=True, null=True, verbose_name='USB ports', validators=[MinValueValidator(0)])
@@ -26,10 +27,13 @@ class Equipment(models.Model):
     displays = models.JSONField(blank=True, default=list)
     users_info = models.JSONField(blank=True, default=list)
     removable_media = models.CharField(max_length=30, blank=True)
+    autopilot_hash = models.CharField(max_length=8192, blank=True)
+    netboot_guid = models.CharField(max_length=64, blank=True, verbose_name='Netboot GUID')
     mac_address = models.CharField(max_length=30, blank=True, verbose_name='MAC address')
     purchase_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, validators=[MinValueValidator(0)])
     purchase_info = models.CharField(max_length=100, blank=True)
     latest_checkout = models.ForeignKey('Checkout', blank=True, null=True, on_delete=models.SET_NULL, related_name='+')
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '%s' % (self.equipment_model)
@@ -44,6 +48,17 @@ class EquipmentType(models.Model):
     def __str__(self):
         return '%s' % (self.type_name)
 
+class OperatingSystem(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    order = models.IntegerField(blank=True, default=0)
+    disabled = models.BooleanField(blank=True, default=False)
+
+    def __str__(self):
+        return '%s' % (self.name)
+
+    class Meta:
+        ordering = ['order']
+
 class Checkout(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=now, blank=True)
@@ -57,6 +72,9 @@ class Checkout(models.Model):
 
     def __str__(self):
         return '%s' % (self.client)
+
+    class Meta:
+        ordering = ['-timestamp']
 
 class Location(models.Model):
     building = models.CharField(max_length=50)
@@ -80,3 +98,4 @@ class Client(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
+

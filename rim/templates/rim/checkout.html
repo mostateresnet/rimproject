@@ -1,0 +1,92 @@
+{% extends "rim/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type='text/javascript' src='{% static "rim/js/checkout.js" %}'></script>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{% static "rim/css/checkout.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div class="grid-x grid-padding-x grid-padding-y align-center">
+        <div class="large-3 text-center cell">
+            <input type="radio" checked=checked name="checkform" id="checkout"><label for="checkout">Checkout</label>
+            <input type="radio" name="checkform" id="checkin"><label for="checkin">Check-In</label>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-3 cell copyable client" id = "client">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Client</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="client_clone" type="checkbox"><label for="client_clone">{% trans 'Copy to new rows' %}</label>
+                </div>
+            </div>
+            <div class="grid-x input_container">
+                <div class="small-1 cell counter">
+                </div>
+                <div class='small-11 cell'>
+                    <textarea class = 'textarea' type="text" name="client" placeholder="{% trans 'Name or M-Number' %}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="large-3 cell copyable barcode" id = "barcode">
+            <h3>Barcode</h3>
+            <div class="grid-x align-middle input_container">
+                <div class="cell">
+                    <textarea class = 'textarea' type="text" name="barcode" placeholder="{% trans 'Serial Number/Barcode' %}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="large-3 cell copyable location building" id = "building">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Building</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="building_clone" type="checkbox"><label for="building_clone">{% trans 'Copy to new rows' %}</label>
+                </div>
+            </div>
+            <div class="input_container">
+                <textarea class = 'textarea' type="text" name="building" placeholder="{% trans 'Building' %}"></textarea>
+            </div>
+        </div>
+        <div class="large-3 cell copyable location room" id = "room">
+            <div class="grid-x grid-padding-x align-middle">
+                <div class="shrink cell">
+                    <h3>Room</h3>
+                </div>
+                <div class="auto cell">
+                    <input id="room_clone" type="checkbox"><label for="room_clone">{% trans 'Copy to new rows' %}</label>
+                </div>
+            </div>
+            <div class="grid-x align-middle input_container">
+                <div class="small-11 cell">
+                    <textarea class = 'textarea' type="text" name="room" placeholder="{% trans 'Room Number' %}"></textarea>
+                </div>
+                <div class="small-1 cell">
+                    <button class="button small delete">&cross;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='btm-bar-wrapper'>
+        <div class='expanded align-center nav btm-bar'>
+            <div class='grid-x grid-margin-x grid-margin-y'>
+                <div class='large-3 cell'>
+                        <button type='submit' id = "btn_submit" class='button expanded'>{% trans 'Submit' %}</button>
+                </div>
+                <div class='large-3 cell large-offset-6'>
+                        <button type='reset' id = "btn_reset" class='button expanded'>{% trans 'Clear Form' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

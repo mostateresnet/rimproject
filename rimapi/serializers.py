@@ -8,20 +8,22 @@ class EquipmentSerializer(serializers.ModelSerializer):
     GPUs = serializers.JSONField(required=False, source='GPU')
     Hostname = serializers.CharField(max_length=100, required=False, source='hostname')
     Manufacturer = serializers.CharField(max_length=30, required=False, source='manufacturer')
-    Model = serializers.CharField(max_length=30, source='equipment_model')
+    Model = serializers.CharField(max_length=64, source='equipment_model')
     NICs = serializers.JSONField(required=False, source='network_cards')
     RAM = serializers.CharField(max_length=255, required=False, source='memory')
     Serial = serializers.CharField(max_length=100, source='serial_no')
     Storage = serializers.JSONField(required=False, source='storage')
     Users = serializers.JSONField(required=False, source='users_info')
     EquipmentType = serializers.SlugRelatedField(queryset=EquipmentType.objects.all(), slug_field='type_name', required=False, allow_null=True, source='equipment_type')
+    AutopilotHash = serializers.CharField(max_length=8192, required=False, source='autopilot_hash')
+    NetbootGUID = serializers.CharField(max_length=64, required=False, source='netboot_guid')
 
     def validate_Serial(self, value):
         return value.upper()
 
     class Meta:
         model = Equipment
-        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType')
+        fields = ('CPU', 'Displays', 'GPUs', 'Hostname', 'Manufacturer', 'Model', 'NICs', 'RAM', 'Serial', 'Storage', 'Users', 'EquipmentType', 'AutopilotHash', 'NetbootGUID')
 
 
 class ApiErrorSerializer(serializers.ModelSerializer):

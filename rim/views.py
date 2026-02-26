@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count, Max, Q, F, Case, When, CharField
-from django.db.models.functions import Lower, Concat
+from django.db.models.functions import Lower, Concat, Coalesce, Greatest
 from django.views.generic import CreateView, ListView, UpdateView, DetailView, View
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponse, Http404, JsonResponse, QueryDict
@@ -12,7 +12,9 @@ from django.forms.utils import pretty_name
 from django.utils.timezone import now, localtime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rim.models import Equipment, Checkout, EquipmentType, Location, Client
-from rim.forms import EquipmentForm
+from rim.forms import EquipmentForm, CheckoutClientForm, CheckoutLocationForm, CheckoutForm
+
+
 class PaginateMixin(object):
     def get_paginate_by(self, queryset):
         obj_per_page = 15
@@ -43,31 +45,35 @@ class HomeView(PaginateMixin, LoginRequiredMixin, ListView):
             default='hostname',
             output_field=CharField(),
         ),
-        latest_checkout__location=Concat(
+        latest_checkout__location_str=Concat(
             'latest_checkout__location__building', 'latest_checkout__location__room',
             output_field=CharField(),
-        )
+        ),
+        last_updated=Greatest(
+            'last_modified',
+            Coalesce('latest_checkout__timestamp', 'last_modified'),
+        ),
     )
 
-    valid_params = ['serial_no', 'hostname', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address', 
+    valid_params = ['serial_no', 'hostname', 'equipment_model', 'equipment_type__type_name', 'service_tag', 'mac_address',
                     'latest_checkout__client__name', 'latest_checkout__location__building', 'latest_checkout__location__room']
 
     def get_ordering(self):
-        default_order ='-latest_checkout__timestamp'
+        default_order = '-last_updated'
         self.order = self.request.GET.get('order', default_order)
-        
+
         if not self.order_is_valid(self.order):
             self.order = default_order
-            
+
         if self.order[0] == '-':
             return [Lower(self.order[1:]).desc()]
         else:
             return [Lower(self.order).asc()]
-    
+
     @staticmethod
     def order_is_valid(order):
-        valid_sorts = ['latest_checkout__timestamp', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model', 
-                        'latest_checkout__client__name', 'latest_checkout__location']
+        valid_sorts = ['last_updated', 'serial_hostname', 'equipment_type__type_name', 'manufacturer', 'equipment_model',
+                        'latest_checkout__client__name', 'latest_checkout__location_str']
         if order[0] == '-':
             if order[1:] not in valid_sorts:
                 return False
@@ -163,6 +169,37 @@ class EditEquipmentView(LoginRequiredMixin, UpdateView):
     form_class = EquipmentForm
     success_url = reverse_lazy('home')
 
+class CheckoutView(LoginRequiredMixin, CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
+
+    def post(self, request, *args, **kwargs):
+        try:
+            from django_rms.models import RmsrealRmgtTBuildings, RmsrealRmgtTRoomPerson
+        except ImportError:
+            raise Http404('RMS is not installed')
+
+        # just assume they're m-numbers for now
+        m_numbers = [q.upper().strip() for q in request.POST.getlist('queries[]')]
+
+        # keep track of which row was queried
+        queried_rows = request.POST.getlist('queried_rows[]')
+
+        results = dict(RmsrealRmgtTRoomPerson.objects.filter(ck_rms_id__rmsrealppletstudentprofile__ix_student_number__in=m_numbers, ck_move_in_date__lte=now(), room_person_move_out_date__gte=now()).values_list('ck_rms_id__rmsrealppletstudentprofile__ix_student_number', 'ck_bed_space_id'))
+        building_names = dict(RmsrealRmgtTBuildings.objects.values_list('pk_building_id', 'buildings_name'))
+        response = {}
+        for m_number, queried_row in zip(m_numbers, queried_rows):
+            bedspace = results.get(m_number)
+            if bedspace:
+                building = building_names[bedspace[:2]]
+                room = bedspace[3:-1]
+                response[queried_row] = [m_number, building, room]
+
+        return JsonResponse(response)
+
+
 class ClientView(LoginRequiredMixin, DetailView):
     template_name = 'rim/client.html'
     model = Client
@@ -173,7 +210,7 @@ class ClientView(LoginRequiredMixin, DetailView):
         context['previous'] = context['client'].checkout_set.exclude(equipment__latest_checkout__pk=F('pk'))
         return context
 
-class CheckSerialView(View):
+class CheckSerialView(LoginRequiredMixin, View):
     def post(self, request):
         data = json.loads(request.POST.get('serial_nums', '[]'))
         data = [x.upper() for x in data]
@@ -195,3 +232,60 @@ class CheckSerialView(View):
 
         return_data = {'context': errors}
         return JsonResponse(return_data)
+
+class CheckoutView(LoginRequiredMixin, CreateView):
+    template_name = 'rim/checkout.html'
+    model = Checkout
+    success_url = reverse_lazy('home')
+    fields = ['client', 'location', 'equipment']
+
+    def post(self, request):
+        response = {}
+
+        if 'submit' in request.POST:
+            right_now = now()
+
+            for i, row_data in json.loads(request.POST.get('data', '[]')).items():
+                if not any(row_data.values()):
+                    continue
+
+                response[i] = {'errors': {}}
+
+                try:
+                    equipment = Equipment.objects.get(Q(hostname__iexact=row_data['barcode'])|Q(serial_no__iexact=row_data['barcode']))
+                except Equipment.DoesNotExist:
+                    equipment = None
+                    response[i]['errors']['barcode'] = [_('Invalid Barcode')]
+
+                client_form = CheckoutClientForm({'name': row_data['client']})
+                if client_form.is_valid():
+                    client = client_form.save(commit=False)
+                else:
+                    client = None
+                    response[i]['errors']['client'] = [_('Invalid Client')]
+
+                location_form = CheckoutLocationForm({'building': row_data['building'], 'room': row_data['room']})
+                if location_form.is_valid():
+                    location = location_form.save(commit=False)
+                else:
+                    location = None
+                    response[i]['errors'].update(location_form.errors)
+
+                related_objects = [equipment, client, location]
+                if all(related_objects):
+                    for obj in related_objects:
+                        obj.save()
+
+                checkout_form = CheckoutForm({'equipment': equipment, 'client': client, 'location': location, 'timestamp': right_now})
+                if checkout_form.is_valid():
+                    checkout_form.save()
+                else:
+                    response[i]['errors']['checkout'] = [_('General Failure')]
+
+                if response[i]['errors']:
+                    response[i]['status'] = 'fail'
+                else:
+                    response[i]['status'] = 'success'
+                    del response[i]['errors']
+
+        return JsonResponse(response)

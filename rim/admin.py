@@ -16,6 +16,11 @@ class EquipmentTypeAdmin(admin.ModelAdmin):
     list_display = ['type_name']
     search_fields = ['type_name']
 
+class OperatingSystemAdmin(admin.ModelAdmin):
+    list_display = ['name', 'disabled']
+    list_filter = ['disabled']
+    search_fields = ['name']
+
 class LocationAdmin(admin.ModelAdmin):
     list_display = ['building', 'room']
     search_fields = ['building', 'room']
@@ -37,6 +42,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Equipment, EquipmentAdmin)
 admin.site.register(models.EquipmentType, EquipmentTypeAdmin)
+admin.site.register(models.OperatingSystem, OperatingSystemAdmin)
 admin.site.register(models.Checkout, CheckoutAdmin)
 admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.Note, NoteAdmin)
